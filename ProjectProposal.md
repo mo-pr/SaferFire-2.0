@@ -1,9 +1,26 @@
 # Project Proposal
 
-## Initial Situation
+### Projekt-Name: 
+    SaferFire-2.0
 
-## Project Objectives and System Concepts
+### Team
+- Alessandro Detta
+- Nikos Hagenberger
+- Moritz Preining
+- Clemens Wolfmayr
 
-## Opportunities and Risks
+## Ausgangssituation
+- SaferFire 1.0 funktionsfähig bereits vorhanden
+- noch nicht Einsatzfähig
 
-## Planning
+## Projektziele und Systemkonzepte
+- Überarbeitung des vorhandenen Backends
+- Änderung des Designs zu responsive Design
+- Push Benachrichtigungen
+- automatisierte Statistik (Heatmap)
+- Kennzeichenabfrage
+- Rettungskarten
+
+## Möglichkeiten und Risiken
+
+## Planung
