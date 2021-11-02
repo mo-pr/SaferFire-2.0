@@ -1,7 +1,5 @@
 # Project Proposal
-
-### Projekt-Name: 
-    SaferFire-2.0
+# SaferFire-2.0
 
 ### Team
 - Alessandro Detta
@@ -9,17 +7,27 @@
 - Moritz Preining
 - Clemens Wolfmayr
 
-## Ausgangssituation
-- SaferFire 1.0 funktionsfähig bereits vorhanden
-- noch nicht Einsatzfähig
+## Initial Situation
+Most fire departments are writing their reports manually. Because of that a lot of information is getting lost in the process. 
 
-## Projektziele und Systemkonzepte
-- Überarbeitung des vorhandenen Backends
-- Änderung des Designs zu responsive Design
-- Push Benachrichtigungen
-- automatisierte Statistik (Heatmap)
-- Kennzeichenabfrage
-- Rettungskarten
+On the market there currently is only one product from Rosenbauer,which is called EMEREC, that solves this problem. It is extremely expensive and is only available with there special tablet.
+
+Last year this team already workd on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
+
+## Project Objectives and System Concepts
+- **Complete makeover of the existing Backend**
+  - There was no separation between frontend and backend. It would be nearly to impossible to implement our new ideas because the     code was written sloppy and there are many bugs.
+- **Changing the design to a responsive design**
+  - Currently the design is getting warped on devices with an display size that is not matching our test device
+- **Push Notifications**
+  - When an alarm goes off you should get a notification on your smartphone. 
+- **Automated Statistics, Heatmaps**
+  - The old statistic was only with filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a heatmap where regions with the most operation mission get highlighted.
+- **Licence plate query**
+  - It should be possible to make a query to the existing state database with our app
+- **Rescue sheets**
+- **Expanding from Upper Austria to Austria**
+  - Currently we are only using the Fire Department API for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
 
 ## Möglichkeiten und Risiken
 
