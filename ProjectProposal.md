@@ -8,11 +8,11 @@
 - Clemens Wolfmayr
 
 ## Initial Situation
-Most fire departments are writing their reports manually. Because of that a lot of information is getting lost in the process. 
+Most fire departments are writing their reports manually. Because of that, a lot of information is getting lost in the process. 
 
-On the market there currently is only one product from Rosenbauer,which is called EMEREC, that solves this problem. It is extremely expensive and is only available with there special tablet.
+On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with there special tablet.
 
-Last year this team already workd on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
+Last year, this team already worked on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
 
 ## Project Objectives and System Concepts
 - **Complete makeover of the existing Backend**
@@ -22,7 +22,7 @@ Last year this team already workd on an application that would solve that and ma
 - **Push Notifications**
   - When an alarm goes off you should get a notification on your smartphone. 
 - **Automated Statistics, Heatmaps**
-  - The old statistic was only with filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a heatmap where regions with the most operation mission get highlighted.
+  - The old statistic was only filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a heatmap where regions with the most operation mission get highlighted.
 - **Licence plate query**
   - It should be possible to make a query to the existing state database with our app
 - **Rescue sheets**
