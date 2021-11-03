@@ -33,11 +33,11 @@ Last year, this team already worked on an application that would solve that and 
 
 #### Chances
 
-With our Software we want to help firefighters in upper-austria to save time with with the writing of protocols and with the coordination at the place of action.Since such software is currently only available at a relatively high price, we would like to offer an alternative with our app.
+With our Software we want to help firefighters in upper-austria to save time with the writing of protocols and with the coordination at the place of action. Since such software is currently only available at a relatively high price, we would like to offer an alternative with our app.
 
 #### Risks
 
-The biggest risks in our prohetc are:
+The biggest risks in our project are:
 * bad time-management
 * underestimation of effort
 * technical difficulties
