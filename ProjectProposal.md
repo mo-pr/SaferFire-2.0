@@ -38,9 +38,9 @@ Last year, this team already worked on an application that would solve that and 
 - **appointment calendar and news display**
   - Possibility to view and enter dates and news of his fire brigade
 
-## Chances and Risks
+## Opportunities and Risks
 
-#### Chances
+#### Opportunities
 
 With our Software we want to help firefighters in austria to save time with the writing of protocols and with the coordination at the place of action. Since such software is currently only available at a relatively high price, we would like to offer an alternative with our app.
 
