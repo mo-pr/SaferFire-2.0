@@ -14,6 +14,13 @@ On the market there currently is only one product from Rosenbauer, which is call
 
 Last year, this team already worked on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
 
+## Conditions and Constraints
+- Intuitiv Design
+- Save time during the operation missions
+- Save paper
+- Improve comradeship
+
+
 ## Project Objectives and System Concepts
 - **Complete makeover of the existing Backend**
   - There was no separation between frontend and backend. It would be nearly to impossible to implement our new ideas because the     code was written sloppy and there are many bugs.
