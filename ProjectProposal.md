@@ -29,6 +29,30 @@ Last year this team already workd on an application that would solve that and ma
 - **Expanding from Upper Austria to Austria**
   - Currently we are only using the Fire Department API for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
 
-## Möglichkeiten und Risiken
+## Chances and Risks
 
-## Planung
+#### Chances
+
+With our Software we want to help firefighters in upper-austria to save time with with the writing of protocols and with the coordination at the place of action.Since such software is currently only available at a relatively high price, we would like to offer an alternative with our app.
+
+#### Risks
+
+The biggest risks in our prohetc are:
+* bad time-management
+* underestimation of effort
+* technical difficulties
+
+## Planning
+
+#### Project Start:
+    November 2021  
+#### Project End:
+    February 2023
+        
+#### Milestones
+- changed UIs ready
+- new Backend ready
+- new PHP scripts ready
+- connct to Database
+- Fusion of Frontend & Backend
+- Testing & Bug-fixing
