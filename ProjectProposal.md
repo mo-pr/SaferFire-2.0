@@ -28,6 +28,8 @@ Last year, this team already worked on an application that would solve that and 
 - **Rescue sheets**
 - **Expanding from Upper Austria to Austria**
   - Currently we are only using the Fire Department API for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
+- **appointment calendar and news display**
+  - Possibility to view and enter dates and news of his fire brigade
 
 ## Chances and Risks
 
