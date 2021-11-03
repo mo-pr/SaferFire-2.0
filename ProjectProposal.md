@@ -10,7 +10,7 @@
 ## Initial Situation
 Most fire departments are writing their reports manually. Because of that, a lot of information is getting lost in the process. 
 
-On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with there special tablet.
+On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with their special tablet.
 
 Last year, this team already worked on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
 
