@@ -57,11 +57,17 @@ The biggest risks in our project are:
     November 2021  
 #### Project End:
     February 2023
+    
+#### Toolstack
+* Flutter
+* Dart
+* SQL
+* PHP
         
 #### Milestones
-- Changed UIs ready
-- New backend ready
-- New PHP scripts ready
-- Connect to database
-- Fusion of frontend & backend
-- Testing & bug-fixing
+Milestone | Features | Date
+----------|----------|------
+M1 | Info, Navigation, Protocol | Christmas 2021
+M2 | Statistic, Breath-Protection | Half-Year 2022
+M3 | Push-Notification, Rescue-Sheets | After Easter 2022
+M4 | License-Plate-Query, Heatmap | Full-Year 2022
