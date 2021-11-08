@@ -7,6 +7,11 @@
 - Moritz Preining
 - Clemens Wolfmayr
 
+## General
+* Mobile Application
+* Android
+* iOS
+
 ## Initial Situation
 Most fire departments are writing their reports manually. Because of that, a lot of information is getting lost in the process. 
 
@@ -47,9 +52,8 @@ With our software we want to help firefighters in austria to save time with the 
 #### Risks
 
 The biggest risks in our project are:
-* bad time-management
-* underestimation of effort
 * technical difficulties
+* App won't be used in real world
 
 ## Planning
 
