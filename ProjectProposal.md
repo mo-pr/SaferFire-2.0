@@ -13,18 +13,17 @@
 * iOS
 
 ## Initial Situation
-Most fire departments are writing their reports manually. Because of that, a lot of information is getting lost in the process. 
+
+At the moment, the documentation and transfer of information during operations is often very slow and it is not uncommon for important information to be lost. In addition, many fire departments still write incident reports by hand at the scene of the incident and type them into the appropriate system after the incident. 
+
+Due to the aspects mentioned, it would be quite helpful to have a suitable tool that firstly simplifies and secondly accelerates and shortens precisely these processes. 
 
 On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with their special tablet.
 
-Last year, this team already worked on an application that would solve that and many more issues and we already developed an functioning product with SaferFire-1.0. A lot of the functions of Safer Fire-1.0 are lacking and many key features are still missing. Thats why we decided to redo our whole project.
-
 ## Conditions and Constraints
-- Intuitiv design
-- Save time during the operation missions
-- Save paper
-- Improve comradeship
-
+- specifications for the mission report
+- Alarm data from state state firefighters association
+- Data privacy regulations (license-plate-query & user-account)
 
 ## Project Objectives and System Concepts
 - **Complete makeover of the existing Backend**
