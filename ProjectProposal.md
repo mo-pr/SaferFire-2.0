@@ -21,26 +21,34 @@ Due to the aspects mentioned, it would be quite helpful to have a suitable tool 
 On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with their special tablet.
 
 ## Conditions and Constraints
-- specifications for the mission report
+- Specifications for the mission report
 - Alarm data from state state firefighters association
 - Data privacy regulations (license-plate-query & user-account)
 
 ## Project Objectives and System Concepts
-- **Complete makeover of the existing Backend**
-  - There was no separation between frontend and backend. It would be nearly impossible to implement our new ideas because the     code was written sloppy and there are many bugs.
-- **Changing the design to a responsive design**
-  - Currently the design is getting warped on devices with an display size, that is not matching our test device
-- **Push Notifications**
-  - When an alarm goes off, you should get a notification on your smartphone. 
-- **Automated Statistics, Heatmaps**
-  - The old statistic was only filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a heatmap, where regions with the most operation mission get highlighted.
+- **Display of alarm data**
+- **Navigation to the scene of the incident**
+- **Protocolation of the incident**
+- **respiratory protection monitoring**
+- **ADR plate informations**
+- **Rescue sheets**
 - **Licence plate query**
   - It should be possible to make a query to the existing state database with our app
-- **Rescue sheets**
-- **Expanding from Upper Austria to Austria**
-  - Currently we are only using the "Fire Department API" for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
+- **Automated Statistics, Heatmaps**
+  - The old statistic was only filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a    heatmap, where regions with the most operation mission get highlighted.
+- **Push Notifications**
+  - When an alarm goes off, you should get a notification on your smartphone. 
 - **appointment calendar and news display**
   - Possibility to view and enter dates and news of his fire brigade
+- **Expanding from Upper Austria to Austria**
+  - Currently we are only using the "Fire Department API" for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
+
+#### Toolstack
+* Flutter
+* Dart
+* SQL
+* MariaDB
+* PHP
 
 ## Opportunities and Risks
 
@@ -60,12 +68,6 @@ The biggest risks in our project are:
     November 2021  
 #### Project End:
     February 2023
-    
-#### Toolstack
-* Flutter
-* Dart
-* SQL
-* PHP
         
 #### Milestones
 Milestone | Features | Date
