@@ -18,8 +18,6 @@ At the moment, the documentation and transfer of information during operations i
 
 Due to the aspects mentioned, it would be quite helpful to have a suitable tool that firstly simplifies and secondly accelerates and shortens precisely these processes. 
 
-On the market there currently is only one product from Rosenbauer, which is called EMEREC, that solves this problem. It is extremely expensive and is only available with their special tablet.
-
 ## Conditions and Constraints
 - Specifications for the mission report
 - Alarm data from state state firefighters association
