@@ -29,7 +29,7 @@ On the market there currently is only one product from Rosenbauer, which is call
 - **Display of alarm data**
 - **Navigation to the scene of the incident**
 - **Protocolation of the incident**
-- **respiratory protection monitoring**
+- **Respiratory protection monitoring**
 - **ADR plate informations**
 - **Rescue sheets**
 - **Licence plate query**
@@ -38,7 +38,7 @@ On the market there currently is only one product from Rosenbauer, which is call
   - The old statistic was only filled with demo data. In the new version we want to save the data from our app and make           statics from them. An example would be a    heatmap, where regions with the most operation mission get highlighted.
 - **Push Notifications**
   - When an alarm goes off, you should get a notification on your smartphone. 
-- **appointment calendar and news display**
+- **Appointment calendar and news display**
   - Possibility to view and enter dates and news of his fire brigade
 - **Expanding from Upper Austria to Austria**
   - Currently we are only using the "Fire Department API" for Upper Austria. In the future it should be possible to have access to       all of the departments in Austria.
@@ -54,13 +54,18 @@ On the market there currently is only one product from Rosenbauer, which is call
 
 #### Opportunities
 
-With our software we want to help firefighters in austria to save time with the writing of protocols and with the coordination at the place of action. Since such software is currently only available at a relatively high price, we would like to offer an alternative with our app.
+The aim of our software is to help firefighters in austria to save time with the writing of protocols and with the coordination at the place of action. The software is for firefighters of any age with smartphone
+
+#### Benefits
+* free of charge
+* compact collection of various tools
+* also for non-firefighters
 
 #### Risks
 
 The biggest risks in our project are:
 * technical difficulties
-* App won't be used in real world
+* app won't be used in real world
 
 ## Planning
 
