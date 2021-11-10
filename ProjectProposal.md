@@ -67,6 +67,10 @@ The biggest risks in our project are:
 * technical difficulties
 * app won't be used in real world
 
+#### Market analysis
+
+There are a few companies that offer some partial elements of SaferFire, but only one vendor that sells similar software that is functional for austria. This provider is Rosenbauer with the software EMEREC but this solution is very expensive.
+
 ## Planning
 
 #### Project Start:
