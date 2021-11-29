@@ -33,5 +33,5 @@ um Zeit zu sparen.
 Als Einsatzleiter/in möchte ich, dass das Protokoll automatisch in das syBOS nach dem speichern übertragen wird,
 um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
 
-Als Ausstehender möchte ich trotzdem grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
+Als Außenstehender möchte ich grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
 um einen groben Einblick zu haben, was gerade passiert.
