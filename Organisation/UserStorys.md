@@ -1,4 +1,4 @@
-Als Feuerwehrmann/frau möchte ich bei Einsätzen Fotos machen 
+Als Einsatzleiter/in möchte ich bei Einsätzen Fotos machen 
 können, die automatisch zum Einsatzprotokoll gespeichert 
 werden um den Einsatzbericht schneller abzuschließen.
 
@@ -23,7 +23,7 @@ Im Anschluss sollten die laufenden Alarme meiner Feuerwehr gelistet werden
 um immer die aktuellsten Einsatzdaten zu haben.
 
 Als Feuerwehrmann/frau möchte ich benachrichtigt werden, 
-wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Ansatz angelegt hat,
+wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Einsatz angelegt hat,
 um genauere Daten zum Einsatz jederzeit in der App sehen zu können.
 
 Als Einsatzleiter/in möchte ich beim Hinzufügen der Einsatzmitglieder nach den Mitgliedern 
@@ -36,7 +36,7 @@ um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
 Als Außenstehender möchte ich grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
 um einen groben Einblick zu haben, was gerade passiert.
 
-Als Feuerwehrmann/frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, 
+Als Feuerwehrmann/frau möchte ich eine Statistik über die Einsatzorte und Einsatzarten haben, 
 um einen Überblick zu bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahme einzuleiten. 
 
 Als Feuerwehr möchte ich Rollen vergeben können, um den Einsatzleiter festzulegen und um den Einsatz abzuwickeln.
