@@ -2,7 +2,7 @@ Als Feuerwehrmann/frau möchte ich bei Einsätzen Fotos machen
 können, die automatisch zum Einsatzprotokoll gespeichert 
 werden um den Einsatzbericht schneller abzuschließen.
 
-Als Feuerwehrmann/frau möchte ich zu den Einsatzorte die schnellste
+Als Feuerwehrmann/frau möchte ich zu den Einsatzorten die schnellste
 Route angezeigt bekommen und dorthin geleitet werden.
 Bei der Route geht es um die Zeit, nicht um den Weg.
 
@@ -35,3 +35,10 @@ um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
 
 Als Außenstehender möchte ich grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
 um einen groben Einblick zu haben, was gerade passiert.
+
+Als Feuerwehrmann/Frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, 
+um einen Überblick zu bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahme einzuleiten. 
+
+Als Feuerwehr möchte ich Rollen vergeben können, um den Einsatzleiter festzulegen und um den Einsatz abzuwickeln.
+
+Als Feuerwehr möchte ich einen Guest User anlegen können, um Außenstehende am laufen zu halten. 
