@@ -36,9 +36,9 @@ um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
 Als Außenstehender möchte ich grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
 um einen groben Einblick zu haben, was gerade passiert.
 
-Als Feuerwehrmann/Frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, 
+Als Feuerwehrmann/frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, 
 um einen Überblick zu bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahme einzuleiten. 
 
 Als Feuerwehr möchte ich Rollen vergeben können, um den Einsatzleiter festzulegen und um den Einsatz abzuwickeln.
 
-Als Feuerwehr möchte ich einen Guest User anlegen können, um Außenstehende am laufen zu halten. 
+Als Außensteher möchte ich einen Guest User anlegen können, um Informationen der Einsätze zu bekommen. 
