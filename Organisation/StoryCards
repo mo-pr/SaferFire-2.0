@@ -2,12 +2,18 @@ Sortiert von Wichtig nach Unwichtig
 
 30
 Als Einsatzleiter/in möchte ich eine App, welche mir die Protokollierung druch Templates vereinfacht, digitalisiert und Zeit spart.
+Acceptance Requirement: Nach ausfüllen des Templates wird es direkt an syBOS geschickt. 
 
 ?
 Als Einsatzleiter/in möchte ich, dass das Protokoll automatisch in das syBOS nach dem speichern übertragen wird, um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
+Acceptance Requirement: Wenn Daten in syBOS erscheinen, wurde die übermittlung erfolgreich durchgeführt. 
+Acceptance Requirement: Jedes Feld muss die dafür vorgesehenen Daten enthalten.
+Acceptance Requirement: Jedes Feld muss alle Daten des Protokolls enthalten. 
 
 13
 Als Einsatzleiter/in möchte ich einen Einsatz anlegen können. Im Anschluss sollten die laufenden Alarme meiner Feuerwehr gelistet werden um immer die aktuellsten Einsatzdaten zu haben.
+Acceptance Requirement: Die Einsatzdaten werden an die dafür vorgesehenen Feuerwehrmitglieder geschickt. 
+Acceptance Requirement: Die Daten sind fehlerfrei.
 
 20
 Als Feuerwehrmann/frau möchte ich benachrichtigt werden, wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Ansatz angelegt hat, um genauere Daten zum Einsatz jederzeit in der App sehen zu können.
