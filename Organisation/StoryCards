@@ -17,7 +17,7 @@ Acceptance Requirement: Die Einsatzdaten werden an die dafür vorgesehenen Feuer
 Acceptance Requirement: Die Daten sind fehlerfrei.
 
 20
-Als Feuerwehrmann/frau möchte ich benachrichtigt werden, wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Ansatz angelegt hat, um genauere Daten zum Einsatz jederzeit in der App sehen zu können.
+Als Feuerwehrmann/frau möchte ich benachrichtigt werden, wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Einsatz angelegt hat, um genauere Daten zum Einsatz jederzeit in der App sehen zu können.
 
 3
 Als Feuerwehrmann/frau möchte ich zu den Einsatzorten die schnellste Route angezeigt bekommen und dorthin geleitet werden. Bei der Route geht es um die Zeit, nicht um den Weg.
@@ -35,10 +35,10 @@ Als Feuerwehr möchte ich Rollen vergeben können, um den Einsatzleiter festzule
 Als Einsatzleiter/in möchte ich beim Hinzufügen der Einsatzmitglieder nach den Mitgliedern suchen können und im Ausnahmefall sollte es Möglich sein ein neues Mitglied zu erstellen, um Zeit zu sparen.
 
 5
-Als Feuerwehrmann/frau möchte ich bei Einsätzen Fotos machen können, die automatisch zum Einsatzprotokoll gespeichert werden um den Einsatzbericht schneller abzuschließen.
+Als Einsatzleiter/in möchte ich bei Einsätzen Fotos machen können, die automatisch zum Einsatzprotokoll gespeichert werden um den Einsatzbericht schneller abzuschließen.
 
 13
-Als Feuerwehrmann/frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, um einen Überblick zu bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahme einzuleiten.
+Als Feuerwehrmann/frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahmen einzuleiten.
 
 3
 Als Außensteher möchte ich einen Guest User anlegen können, um Informationen der Einsätze zu bekommen.
