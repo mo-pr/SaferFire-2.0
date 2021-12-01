@@ -2,7 +2,7 @@ Als Feuerwehrmann/frau möchte ich bei Einsätzen Fotos machen
 können, die automatisch zum Einsatzprotokoll gespeichert 
 werden um den Einsatzbericht schneller abzuschließen.
 
-Als Feuerwehrmann/frau möchte ich zu den Einsatzorte die schnellste
+Als Feuerwehrmann/frau möchte ich zu den Einsatzorten die schnellste
 Route angezeigt bekommen und dorthin geleitet werden.
 Bei der Route geht es um die Zeit, nicht um den Weg.
 
@@ -17,3 +17,28 @@ um die Verwaltung zu vereinfachen und eine Übersicht zu generieren.
 Als Einsatzleiter/in möchte ich eine App,
 welche mir die Protokollierung druch 
 Templates vereinfacht, digitalisiert und Zeit spart.
+
+Als Einsatzleiter/in möchte ich einen Einsatz anlegen können. 
+Im Anschluss sollten die laufenden Alarme meiner Feuerwehr gelistet werden 
+um immer die aktuellsten Einsatzdaten zu haben.
+
+Als Feuerwehrmann/frau möchte ich benachrichtigt werden, 
+wenn der Einsatzleiter/in meiner Feuerwehr einen neuen Ansatz angelegt hat,
+um genauere Daten zum Einsatz jederzeit in der App sehen zu können.
+
+Als Einsatzleiter/in möchte ich beim Hinzufügen der Einsatzmitglieder nach den Mitgliedern 
+suchen können und im Ausnahmefall sollte es Möglich sein ein neues Mitglied zu erstellen,
+um Zeit zu sparen.
+
+Als Einsatzleiter/in möchte ich, dass das Protokoll automatisch in das syBOS nach dem speichern übertragen wird,
+um eine erneute Eingabe der Daten zu verhindern und somit Zeit zu sparen.
+
+Als Außenstehender möchte ich grundlegende Informationen (Um was es geht, Wo es ist, usw.) angezeigt bekommen
+um einen groben Einblick zu haben, was gerade passiert.
+
+Als Feuerwehrmann/frau möchte ich einen Überblick über die Einsatzorte und Einsatzarten bekommen, 
+um einen Überblick zu bekommen, welche Regionen stark betroffen sind, um eventuelle vorbeugende Maßnahme einzuleiten. 
+
+Als Feuerwehr möchte ich Rollen vergeben können, um den Einsatzleiter festzulegen und um den Einsatz abzuwickeln.
+
+Als Außensteher möchte ich einen Guest User anlegen können, um Informationen der Einsätze zu bekommen. 
