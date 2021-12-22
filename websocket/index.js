@@ -1,22 +1,28 @@
-const express = require('express')
-const app = express()
-const server = require('http').createServer(app);
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ server:server });
+//region IMPORTS
+var methods = require('./methods')
+var express = require('express');
+var expressWs = require('express-ws');
+var expressWs = expressWs(express());
+var app = expressWs.app;
+var wss = expressWs.getWss('/');
+//endregion
 
-wss.on('connection', function connection(ws,request,client) {
-    console.log('A new client Connected!');
-    console.log(client);
-    ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-        wss.clients.forEach(function each(client) {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message.toString());
-            }
-        });
-    });
-});
+app.ws('/login',(ws,req)=>{
+    ws.on('message', msg => {
+        console.log(msg);
+        var jsonmsg = JSON.parse(msg);
+        ws.send(methods.login(jsonmsg['username'], jsonmsg['password']));
+    })
+})
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.ws('/alarm',(ws,req)=>{
+    ws.on('message',msg=>{
+        var jsonmsg = JSON.parse(msg);
+        console.log(methods.alarm(jsonmsg['firedep']));
+        wss.clients.forEach(function broadcast(client){
+            client.send('Alarm '+msg);
+        })
+    })
+})
 
-server.listen(3000, () => console.log(`Lisening on port :3000`))
+app.listen(80);
