@@ -17,7 +17,7 @@ const client = new Client({
 client.connect()
 
 module.exports={
-    login: function (uname, passwd, privateK, _call) {
+    login: function (uname, passwd, firedep, privateK, _call) {
         var token = undefined;
         client.query("SELECT * from missiondata where LOWER(location) like LOWER('abc')", (err, res) => {
             if (res.rows[0] === undefined) {
@@ -26,12 +26,16 @@ module.exports={
             else{
                 let payload = {
                     username: 'abc',
+                    firedep: firedep
                 };
                 token = jwt.sign(payload, privateK, {expiresIn: "15d", algorithm: 'HS256'})
                 console.log(token)
                 _call(token)
             }
         })
+    },
+    register: function(uname,passwd,firedep,email,_call){
+        _call();
     },
     alarm: function (_call){
         getJSON('https://cf-intranet.ooelfv.at/webext2/rss/json_2tage.txt',

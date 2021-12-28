@@ -16,25 +16,37 @@ diffHell.generateKeys('base64');
 app.ws('/login',(ws,req)=>{
     ws.on('message', msg => {
         var jsonmsg = JSON.parse(msg);
-        methods.login(jsonmsg['username'], jsonmsg['password'],diffHell.getPrivateKey(),function (token) {
+        methods.login(jsonmsg['username'], jsonmsg['password'], jsonmsg['firedep'],new Buffer( 'ThisStringIsASecret', 'base64' ),function (token) {
             ws.send(token)
         });
+    })
+})
+
+app.ws('/register', (ws,req)=>{
+    ws.on('message', msg => {
+        var jsonmsg = JSON.parse(msg);
+        methods.register(jsonmsg['username'],jsonmsg['password'],jsonmsg['firedep'],jsonmsg['email'],function(){
+            ws.send('USER Registered')
+        })
     })
 })
 
 app.ws('/alarm',(ws,req)=>{
     ws.on('message',msg => {
         var jsonmsg = JSON.parse(msg);
-        try {
-            jwt.verify(jsonmsg['token'], diffHell.getPublicKey(), {algorithm: 'HS256'});
-        }catch{
-            ws.close()
-        }
-        methods.alarm(function (alarms) {
-            console.log(alarms['cnt_einsaetze'])
-            wss.clients.forEach(function broadcast(client) {
-                client.send(JSON.stringify(alarms))
-            })
+        jwt.verify(jsonmsg['token'], new Buffer( 'ThisStringIsASecret', 'base64' ),{algorithm:['HS256']},function(err,decode)  {
+            if (err) {
+                console.log(err)
+                ws.send("Error: Your token is no longer valid. Please reauthenticate.");
+                ws.close();
+            } else {
+                methods.alarm(function (alarms) {
+                    console.log(alarms['cnt_einsaetze'])
+                    wss.clients.forEach(function broadcast(client) {
+                        client.send(JSON.stringify(alarms))
+                    })
+                });
+            }
         });
     })
 })
