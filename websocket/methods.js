@@ -3,13 +3,9 @@ const { Client } = require('pg');
 var jwt = require('jsonwebtoken')
 var crypto = require('crypto');
 
-var prime_length = 60;
-var diffHell = crypto.createDiffieHellman(prime_length);
-diffHell.generateKeys('base64');
-
 const client = new Client({
     user: 'dev',
-    host: IP,
+    host: 'IP',
     database: 'saferfire',
     password: 'dev',
     port: 5432,
@@ -28,7 +24,7 @@ module.exports={
                     username: 'abc',
                     firedep: firedep
                 };
-                token = jwt.sign(payload, privateK, {expiresIn: "15d", algorithm: 'HS256'})
+                token = jwt.sign(payload, privateK, {expiresIn: "365d", algorithm: 'HS256'})
                 console.log(token)
                 _call(token)
             }
