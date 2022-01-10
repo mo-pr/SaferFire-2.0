@@ -31,8 +31,12 @@ class _CurrentAlarmsState extends State<CurrentAlarms>{
   @override
   void initState() {
     super.initState();
-    channel = IOWebSocketChannel.connect(globals.uri);
-    channel.stream.listen((data) => setState(() => list.add(Alarm.fromJson(data).toString())));
+    try{
+      channel = IOWebSocketChannel.connect(globals.uri);
+      channel.stream.listen((data) => setState(() => list.add(Alarm.fromJson(data).toString())));
+    } on Exception catch(_){
+
+    }
   }
 
   void searchForNewAlarms(){
