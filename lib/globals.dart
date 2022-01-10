@@ -1,2 +1,3 @@
 library my_prj.globals;
-String webSocketAdress = "";
+String uri = "";
+String getAlarmsRequest ="";
