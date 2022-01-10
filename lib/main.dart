@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/infoPage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(Info());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Info(),
     );
   }
 }
