@@ -20,12 +20,13 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   @SubscribeMessage('alarmsReq')
   handleMessage(client: Socket, payload: string){
-    this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
+    this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));  //x is the data | this.wss.emit(...) sends alarm respond with data x to all clients | emit is like a send but to all clients in order of their registration and syncron
     this.logger.log(`Client ${client.id} requested alarms`);
   }
 
   private async getAlarms(){
     const url ='https://cf-intranet.ooelfv.at/webext2/rss/json_2tage.txt';
+
     const getalarms = async ()  => {
       let result: AxiosResponse = await axios.get(url);
       return result.data;
