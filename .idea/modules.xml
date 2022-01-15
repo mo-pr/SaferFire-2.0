@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/websocket_client.iml" filepath="$PROJECT_DIR$/websocket_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/websocket_client_android.iml" filepath="$PROJECT_DIR$/android/websocket_client_android.iml" />
+    </modules>
+  </component>
+</project>
+=======
       <module fileurl="file://$PROJECT_DIR$/.idea/SaferFire-2.0.iml" filepath="$PROJECT_DIR$/.idea/SaferFire-2.0.iml" />
     </modules>
   </component>
 </project>
+>>>>>>> main
