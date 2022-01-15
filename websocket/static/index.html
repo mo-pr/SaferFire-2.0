@@ -39,7 +39,7 @@
                 },
             },
             created(){
-                this.socket = io('http://localhost:3000/alarms');
+                this.socket = io('http://localhost:3030/alarms');
                 this.socket.on('alarmsRes', (msg) =>{
                     this.recieveAlarmResponse(msg);
                 });
