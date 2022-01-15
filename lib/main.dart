@@ -1,66 +1,86 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:saferfire/temp.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'Entities/alarm.dart';
-import 'globals.dart' as globals;
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: tempState(),
+    home: MyHomePage()
   ));
 }
 
-class CurrentAlarms extends StatefulWidget {
+class MyHomePage extends StatefulWidget {
   @override
-  _CurrentAlarmsState createState() => _CurrentAlarmsState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _CurrentAlarmsState extends State<CurrentAlarms> {
-  final List<String> list = [];
-  late IO.Socket socket;
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Alarms"),
+          backgroundColor: Colors.cyan,
+        ),
+        body: Container(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>Alarms()))
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        )
+    );
+  }
+}
+
+class Alarms extends StatefulWidget {
+  @override
+  State<Alarms> createState() => AlarmState();
+}
+
+class AlarmState extends State<Alarms> {
+  late Socket socket;
 
   @override
-  void initState() {
-    socket = IO.io('http://86.56.241.47:3030/alarms');
+  void initState(){
+    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
     socket.connect();
-    socket.onConnect((_) {
-      print('Connected');
-    });
     socket.on('alarmsRes', (data) => print(data));
+    socket.on('connect_error', (data) => print("ConnErr: "+data)); //debug output
+    socket.on('connect_timeout', (data) => print("ConnTo: "+data)); //debug output
+    socket.on('connect', (data)=>print("Conn: "+data)); //debug output
+    socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
+    socket.on('error', (data) => print("Err: "+data)); //debug output
     super.initState();
   }
+  
+  void sendRequest(){
+    socket.emit('alarmsReq',json.encode({'username':'Test'}));
+  }
 
-
-
-  void connectToSocket() {
-    socket.emit("alarmsReq",
-      {
-        "username": 'AppTestUser',
-      },
-    );
+  @override
+  void dispose() {
+    socket.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: const Text('Search for Alarms'),
+          title: Text("Alarms-Client"),
           backgroundColor: Colors.red,
         ),
-        body: Container(
-            padding: EdgeInsets.all(20.0),
-            child: Column(children: <Widget>[
-              Column(
-                children: list.map((e) => Text(e)).toList(),
-              )
-            ])),
+        body: Container(),
         floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.red,
-            child: const Icon(Icons.search),
-            onPressed: connectToSocket),
-      ),
-    );
+          onPressed: (){
+              print("Pressed...");
+              sendRequest();
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ));
   }
 }
