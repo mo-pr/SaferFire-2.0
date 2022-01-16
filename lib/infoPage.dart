@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
-
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 const _cardColor = Color(0xFFF7883C);
@@ -50,13 +47,6 @@ class DeploymentInfo {
 }
 
 class Info extends StatefulWidget {
-  /*@override
-  Widget build(BuildContext context) {
-    return MaterialApp( //use MaterialApp() widget like this
-        home: InfoPage() //create new widget class for this 'home' to
-      // escape 'No MediaQuery widget found' error
-    );
-  }*/
   @override
   InfoPage createState() => InfoPage();
 }
@@ -73,21 +63,15 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
   DeploymentInfo _deploymentInfo = new DeploymentInfo("Zwettl an der Rodle; 4180 / Hochgarten 12", "Hausbrand; schwer", "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
   late DeploymentInfo _deployment;
 
-  InfoPage(){
-    //_allDeployments.add(_deploymentInfo);
-    //_deployment = _allDeployments.first;
-  }
-
   @override
   void initState() {
-    /*socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
+    socket = io('http://192.168.0.8:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
     socket.connect();
     socket.on('alarmsRes', (data) => print(data));
     socket.on('connect_error', (data) => print("ConnErr: "+data)); //debug output
     socket.on('connect_timeout', (data) => print("ConnTo: "+data)); //debug output
-    socket.on('connect', (data)=>print("Conn: "+data)); //debug output
     socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
-    socket.on('error', (data) => print("Err: "+data)); //debug output*/
+    socket.on('error', (data) => print("Err: "+data)); //debug output
 
     if(_allDeployments.isEmpty){
       _isDeployment = false;
@@ -104,9 +88,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
     super.initState();
   }
 
-  /*void sendRequest(){
+  void sendRequest(){
     socket.emit('alarmsReq',json.encode({'username':'Test'}));
-  }*/
+  }
 
   @override
   void dispose() {
@@ -237,8 +221,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
         const SizedBox(height: 20),
         new MaterialButton(
           onPressed: () {
-            /*print("Pressed...");
-            sendRequest();*/
+            sendRequest();
           },
           color: Color(0xffFF5929),
           textColor: Colors.black,
