@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,10 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 const _cardColor = Color(0xFFF7883C);
+const _backgroundColorDark = Color(0xffD1D1D1);
+const _backgroundColor = Color(0xFFE5E5E5);
 const _maxHeight = 350.0;
 const _minHeight = 70.0;
+List _allDeployments = [];
 
 class DeploymentInfo {
+
+  late int id;
+  late String missionNumber;
+  late String location;
+  late DateTime timestamp;
+  late int alertLevel;
+  late String typeOfOperation;
+  late String fireStation;
 
   String _place = "";
   String _kind = "";
@@ -49,16 +62,39 @@ class Info extends StatefulWidget {
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
-
+  late Socket socket;
   late AnimationController _controller;
   bool _expanded = false;
+  bool _isDeployment = false;
   double _currentHeight = _minHeight;
   String _timeString = "";
 
+  List _allDeployments = [];
   DeploymentInfo _deploymentInfo = new DeploymentInfo("Zwettl an der Rodle; 4180 / Hochgarten 12", "Hausbrand; schwer", "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
+  late DeploymentInfo _deployment;
+
+  InfoPage(){
+    //_allDeployments.add(_deploymentInfo);
+    //_deployment = _allDeployments.first;
+  }
 
   @override
   void initState() {
+    /*socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
+    socket.connect();
+    socket.on('alarmsRes', (data) => print(data));
+    socket.on('connect_error', (data) => print("ConnErr: "+data)); //debug output
+    socket.on('connect_timeout', (data) => print("ConnTo: "+data)); //debug output
+    socket.on('connect', (data)=>print("Conn: "+data)); //debug output
+    socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
+    socket.on('error', (data) => print("Err: "+data)); //debug output*/
+
+    if(_allDeployments.isEmpty){
+      _isDeployment = false;
+    }
+    else {
+      _isDeployment = true;
+    }
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     _controller = AnimationController(
@@ -68,8 +104,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
     super.initState();
   }
 
+  /*void sendRequest(){
+    socket.emit('alarmsReq',json.encode({'username':'Test'}));
+  }*/
+
   @override
   void dispose() {
+    socket.close();
     _controller.dispose();
     super.dispose();
   }
@@ -79,127 +120,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
     final size = MediaQuery.of(context).size;
     final menuWidh = size.width;
     return Scaffold(
-      backgroundColor: Color(0xffD1D1D1),
+      backgroundColor: _backgroundColor,
       body: SingleChildScrollView(
         child: new Column(
           children: [
             new Container(
-              height: MediaQuery.of(context).size.height / 1.8,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0xff4D4F4E),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xff333333).withOpacity(1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: Offset(0, 30), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  children: <Widget>[
-                    //#region Text
-                    Text(
-                      'Einsatzdaten',
-                      style: TextStyle(
-                          color: Colors.red[500],
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '001',
-                      style: TextStyle(
-                          color: Colors.red[500]),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      _deploymentInfo.GetPlace().split(";")[0],
-                      style: TextStyle(
-                          color: Colors.red[500],
-                          fontSize: 25),
-                    ),
-                    Text(
-                      _deploymentInfo.GetPlace().split(";")[1],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      _deploymentInfo.GetKind().split(";")[0],
-                      style: TextStyle(
-                          color: Colors.red[500],
-                          fontSize: 25),
-                    ),
-                    Text(
-                      _deploymentInfo.GetKind().split(";")[1],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      _deploymentInfo.GetFireDepartments().split(";")[0],
-                      style: TextStyle(
-                          color: Colors.red[500],
-                          fontSize: 25),
-                    ),
-                    Text(
-                      _deploymentInfo.GetFireDepartments().split(";")[1],
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15),
-                    ),
-                    //#endregion
-                  ],
-                ),
-              ),
-            ),
-            new MaterialButton(
-              onPressed: () {},
-              color: Color(0xffFF5929),
-              textColor: Colors.black,
-              child: Column(
-                children: [
-                  Icon(Icons.navigation, size: 80,),
-                  Text("Route"),
-                ],
-              ),
-              padding: EdgeInsets.all(16),
-              shape: CircleBorder(),
-            ),
-            const SizedBox(height: 15),
-            new Container(
-              height: 65,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color(0xff4D4F4E),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xff333333).withOpacity(1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: Offset(0, 5), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  'Vergangene Einsätze',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+              child: _isDeployment? _receiveDeployment() : _noDeployment(),
             ),
             const SizedBox(height: 15),
             new Container(
@@ -270,6 +196,291 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
             },
           )
       )
+    );
+  }
+
+  /// there is no deployment right now
+  Widget _noDeployment(){
+    return Column(
+      children: [
+        new Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xff4D4F4E),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 10), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Center(
+              child: Text(
+                'Kein laufender Einsatz',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        new MaterialButton(
+          onPressed: () {
+            /*print("Pressed...");
+            sendRequest();*/
+          },
+          color: Color(0xffFF5929),
+          textColor: Colors.black,
+          child: Column(
+            children: [
+              Icon(Icons.add, size: 80,),
+            ],
+          ),
+          padding: EdgeInsets.all(16),
+          shape: CircleBorder(),
+        ),
+        const SizedBox(height: 40),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'News',
+              style: TextStyle(
+                  color: Color(0xFFD1D1D1),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        new Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xffB2B1B1),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff959090),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Statistik',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Einsätze',
+              style: TextStyle(
+                  color: Color(0xFFD1D1D1),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        new Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xff4D4F4E),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Vergangener Einsatz 001',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        new Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xff4D4F4E),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Vergangener Einsatz 002',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Deployment received
+  Widget _receiveDeployment(){
+    return Column(
+      children: [
+        new Container(
+          height: MediaQuery.of(context).size.height / 1.8,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xff4D4F4E),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 30), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              children: <Widget>[
+                //#region Text
+                Text(
+                  'Einsatzdaten',
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '001',
+                  style: TextStyle(
+                      color: Colors.red[500]),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  _deployment.GetPlace().split(";")[0],
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 25),
+                ),
+                Text(
+                  _deployment.GetPlace().split(";")[1],
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  _deployment.GetKind().split(";")[0],
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 25),
+                ),
+                Text(
+                  _deployment.GetKind().split(";")[1],
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  _deployment.GetFireDepartments().split(";")[0],
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 25),
+                ),
+                Text(
+                  _deployment.GetFireDepartments().split(";")[1],
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15),
+                ),
+                //#endregion
+              ],
+            ),
+          ),
+        ),
+        new MaterialButton(
+          onPressed: () {},
+          color: Color(0xffFF5929),
+          textColor: Colors.black,
+          child: Column(
+            children: [
+              Icon(Icons.navigation, size: 80,),
+              Text("Route"),
+            ],
+          ),
+          padding: EdgeInsets.all(16),
+          shape: CircleBorder(),
+        ),
+        const SizedBox(height: 15),
+        new Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Color(0xff4D4F4E),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Vergangene Einsätze',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
