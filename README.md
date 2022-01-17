@@ -1,4 +1,5 @@
 # SaferFire2.0
 Teilnehmer: Preining Moritz, Detta Alessandro, Hagenberger Nikos, Wolfmayr Clemens
 
-Clockify: https://clockify.me/tracker
+UI-Mockups
+https://framer.com/projects/7GZlQETyMAZ9aBw2zBme-brH16

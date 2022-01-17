@@ -65,11 +65,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
 
   @override
   void initState() {
-    socket = io('http://192.168.0.8:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
+    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
     socket.connect();
     socket.on('alarmsRes', (data) => print(data));
     socket.on('connect_error', (data) => print("ConnErr: "+data)); //debug output
     socket.on('connect_timeout', (data) => print("ConnTo: "+data)); //debug output
+    socket.on('connect', (data)=>print("Conn: "+data)); //debug output
     socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
     socket.on('error', (data) => print("Err: "+data)); //debug output
 
