@@ -20,8 +20,10 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   @SubscribeMessage('alarmsReq')
   handleMessage(client: Socket, payload: string){
-    this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
-    this.logger.log(`Client ${client.id} requested alarms`);
+    setInterval(()=>{
+        this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
+        this.logger.log(`Client ${client.id} requested alarms`);
+    },15000);
   }
 
   private async getAlarms(){
