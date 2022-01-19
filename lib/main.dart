@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 
+import 'navigation.dart';
+
 void main() {
   runApp(MyApp());
 }
