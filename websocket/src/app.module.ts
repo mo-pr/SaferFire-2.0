@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AlarmsGateway } from './alarms/alarms.gateway';
-import { UserManagementController } from './user-management/login.controller';
+import { LoginController } from './user-management/login.controller';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PassportModule } from '@nestjs/passport';
 import { dbConstants, jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
+import { RegistrationController } from './user-management/registration.controller';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: {expiresIn: '365d'}
     }),
   ],
-  controllers: [UserManagementController],
+  controllers: [LoginController, RegistrationController],
   providers: [AlarmsGateway],
 })
 export class AppModule {}
