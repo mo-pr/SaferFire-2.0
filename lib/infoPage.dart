@@ -73,7 +73,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
     socket.on('connect', (data)=>print("Conn: "+data)); //debug output
     socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
     socket.on('error', (data) => print("Err: "+data)); //debug output
-
+    socket.emit('alarmsReq',json.encode({'username':'Test'}));
     if(_allDeployments.isEmpty){
       _isDeployment = false;
     }
@@ -87,10 +87,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
       duration: const Duration(milliseconds: 500),
     );
     super.initState();
-  }
-
-  void sendRequest(){
-    socket.emit('alarmsReq',json.encode({'username':'Test'}));
   }
 
   @override
@@ -221,9 +217,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
         ),
         const SizedBox(height: 20),
         new MaterialButton(
-          onPressed: () {
-            sendRequest();
-          },
+          onPressed: null,
           color: Color(0xffFF0000),
           textColor: Colors.black,
           child: Column(
