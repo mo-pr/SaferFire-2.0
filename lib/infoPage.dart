@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-const _cardColor = Color(0xFFF7883C);
-const _backgroundColorDark = Color(0xffD1D1D1);
-const _backgroundColor = Color(0xFFE5E5E5);
+const _cardColor = Color(0xFFbb1e10);
+const _openNavbarColor = Color(0xFFbb1e10);
+const _backgroundColor = Colors.white;
 const _maxHeight = 350.0;
 const _minHeight = 70.0;
 List _allDeployments = [];
@@ -112,9 +112,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
             new Container(
               child: _isDeployment? _receiveDeployment() : _noDeployment(),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             new Container(
-              height: 65,
+              height: 60,
               width: MediaQuery.of(context).size.width,
               child: Center(
                 child: Text(
@@ -224,7 +224,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
           onPressed: () {
             sendRequest();
           },
-          color: Color(0xffFF5929),
+          color: Color(0xffFF0000),
           textColor: Colors.black,
           child: Column(
             children: [
@@ -234,22 +234,35 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
           padding: EdgeInsets.all(16),
           shape: CircleBorder(),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 30),
         new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'News',
+            new Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
+            new Text(
+              'Statistik',
               style: TextStyle(
-                  color: Color(0xFFD1D1D1),
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
+            new Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 5),
         new Container(
-          height: 65,
+          child: Image.asset('assets/heatmap.jpg'),
+        ),
+        new Container(
+          height: 30,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Color(0xffB2B1B1),
@@ -264,7 +277,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
           ),
           child: Center(
             child: Text(
-              'Statistik',
+              'Mehr',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
@@ -277,12 +290,22 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
         new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
             Text(
               'Einsätze',
               style: TextStyle(
-                  color: Color(0xFFD1D1D1),
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
+            ),
+            new Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
             ),
           ],
         ),
@@ -574,7 +597,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
               _controller.forward(from: 0.0);
             });
           },
-          color: Color(0xFFF7883C),
+          color: _openNavbarColor,
           child: Icon(Icons.add, size: 60.0),
           padding: EdgeInsets.all(5),
           shape: CircleBorder(),

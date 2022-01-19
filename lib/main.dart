@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
+import 'package:saferfire/loginPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Info(),
+      home: Login(),
     );
   }
 }
