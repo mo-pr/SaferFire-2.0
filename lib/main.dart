@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/startscreen.dart';
 import 'Entities/alarm.dart';
 import 'globals.dart' as globals;
 import'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 
-void main() => runApp(AlarmsApp());
+void main() => runApp(
+    MaterialApp(
+      title:'test',
+      home: Startscreen()
+    )
+);
 
 class AlarmsApp extends StatelessWidget{
   @override
@@ -35,7 +41,6 @@ class _CurrentAlarmsState extends State<CurrentAlarms>{
       channel = IOWebSocketChannel.connect(globals.uri);
       channel.stream.listen((data) => setState(() => list.add(Alarm.fromJson(data).toString())));
     } on Exception catch(_){
-
     }
   }
 

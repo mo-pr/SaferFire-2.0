@@ -1,3 +1,3 @@
 library my_prj.globals;
-String uri = "";
-String getAlarmsRequest = "";
+String uri = 'ws://echo.websocket.org';
+String getAlarmsRequest = "Test";
