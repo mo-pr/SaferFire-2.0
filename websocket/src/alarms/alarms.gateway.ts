@@ -2,9 +2,12 @@ import { Logger } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import axios, { AxiosResponse } from 'axios';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({cors: true, namespace:'/alarms'})
 export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
+  constructor(private jwtService:JwtService){}
+  
   @WebSocketServer() wss: Server;
   private logger:Logger = new Logger('AlarmGateway');
 
@@ -19,9 +22,15 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   @SubscribeMessage('alarmsReq')
-  handleMessage(client: Socket, payload: string){
-      this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
-      this.logger.log(`Client ${client.id} requested alarms`);
+  async handleMessage(client: Socket, payload:string){
+    const access_token = JSON.parse(payload)['token'];
+    if(access_token != undefined || access_token != null){
+      const isValid = await this.jwtService.verifyAsync(access_token)
+      if(isValid){
+        this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
+        this.logger.log(`Client ${client.id} requested alarms`);
+      }
+    }
   }
 
   private async getAlarms(){

@@ -19,11 +19,13 @@ export class RegistrationController {
             await qRunner.commitTransaction();
         }catch(err){
             await qRunner.rollbackTransaction();
+            this.logger.log(`Unsuccessful registration | ${regUser.email}`);
             throw new HttpException('An error occured!',HttpStatus.BAD_REQUEST);
         }
         finally{
             await qRunner.release();
         }
+        this.logger.log(`Successful registration | ${regUser.email}`);
         throw new HttpException('Registration successful!', HttpStatus.CREATED);
     }
 }
