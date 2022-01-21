@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
-import 'package:socket_io_client/socket_io_client.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:saferfire/alarm.dart';
+import 'package:saferfire/helper.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 const _cardColor = Color(0xFFbb1e10);
 const _openNavbarColor = Color(0xFFbb1e10);
@@ -14,7 +16,6 @@ const _minHeight = 70.0;
 List _allDeployments = [];
 
 class DeploymentInfo {
-
   late int id;
   late String missionNumber;
   late String location;
@@ -27,17 +28,17 @@ class DeploymentInfo {
   String _kind = "";
   String _fireDepartments = "";
 
-  DeploymentInfo(String place, String kind, String fireDepartments){
+  DeploymentInfo(String place, String kind, String fireDepartments) {
     _place = place;
     _kind = kind;
     _fireDepartments = fireDepartments;
   }
 
-  String GetPlace(){
+  String GetPlace() {
     return _place;
   }
 
-  String GetKind(){
+  String GetKind() {
     return _kind;
   }
 
@@ -51,7 +52,7 @@ class Info extends StatefulWidget {
   InfoPage createState() => InfoPage();
 }
 
-class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
+class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   late Socket socket;
   late AnimationController _controller;
   bool _expanded = false;
@@ -60,24 +61,30 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
   String _timeString = "";
 
   List _allDeployments = [];
-  DeploymentInfo _deploymentInfo = new DeploymentInfo("Zwettl an der Rodle; 4180 / Hochgarten 12", "Hausbrand; schwer", "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
+  DeploymentInfo _deploymentInfo = new DeploymentInfo(
+      "Zwettl an der Rodle; 4180 / Hochgarten 12",
+      "Hausbrand; schwer",
+      "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
   late DeploymentInfo _deployment;
 
   @override
   void initState() {
-    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{'transports': ['websocket'], 'forceNew': true});
+    socket = io('http://192.168.0.8:3030/alarms', <String, dynamic>{
+      'transports': ['websocket'],
+      'forceNew': true
+    });
     socket.connect();
-    socket.on('alarmsRes', (data) => print(data));
-    socket.on('connect_error', (data) => print("ConnErr: "+data)); //debug output
-    socket.on('connect_timeout', (data) => print("ConnTo: "+data)); //debug output
-    socket.on('connect', (data)=>print("Conn: "+data)); //debug output
-    socket.on('disconnect', (data) => print("DConn: "+data)); //debug output
-    socket.on('error', (data) => print("Err: "+data)); //debug output
-    socket.emit('alarmsReq',json.encode({'username':'Test'}));
-    if(_allDeployments.isEmpty){
+    socket.on('alarmsRes', (data) {
+      Helper h = new Helper();
+      List<Alarm> alarms =h.GetAlarmsFromString(data);
+      alarms.forEach((element) {print(element.toString());});
+    });
+    socket.on(
+        'connect_error', (data) => print("ConnErr: " + data)); //debug output
+    socket.on('error', (data) => print("Err: " + data)); //debug output
+    if (_allDeployments.isEmpty) {
       _isDeployment = false;
-    }
-    else {
+    } else {
       _isDeployment = true;
     }
     _timeString = _formatDateTime(DateTime.now());
@@ -101,87 +108,89 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
     final size = MediaQuery.of(context).size;
     final menuWidh = size.width;
     return Scaffold(
-      backgroundColor: _backgroundColor,
-      body: SingleChildScrollView(
-        child: new Column(
-          children: [
-            new Container(
-              child: _isDeployment? _receiveDeployment() : _noDeployment(),
-            ),
-            const SizedBox(height: 10),
-            new Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: Text(
-                  _timeString,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300),
+        backgroundColor: _backgroundColor,
+        body: SingleChildScrollView(
+          child: new Column(
+            children: [
+              new Container(
+                child: _isDeployment ? _receiveDeployment() : _noDeployment(),
+              ),
+              const SizedBox(height: 10),
+              new Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Text(
+                    _timeString,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      extendBody: true,
-      bottomNavigationBar: GestureDetector(
-        //#region Drag
-          onVerticalDragUpdate: _expanded
-              ? (details) {
-            setState(() {
-              final newHeight = _currentHeight - details.delta.dy;
-              _controller.value = _currentHeight / _maxHeight;
-              _currentHeight = newHeight.clamp(_minHeight, _maxHeight);
-            });
-          }
-              : null,
-          onVerticalDragEnd: _expanded
-              ? (details) {
-            if(_currentHeight < _maxHeight / 1.5){
-              _controller.reverse();
-              _expanded = false;
-            } else {
-              _expanded = true;
-              _controller.forward(from: _currentHeight / _maxHeight);
-              _currentHeight = _maxHeight;
-            }
-          } : null,
-          //#endregion
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, snapshot){
-              //final value = _controller.value;
-              final value = const ElasticInOutCurve(0.9).transform(_controller.value);
-              return Stack(
-                children: [
-                  Positioned(
-                    height: lerpDouble(_minHeight, _currentHeight, value),
-                    left: lerpDouble(size.width / 2 - menuWidh / 2, 0, value),
-                    width: lerpDouble(menuWidh, size.width, value),
-                    bottom: lerpDouble(0.0, 0.0, value),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _cardColor,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(5),
+        extendBody: true,
+        bottomNavigationBar: GestureDetector(
+            //#region Drag
+            onVerticalDragUpdate: _expanded
+                ? (details) {
+                    setState(() {
+                      final newHeight = _currentHeight - details.delta.dy;
+                      _controller.value = _currentHeight / _maxHeight;
+                      _currentHeight = newHeight.clamp(_minHeight, _maxHeight);
+                    });
+                  }
+                : null,
+            onVerticalDragEnd: _expanded
+                ? (details) {
+                    if (_currentHeight < _maxHeight / 1.5) {
+                      _controller.reverse();
+                      _expanded = false;
+                    } else {
+                      _expanded = true;
+                      _controller.forward(from: _currentHeight / _maxHeight);
+                      _currentHeight = _maxHeight;
+                    }
+                  }
+                : null,
+            //#endregion
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, snapshot) {
+                //final value = _controller.value;
+                final value =
+                    const ElasticInOutCurve(0.9).transform(_controller.value);
+                return Stack(
+                  children: [
+                    Positioned(
+                      height: lerpDouble(_minHeight, _currentHeight, value),
+                      left: lerpDouble(size.width / 2 - menuWidh / 2, 0, value),
+                      width: lerpDouble(menuWidh, size.width, value),
+                      bottom: lerpDouble(0.0, 0.0, value),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: _cardColor,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(5),
+                          ),
                         ),
+                        child: _expanded
+                            ? _buildExpandedContent()
+                            : _buildMenuContent(),
                       ),
-                      child: _expanded? _buildExpandedContent() : _buildMenuContent(),
                     ),
-                  ),
-                ],
-              );
-            },
-          )
-      )
-    );
+                  ],
+                );
+              },
+            )));
   }
 
   /// there is no deployment right now
-  Widget _noDeployment(){
+  Widget _noDeployment() {
     return Column(
       children: [
         new Container(
@@ -191,8 +200,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
             color: Color(0xff4D4F4E),
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)
-            ),
+                bottomRight: Radius.circular(20)),
             boxShadow: [
               BoxShadow(
                 color: Color(0xff333333).withOpacity(1),
@@ -217,12 +225,17 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
         ),
         const SizedBox(height: 20),
         new MaterialButton(
-          onPressed: null,
+          onPressed: () {
+            socket.emit('alarmsReq', json.encode({'username': 'Test'}));
+          },
           color: Color(0xffFF0000),
           textColor: Colors.black,
           child: Column(
             children: [
-              Icon(Icons.add, size: 80,),
+              Icon(
+                Icons.add,
+                size: 80,
+              ),
             ],
           ),
           padding: EdgeInsets.all(16),
@@ -360,7 +373,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
   }
 
   /// Deployment received
-  Widget _receiveDeployment(){
+  Widget _receiveDeployment() {
     return Column(
       children: [
         new Container(
@@ -370,8 +383,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
             color: Color(0xff4D4F4E),
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)
-            ),
+                bottomRight: Radius.circular(20)),
             boxShadow: [
               BoxShadow(
                 color: Color(0xff333333).withOpacity(1),
@@ -395,47 +407,34 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
                 ),
                 Text(
                   '001',
-                  style: TextStyle(
-                      color: Colors.red[500]),
+                  style: TextStyle(color: Colors.red[500]),
                 ),
                 const SizedBox(height: 15),
                 Text(
                   _deployment.GetPlace().split(";")[0],
-                  style: TextStyle(
-                      color: Colors.red[500],
-                      fontSize: 25),
+                  style: TextStyle(color: Colors.red[500], fontSize: 25),
                 ),
                 Text(
                   _deployment.GetPlace().split(";")[1],
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 const SizedBox(height: 15),
                 Text(
                   _deployment.GetKind().split(";")[0],
-                  style: TextStyle(
-                      color: Colors.red[500],
-                      fontSize: 25),
+                  style: TextStyle(color: Colors.red[500], fontSize: 25),
                 ),
                 Text(
                   _deployment.GetKind().split(";")[1],
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 const SizedBox(height: 15),
                 Text(
                   _deployment.GetFireDepartments().split(";")[0],
-                  style: TextStyle(
-                      color: Colors.red[500],
-                      fontSize: 25),
+                  style: TextStyle(color: Colors.red[500], fontSize: 25),
                 ),
                 Text(
                   _deployment.GetFireDepartments().split(";")[1],
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 //#endregion
               ],
@@ -448,7 +447,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
           textColor: Colors.black,
           child: Column(
             children: [
-              Icon(Icons.navigation, size: 80,),
+              Icon(
+                Icons.navigation,
+                size: 80,
+              ),
               Text("Route"),
             ],
           ),
@@ -486,7 +488,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
   }
 
   /// Content for the extended bottomNavigationBar
-  Widget _buildExpandedContent(){
+  Widget _buildExpandedContent() {
     return Padding(
         padding: const EdgeInsets.all(20.0),
         child: FittedBox(
@@ -569,18 +571,16 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
   /// Content for the smaller bottomNavigationBar
-  Widget _buildMenuContent(){
+  Widget _buildMenuContent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         GestureDetector(
-          onTap: (){
-          },
+          onTap: () {},
           child: Icon(Icons.masks, size: 30.0),
         ),
         new MaterialButton(
@@ -607,8 +607,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin{
           child: Icon(Icons.add, size: 80.0),
         ),*/
         GestureDetector(
-          onTap: (){
-          },
+          onTap: () {},
           child: Icon(Icons.timer, size: 30.0),
         ),
       ],
