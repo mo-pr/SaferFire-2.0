@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
+import 'package:saferfire/navigation.dart';
+import "package:saferfire/authentication.dart";
+import 'package:http/http.dart' as http;
 
-void main() {
+void main() async{
+  var login = await UserAuthentication.login("alessandro.detta@gmail.com", "Test123*");
   runApp(MyApp());
 }
 
