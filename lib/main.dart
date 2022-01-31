@@ -5,7 +5,6 @@ import "package:saferfire/authentication.dart";
 import 'package:http/http.dart' as http;
 
 void main() async{
-  var login = await UserAuthentication.login("alessandro.detta@gmail.com", "Test123*");
   runApp(MyApp());
 }
 
