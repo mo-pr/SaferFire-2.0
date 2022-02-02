@@ -40,6 +40,8 @@ dependencies:
   email_validator:
   http:
   crypto:
+  shared_preferences:
+  jwt_decoder:
 
 dev_dependencies:
   flutter_test:
