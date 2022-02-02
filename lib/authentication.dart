@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+
 abstract class UserAuthentication{
   static Future<http.Response> register(String email, String password, String fireStation) async{
     return http.post(
@@ -10,7 +11,7 @@ abstract class UserAuthentication{
       },
       body: jsonEncode(<String, String>{
         'email': email,
-        'passwordhash': hashPassword(password),
+        'passwordhash': _hashPassword(password),
         'firestation': fireStation,
       }),
     );
@@ -23,11 +24,11 @@ abstract class UserAuthentication{
       },
       body: jsonEncode(<String, String>{
         'email': email,
-        'passwordhash': hashPassword(password),
+        'passwordhash': _hashPassword(password),
       }),
     );
   }
-  static String hashPassword(String password){
+  static String _hashPassword(String password){
     var bytes1 = utf8.encode(password);
     return sha256.convert(bytes1).toString();
   }
