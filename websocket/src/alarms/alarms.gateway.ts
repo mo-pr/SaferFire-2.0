@@ -23,14 +23,14 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   @SubscribeMessage('alarmsReq')
   async handleMessage(client: Socket, payload:string){
-    const access_token = JSON.parse(payload)['token'];
-    if(access_token != undefined || access_token != null){
-      const isValid = await this.jwtService.verifyAsync(access_token)
-      if(isValid){
+    //const access_token = JSON.parse(payload)['token'];
+    //if(access_token != undefined || access_token != null){
+      //const isValid = await this.jwtService.verifyAsync(access_token)
+      //if(isValid){
         this.getAlarms().then(x=>this.wss.emit('alarmsRes',x));
         this.logger.log(`Client ${client.id} requested alarms`);
-      }
-    }
+      //}
+    //}
   }
 
   private async getAlarms(){
