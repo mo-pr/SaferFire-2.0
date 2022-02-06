@@ -24,7 +24,7 @@ class Alarm {
     this.District = alarmBody['bezirk']['text'];
     List<String> firedeps = [];
     for(int i = 0; i < alarmBody['cntfeuerwehren'];i++){
-      firedeps.add(alarmBody['feuerwehrenarray'][i.toString()]['fwname']);
+      firedeps.add(alarmBody['feuerwehrenarray'][i.toString()]['fwname']+"\n");
     }
     this.FireDeps = firedeps;
   }

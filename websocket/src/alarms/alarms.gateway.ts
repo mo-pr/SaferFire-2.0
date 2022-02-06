@@ -42,17 +42,15 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       if(isValid){
         this.clients.set(client,access_token);
         while(this.isClientConnected){
-          console.log(this.clients.size);
           await this.getAlarms().then(x=>alarms=x);
           for(let el of this.clients.keys()){
-            console.log(el.id);
             let alarmCnt = alarms['cnt_einsaetze'];
             for(let i = 0; i < alarmCnt;i++){
-              if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
+              //if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
                 if(JSON.stringify(alarms['einsaetze'][i]['einsatz']).includes(this.jwtService.decode(access_token)['firestation'])){
                   el.emit('alarmsRes',alarms['einsaetze'][i]['einsatz']);
                 }
-              }
+              //}
             }
           }
           

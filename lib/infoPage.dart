@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/helper.dart';
+import 'package:saferfire/navigation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 const _cardColor = Color(0xFFbb1e10);
@@ -53,19 +54,13 @@ class Info extends StatefulWidget {
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
+  List<Alarm> alarms = List.empty();
   late Socket socket;
   late AnimationController _controller;
   bool _expanded = false;
   bool _isDeployment = false;
   double _currentHeight = _minHeight;
   String _timeString = "";
-
-  List _allDeployments = [];
-  DeploymentInfo _deploymentInfo = new DeploymentInfo(
-      "Zwettl an der Rodle; 4180 / Hochgarten 12",
-      "Hausbrand; schwer",
-      "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
-  late DeploymentInfo _deployment;
 
   @override
   void initState() {
@@ -74,19 +69,27 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       'forceNew': true
     });
     socket.connect();
+    socket.emit('alarmsReq', json.encode({'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlci5hdCIsImZpcmVzdGF0aW9uIjoiRkYgU3RlaW5ob2x6IiwiaWF0IjoxNjQ0MTY3MjE2LCJleHAiOjE2NzU3MDMyMTZ9.FHpUV7EwwzPVbEkWmFgRHnXk--gQeKUqoWIRNXzCdsg'}));
     socket.on('alarmsRes', (data) {
       Helper h = new Helper();
-      List<Alarm> alarms =h.GetAlarmsFromString(data);
-      alarms.forEach((element) {print(element.toString());});
+      alarms = h.GetAlarmsFromString(data);
     });
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
     socket.on('error', (data) => print("Err: " + data)); //debug output
-    if (_allDeployments.isEmpty) {
-      _isDeployment = false;
-    } else {
-      _isDeployment = true;
-    }
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      if (alarms.isEmpty) {
+        setState(() {
+          _isDeployment = false;
+          _noDeployment();
+        });
+      } else {
+        setState(() {
+          _isDeployment = true;
+          _receiveDeployment();
+        });
+      }
+    });
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     _controller = AnimationController(
@@ -224,24 +227,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ),
         ),
         const SizedBox(height: 20),
-        new MaterialButton(
-          onPressed: () {
-            socket.emit('alarmsReq', json.encode({'username': 'Test'}));
-          },
-          color: Color(0xffFF0000),
-          textColor: Colors.black,
-          child: Column(
-            children: [
-              Icon(
-                Icons.add,
-                size: 80,
-              ),
-            ],
-          ),
-          padding: EdgeInsets.all(16),
-          shape: CircleBorder(),
-        ),
-        const SizedBox(height: 30),
         new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -406,35 +391,27 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '001',
+                  alarms.first.Id.toString(),
                   style: TextStyle(color: Colors.red[500]),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  _deployment.GetPlace().split(";")[0],
-                  style: TextStyle(color: Colors.red[500], fontSize: 25),
+                  alarms.first.Subtype.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  alarms.first.Address.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
                 Text(
-                  _deployment.GetPlace().split(";")[1],
+                  alarms.first.Lat.toString()+" "+alarms.first.Lng.toString(),
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  _deployment.GetKind().split(";")[0],
+                  alarms.first.FireDeps.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', ''),
                   style: TextStyle(color: Colors.red[500], fontSize: 25),
-                ),
-                Text(
-                  _deployment.GetKind().split(";")[1],
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  _deployment.GetFireDepartments().split(";")[0],
-                  style: TextStyle(color: Colors.red[500], fontSize: 25),
-                ),
-                Text(
-                  _deployment.GetFireDepartments().split(";")[1],
-                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 //#endregion
               ],
@@ -442,7 +419,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ),
         ),
         new MaterialButton(
-          onPressed: () {},
+          onPressed: () {
+            MapUtils.openMap(alarms.first.Lat,alarms.first.Lng);
+          },
           color: Color(0xffFF5929),
           textColor: Colors.black,
           child: Column(
