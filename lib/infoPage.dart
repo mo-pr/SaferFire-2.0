@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/helper.dart';
 import 'package:saferfire/navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 const _cardColor = Color(0xFFbb1e10);
@@ -62,6 +63,11 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   double _currentHeight = _minHeight;
   String _timeString = "";
 
+  Future<void> _websocketReq()async{
+    var prefs = await SharedPreferences.getInstance();
+    socket.emit('alarmsReq', json.encode({'token': prefs.getString('token')}));
+  }
+
   @override
   void initState() {
     socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{
@@ -69,7 +75,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       'forceNew': true
     });
     socket.connect();
-    socket.emit('alarmsReq', json.encode({'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdXNlci5hdCIsImZpcmVzdGF0aW9uIjoiRkYgU3RlaW5ob2x6IiwiaWF0IjoxNjQ0MTY3MjE2LCJleHAiOjE2NzU3MDMyMTZ9.FHpUV7EwwzPVbEkWmFgRHnXk--gQeKUqoWIRNXzCdsg'}));
+    _websocketReq();
     socket.on('alarmsRes', (data) {
       Helper h = new Helper();
       alarms = h.GetAlarmsFromString(data);
