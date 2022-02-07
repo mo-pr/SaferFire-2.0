@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:saferfire/authentication.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/validation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
@@ -31,6 +33,10 @@ class LoginPage extends State<Login> {
       form.save();
       var res = await UserAuthentication.login(email, password);
       if(res.statusCode == 200){
+        Map<String, dynamic> claims = JwtDecoder.decode(res.body);
+        var prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', res.body);
+        prefs.setString('firestation', claims["firestation"].toString());
         password = email = "";
         Navigator.push(
           context,
