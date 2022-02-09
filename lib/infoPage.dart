@@ -59,36 +59,20 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   bool _isDeployment = false;
   double _currentHeight = _minHeight;
   String _timeString = "";
+  List<Alarm> alarms = [];
 
-  List _allDeployments = [];
-  DeploymentInfo _deploymentInfo = new DeploymentInfo(
-      "Zwettl an der Rodle; 4180 / Hochgarten 12",
-      "Hausbrand; schwer",
-      "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
+  String _alaramID = "000";
+  String _alarmAdress = "Einsatzadresse";
+  String _alarmFireDepartments = "Feuerwehren";
+  String _alarmSubType = "Einsatzart";
+
   late DeploymentInfo _deployment;
 
   @override
   void initState() {
-    socket = io('http://192.168.0.8:3030/alarms', <String, dynamic>{
-      'transports': ['websocket'],
-      'forceNew': true
-    });
-    socket.connect();
-    socket.on('alarmsRes', (data) {
-      Helper h = new Helper();
-      List<Alarm> alarms =h.GetAlarmsFromString(data);
-      alarms.forEach((element) {print(element.toString());});
-    });
-    socket.on(
-        'connect_error', (data) => print("ConnErr: " + data)); //debug output
-    socket.on('error', (data) => print("Err: " + data)); //debug output
-    if (_allDeployments.isEmpty) {
-      _isDeployment = false;
-    } else {
-      _isDeployment = true;
-    }
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    Timer.periodic(Duration(seconds: 10), (Timer t) => _getAlarms());
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -405,24 +389,26 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
+                const SizedBox(height: 10),
                 Text(
-                  '001',
+                  _alaramID,
                   style: TextStyle(color: Colors.red[500]),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  _deployment.GetPlace().split(";")[0],
-                  style: TextStyle(color: Colors.red[500], fontSize: 25),
-                ),
-                Text(
-                  _deployment.GetPlace().split(";")[1],
+                  _alarmSubType,
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  _deployment.GetKind().split(";")[0],
-                  style: TextStyle(color: Colors.red[500], fontSize: 25),
+                  _alarmAdress,
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
+                const SizedBox(height: 15),
+                Text(
+                  _alarmFireDepartments,
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),/*
                 Text(
                   _deployment.GetKind().split(";")[1],
                   style: TextStyle(color: Colors.white, fontSize: 15),
@@ -435,7 +421,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                 Text(
                   _deployment.GetFireDepartments().split(";")[1],
                   style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
+                ),*/
                 //#endregion
               ],
             ),
@@ -620,6 +606,39 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     final String formattedDateTime = _formatDateTime(now);
     setState(() {
       _timeString = formattedDateTime;
+    });
+  }
+
+  void _getAlarms(){
+    bool isAlarm = false;
+
+    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{
+      'transports': ['websocket'],
+      'forceNew': true
+    });
+    socket.connect();
+    socket.on('alarmsRes', (data) {
+      Helper h = new Helper();
+      alarms =h.GetAlarmsFromString(data);
+      alarms.forEach((element) {print(element.toString());});
+    });
+    socket.on(
+        'connect_error', (data) => print("ConnErr: " + data)); //debug output
+    socket.on('error', (data) => print("Err: " + data)); //debug output
+
+    if (alarms.isEmpty) {
+      isAlarm = false;
+    } else {
+      isAlarm = true;
+    }
+    setState(() {
+      _isDeployment = isAlarm;
+      if(_isDeployment == true){
+        _alaramID = alarms.first.Id.toString();
+        _alarmAdress = alarms.first.Address ?? ' ';
+        _alarmSubType = alarms.first.Subtype ?? ' ';
+        _alarmFireDepartments = alarms.first.FireDeps.toString();
+      }
     });
   }
 
