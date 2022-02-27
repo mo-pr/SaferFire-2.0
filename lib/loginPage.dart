@@ -45,7 +45,6 @@ class LoginPage extends State<Login> {
       }
     }
   }
-
   ///Gets called when the "Sign Up" Button is Pressed
   Register() async{
     final form = _keyR.currentState;
@@ -58,7 +57,6 @@ class LoginPage extends State<Login> {
       }
     }
   }
-
   String _timeString = "";
 
   @override
