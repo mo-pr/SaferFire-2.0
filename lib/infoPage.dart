@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/helper.dart';
+<<<<<<< HEAD
 import 'package:saferfire/navigation.dart';
+=======
+import 'package:saferfire/loginPage.dart';
+>>>>>>> main
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -74,6 +78,15 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   Future<void> _websocketReq()async{
     var prefs = await SharedPreferences.getInstance();
     socket.emit('alarmsReq', json.encode({'token': prefs.getString('token')}));
+  }
+
+  void logout() async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
   }
 
   @override
