@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +11,13 @@ import 'package:saferfire/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-const _cardColor = Color(0xFFbb1e10);
+var _cardColor = Color(0xFFbb1e10);
 const _openNavbarColor = Color(0xFFbb1e10);
 const _backgroundColor = Colors.white;
 const _maxHeight = 350.0;
 const _minHeight = 70.0;
 List _allDeployments = [];
+List<Alarm> alarms = List.empty();
 
 class DeploymentInfo {
   late int id;
@@ -55,13 +57,19 @@ class Info extends StatefulWidget {
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
-  List<Alarm> alarms = List.empty();
   late Socket socket;
   late AnimationController _controller;
   bool _expanded = false;
   bool _isDeployment = false;
   double _currentHeight = _minHeight;
   String _timeString = "";
+
+  String _alarmId = " ";
+  String _alarmSubtype = " ";
+  String _alarmAdress = " ";
+  String _alarmLat = " ";
+  String _alarmFireDepts = " ";
+  Helper h = new Helper();
 
   Future<void> _websocketReq()async{
     var prefs = await SharedPreferences.getInstance();
@@ -77,25 +85,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     socket.connect();
     _websocketReq();
     socket.on('alarmsRes', (data) {
-      Helper h = new Helper();
+      print(data);
       alarms = h.GetAlarmsFromString(data);
     });
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
-    socket.on('error', (data) => print("Err: " + data)); //debug output
-    Timer.periodic(Duration(seconds: 5), (timer) {
-      if (alarms.isEmpty) {
-        setState(() {
-          _isDeployment = false;
-          _noDeployment();
-        });
-      } else {
-        setState(() {
-          _isDeployment = true;
-          _receiveDeployment();
-        });
-      }
-    });
+    socket.on('error', (data) => print("Err: " + data));
+    Timer.periodic(Duration(seconds: 5), (Timer t) => _getAlarms());//debug output
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     _controller = AnimationController(
@@ -121,8 +117,30 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
         body: SingleChildScrollView(
           child: new Column(
             children: [
-              new Container(
-                child: _isDeployment ? _receiveDeployment() : _noDeployment(),
+              new GestureDetector(
+                onTap: (){
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Scaffold(
+                          appBar: AppBar(
+                            title: const Text('Second Route'),
+                          ),
+                          body: Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: ListViewBuilder(),
+                            ),
+                          ),
+                        );
+                      });
+                  print("Container clicked");
+                },
+                child: new Container(
+                  child: _isDeployment ? _receiveDeployment() : _noDeployment(),
+                ),
               ),
               const SizedBox(height: 10),
               new Container(
@@ -159,10 +177,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     if (_currentHeight < _maxHeight / 1.5) {
                       _controller.reverse();
                       _expanded = false;
+                      _cardColor = Colors.white;
+
                     } else {
                       _expanded = true;
                       _controller.forward(from: _currentHeight / _maxHeight);
                       _currentHeight = _maxHeight;
+                      _cardColor = Color(0xFFbb1e10);
                     }
                   }
                 : null,
@@ -373,14 +394,14 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           decoration: BoxDecoration(
             color: Color(0xff4D4F4E),
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5)),
             boxShadow: [
               BoxShadow(
                 color: Color(0xff333333).withOpacity(1),
                 spreadRadius: 0,
                 blurRadius: 0,
-                offset: Offset(0, 30), // changes position of shadow
+                offset: Offset(0, 10), // changes position of shadow
               ),
             ],
           ),
@@ -389,61 +410,117 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
             child: Column(
               children: <Widget>[
                 //#region Text
+                const SizedBox(height: 30),
                 Text(
                   'Einsatzdaten',
                   style: TextStyle(
-                      color: Colors.red[500],
+                      color: _openNavbarColor,
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  alarms.first.Id.toString(),
-                  style: TextStyle(color: Colors.red[500]),
+                  "ID: " + _alarmId,
+                  style: TextStyle(
+                    color: _openNavbarColor,
+                    fontSize: 25,
+                  ),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  alarms.first.Subtype.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  'Subtype',
+                  style: TextStyle(
+                      color: _openNavbarColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  _alarmSubtype,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  alarms.first.Address.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                  'Adresse',
+                  style: TextStyle(
+                    color: _openNavbarColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
-                  alarms.first.Lat.toString()+" "+alarms.first.Lng.toString(),
+                  _alarmAdress,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                Text(
+                  _alarmLat,
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  alarms.first.FireDeps.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', ''),
-                  style: TextStyle(color: Colors.red[500], fontSize: 25),
+                  'Feuerwehren',
+                  style: TextStyle(
+                    color: _openNavbarColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  _alarmFireDepts,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 //#endregion
               ],
             ),
           ),
         ),
-        new MaterialButton(
-          onPressed: () {
-            MapUtils.openMap(alarms.first.Lat,alarms.first.Lng);
-          },
-          color: Color(0xffFF5929),
-          textColor: Colors.black,
-          child: Column(
-            children: [
-              Icon(
-                Icons.navigation,
-                size: 80,
+        const SizedBox(height: 50),
+        new Material(
+          elevation: 10,
+          borderRadius: BorderRadius.circular(2.0),
+          child: InkWell(
+            onTap: () {
+              MapUtils.openMap(alarms.first.Lat,alarms.first.Lng);
+            },
+            child: Container(
+              padding: EdgeInsets.all(0.0),
+              height: 60.0,//MediaQuery.of(context).size.width * .08,
+              width: 220.0,//MediaQuery.of(context).size.width * .3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(2.0),
               ),
-              Text("Route"),
-            ],
+              child: Row(
+                children: <Widget>[
+                  LayoutBuilder(builder: (context, constraints) {
+                    print(constraints);
+                    return Container(
+                      height: constraints.maxHeight,
+                      width: constraints.maxHeight,
+                      decoration: BoxDecoration(
+                        color: _openNavbarColor,
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      child: Icon(
+                        Icons.navigation,
+                        color: Colors.white,
+                      ),
+                    );
+                  }),
+                  Expanded(
+                    child: Text(
+                      'Open Maps',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          padding: EdgeInsets.all(16),
-          shape: CircleBorder(),
         ),
-        const SizedBox(height: 15),
-        new Container(
+        const SizedBox(height: 90),
+        /*new Container(
           height: 65,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
@@ -467,7 +544,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   fontWeight: FontWeight.bold),
             ),
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -574,12 +651,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
               _expanded = true;
               _currentHeight = _maxHeight;
               _controller.forward(from: 0.0);
+              _cardColor = Color(0xFFbb1e10);
             });
           },
-          color: _openNavbarColor,
+          color: Color(0xFFA81A0D),
           child: Icon(Icons.add, size: 60.0),
           padding: EdgeInsets.all(5),
-          shape: CircleBorder(),
         ),
         /*GestureDetector(
           onTap: (){
@@ -608,8 +685,66 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     });
   }
 
+  void _getAlarms(){
+    if (alarms.isEmpty) {
+      setState(() {
+        _isDeployment = false;
+      });
+    } else {
+      setState(() {
+        _alarmId = alarms.first.Id.toString();
+        _alarmSubtype = alarms.first.Subtype.toString();
+        _alarmAdress = alarms.first.Address.toString();
+        _alarmLat = alarms.first.Lat.toString()+" "+alarms.first.Lng.toString();
+        _alarmFireDepts = alarms.first.FireDeps.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', '');
+        _isDeployment = true;
+      });
+    }
+  }
+
   /// converts the DateTime in a string (uses intl 0.17.0)
   String _formatDateTime(DateTime dateTime) {
     return DateFormat('dd.MM.yyyy hh:mm:ss').format(dateTime);
+  }
+}
+
+class ListViewBuilder extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            color: _openNavbarColor,
+            child: Column(
+              children: [
+                const SizedBox(height: 5),
+                new Text(
+                  "ID",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                new Text(
+                  alarms[index].Id ?? ' ',
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 5),
+                new Text(
+                  "Subtype",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                new Text(
+                  alarms[index].Subtype ?? ' ',
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 5),
+              ],
+            ),
+          ),
+        );
+      },
+      itemCount: alarms.length,
+    );
   }
 }
