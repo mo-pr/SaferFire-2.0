@@ -28,7 +28,8 @@
     "@nestjs/platform-express": "^8.2.5",
     "@nestjs/platform-socket.io": "^8.2.5",
     "@nestjs/typeorm": "^8.0.3",
-    "@nestjs/websockets": "^8.2.5",
+    "@nestjs/websockets": "^8.3.1",
+    "axios": "^0.26.0",
     "node-fetch": "^3.2.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
@@ -37,7 +38,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "shelljs": "^0.8.5",
-    "socket.io": "^3.1.2",
+    "socket.io": "^4.4.1",
     "typeorm": "^0.2.41"
   },
   "devDependencies": {

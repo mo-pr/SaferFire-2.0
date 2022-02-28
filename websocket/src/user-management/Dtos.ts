@@ -9,11 +9,3 @@ export class UserRegistrationDto{
     passwordhash: string;
     firestation: string;
 }
-export class ClientDto{
-    client: Socket;
-    firestation: string;
-    ClientDto(cl:Socket,fs:string){
-        this.client = cl;
-        this.firestation = fs;
-    }
-}
