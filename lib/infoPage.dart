@@ -69,7 +69,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    socket = io('http://192.168.0.8:3030/alarms', <String, dynamic>{
+    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{
       'transports': ['websocket'],
       'forceNew': true
     });

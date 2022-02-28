@@ -2,7 +2,7 @@ import { Controller, Logger, Post, Body, HttpCode, HttpException, HttpStatus, } 
 import { Connection, ReturningStatementNotSupportedError } from 'typeorm';
 import { UserRegistrationDto } from './Dtos';
 
-@Controller('registration')
+@Controller('register')
 export class RegistrationController {
     constructor(private conn:Connection){}
     private logger:Logger = new Logger('RegistrationController');
@@ -10,10 +10,14 @@ export class RegistrationController {
     @Post()
     @HttpCode(400)
     @HttpCode(201)
-    async registration(@Body() regUser:UserRegistrationDto){
+    async register(@Body() regUser:UserRegistrationDto){
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
         await qRunner.startTransaction();
+        const r = await qRunner.query(`SELECT email,passwordhash,firestation FROM firefighters WHERE email LIKE '${regUser.email}' LIMIT 1`);
+        if(r.length != 0){
+            throw new HttpException('There is already a user with this email!', HttpStatus.BAD_REQUEST);
+        }
         const res = await qRunner.query(`INSERT INTO firefighters (email,passwordhash,firestation) VALUES ('${regUser.email}','${regUser.passwordhash}','${regUser.firestation}')`);
         try{
             await qRunner.commitTransaction();

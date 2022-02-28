@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/navigation.dart';
+import "package:saferfire/authentication.dart";
 
-import 'navigation.dart';
-
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Info(),
+      home: Login(),
     );
   }
 }
-
