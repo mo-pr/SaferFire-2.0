@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/helper.dart';
+import 'package:saferfire/loginPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 const _cardColor = Color(0xFFbb1e10);
@@ -66,6 +69,15 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       "Hausbrand; schwer",
       "Feuerwehren; Zwettl / Oberneukirchen / Bad Leonfelden");
   late DeploymentInfo _deployment;
+
+  void logout() async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+  }
 
   @override
   void initState() {
