@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "^8.2.5",
     "@nestjs/platform-socket.io": "^8.2.5",
     "@nestjs/typeorm": "^8.0.3",
-    "@nestjs/websockets": "^8.3.1",
+    "@nestjs/websockets": "^8.4.0",
     "axios": "^0.26.0",
     "node-fetch": "^3.2.0",
     "passport": "^0.5.2",

@@ -1,0 +1,1027 @@
+{
+    "webext2": true,
+    "version": "1.3.1",
+    "title": "Eins\u00e4tze laufender Tag (seit 00:00)",
+    "pubDate": "Tue, 01 Mar 2022 21:04:04 +0100",
+    "cnt_feuerwehren": 12,
+    "cnt_einsaetze": 20,
+    "einsaetze": {
+        "0": {
+            "einsatz": {
+                "num1": "E220300075",
+                "einsatzort": "VB - ATTNANG-PUCHHEIM",
+                "startzeit": "Tue, 01 Mar 2022 20:32:49 +0100",
+                "inzeit": "",
+                "status": "offen",
+                "alarmstufe": 1,
+                "einsatzart": "PERSON",
+                "einsatztyp": {
+                    "id": "TEE",
+                    "text": "TECHNISCH \"MITTEL\" FEUERWEHREINSATZ (A2+3: \"GRO\u00df\")"
+                },
+                "einsatzsubtyp": {
+                    "id": "PERSON-TG",
+                    "text": "PERSONENRETTUNG"
+                },
+                "adresse": {
+                    "default": "TOMERLWEG 33",
+                    "earea": "ATTNANG",
+                    "emun": "ATTNANG-PUCHHEIM",
+                    "efeanme": "TOMERLWEG",
+                    "estnum": "33",
+                    "ecompl": ""
+                },
+                "wgs84": {
+                    "lng": 13.714226999999999,
+                    "lat": 48.015745000000003
+                },
+                "bezirk": {
+                    "id": 13,
+                    "text": "V\u00f6cklabruck"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "1": {
+            "einsatz": {
+                "num1": "E220300072",
+                "einsatzort": "RI - ST. MARIENKIRCHEN AM HAUSRUCK",
+                "startzeit": "Tue, 01 Mar 2022 19:51:38 +0100",
+                "inzeit": "",
+                "status": "offen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "AUFRAEUM-VU",
+                    "text": "VERKEHRSUNFALL AUFR\u00c4UMARBEITEN"
+                },
+                "adresse": {
+                    "default": "ST. MARIENKIRCHEN AM HAUSRUCK",
+                    "earea": "",
+                    "emun": "ST. MARIENKIRCHEN AM HAUSRUCK",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "B141 RIEDER STRA\u00dfE KM 16.4 H\u00d6HE OBERESELBACH"
+                },
+                "wgs84": {
+                    "lng": 13.572585,
+                    "lat": 48.192176000000003
+                },
+                "bezirk": {
+                    "id": 8,
+                    "text": "Ried im Innkreis"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "2": {
+            "einsatz": {
+                "num1": "E220300062",
+                "einsatzort": "BR - LENGAU",
+                "startzeit": "Tue, 01 Mar 2022 17:31:13 +0100",
+                "inzeit": "Tue, 01 Mar 2022 17:50:43 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA1-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "GEWERBESTRA\u00dfE 32",
+                    "earea": "LENGAU",
+                    "emun": "LENGAU",
+                    "efeanme": "GEWERBESTRA\u00dfE",
+                    "estnum": "32",
+                    "ecompl": "00000-1121-1"
+                },
+                "wgs84": {
+                    "lng": 13.22893,
+                    "lat": 48.001916999999999
+                },
+                "bezirk": {
+                    "id": 0,
+                    "text": "Braunau"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "3": {
+            "einsatz": {
+                "num1": "E220300060",
+                "einsatzort": "BR - MOOSDORF",
+                "startzeit": "Tue, 01 Mar 2022 16:01:28 +0100",
+                "inzeit": "Tue, 01 Mar 2022 18:17:39 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "AUFRAEUM-VU",
+                    "text": "VERKEHRSUNFALL AUFR\u00c4UMARBEITEN"
+                },
+                "adresse": {
+                    "default": "MOOSDORF",
+                    "earea": "",
+                    "emun": "MOOSDORF",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "B156 LAMPRECHTSHAUSENER STRA\u00dfE KM 31.605 H\u00d6HE FURKERN"
+                },
+                "wgs84": {
+                    "lng": 12.972168,
+                    "lat": 48.025035000000003
+                },
+                "bezirk": {
+                    "id": 0,
+                    "text": "Braunau"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "4": {
+            "einsatz": {
+                "num1": "E220300058",
+                "einsatzort": "WL - MARCHTRENK",
+                "startzeit": "Tue, 01 Mar 2022 15:57:50 +0100",
+                "inzeit": "Tue, 01 Mar 2022 16:38:56 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA1-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "MARCHTRENK",
+                    "earea": "",
+                    "emun": "MARCHTRENK",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "00000-141112-1"
+                },
+                "wgs84": {
+                    "lng": 14.118278999999999,
+                    "lat": 48.192739000000003
+                },
+                "bezirk": {
+                    "id": 14,
+                    "text": "Wels-Land"
+                },
+                "cntfeuerwehren": 2,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    },
+                    "414215": {
+                        "feuerwehr": "FF Marchtrenk"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    },
+                    "1": {
+                        "fwnr": "414215",
+                        "fwname": "FF Marchtrenk"
+                    }
+                }
+            }
+        },
+        "5": {
+            "einsatz": {
+                "num1": "E220300049",
+                "einsatzort": "SE - SIERNING",
+                "startzeit": "Tue, 01 Mar 2022 12:56:50 +0100",
+                "inzeit": "Tue, 01 Mar 2022 14:28:24 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": "2",
+                "einsatzart": "PERSON",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "VUBERGE-VU",
+                    "text": "VERKEHRSUNFALL EINGEKLEMMTE PERSON"
+                },
+                "adresse": {
+                    "default": "SIERNING",
+                    "earea": "",
+                    "emun": "SIERNING",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "KM 14.4 H\u00d6HE L1372 SCHIEDLBERGER STRA\u00dfE"
+                },
+                "wgs84": {
+                    "lng": 14.289875,
+                    "lat": 48.037069000000002
+                },
+                "bezirk": {
+                    "id": 11,
+                    "text": "Steyr-Land"
+                },
+                "cntfeuerwehren": 3,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    },
+                    "411211": {
+                        "feuerwehr": "FF Pichlern"
+                    },
+                    "411217": {
+                        "feuerwehr": "FF Sierning"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    },
+                    "1": {
+                        "fwnr": "411211",
+                        "fwname": "FF Pichlern"
+                    },
+                    "2": {
+                        "fwnr": "411217",
+                        "fwname": "FF Sierning"
+                    }
+                }
+            }
+        },
+        "6": {
+            "einsatz": {
+                "num1": "E220300046",
+                "einsatzort": "LL - WILHERING",
+                "startzeit": "Tue, 01 Mar 2022 12:37:01 +0100",
+                "inzeit": "Tue, 01 Mar 2022 14:04:00 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": "2",
+                "einsatzart": "PERSON",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "VUBERGE-VU",
+                    "text": "VERKEHRSUNFALL EINGEKLEMMTE PERSON"
+                },
+                "adresse": {
+                    "default": "WILHERING",
+                    "earea": "",
+                    "emun": "WILHERING",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "KM 14.0 H\u00d6HE B129 EFERDINGER STRA\u00dfE"
+                },
+                "wgs84": {
+                    "lng": 14.156008,
+                    "lat": 48.295355999999998
+                },
+                "bezirk": {
+                    "id": 6,
+                    "text": "Linz-Land"
+                },
+                "cntfeuerwehren": 2,
+                "feuerwehren": {
+                    "406221": {
+                        "feuerwehr": "FF Sch\u00f6nering"
+                    },
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "406221",
+                        "fwname": "FF Sch\u00f6nering"
+                    },
+                    "1": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "7": {
+            "einsatz": {
+                "num1": "E220300043",
+                "einsatzort": "RI - RIED IM INNKREIS",
+                "startzeit": "Tue, 01 Mar 2022 12:22:34 +0100",
+                "inzeit": "Tue, 01 Mar 2022 12:43:36 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "AUFRAEUM-VU",
+                    "text": "VERKEHRSUNFALL AUFR\u00c4UMARBEITEN"
+                },
+                "adresse": {
+                    "default": "RIED IM INNKREIS",
+                    "earea": "RIED IM INNKREIS",
+                    "emun": "RIED IM INNKREIS",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "BAHNHOF RIED"
+                },
+                "wgs84": {
+                    "lng": 13.488199,
+                    "lat": 48.200637
+                },
+                "bezirk": {
+                    "id": 8,
+                    "text": "Ried im Innkreis"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "8": {
+            "einsatz": {
+                "num1": "E220300039",
+                "einsatzort": "LL - LEONDING",
+                "startzeit": "Tue, 01 Mar 2022 12:02:42 +0100",
+                "inzeit": "Tue, 01 Mar 2022 13:16:49 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "TK",
+                    "text": "TECHNISCH \"KLEIN\" FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "SONSTIGE-TK",
+                    "text": "TECHNISCHER EINSATZ KLEIN"
+                },
+                "adresse": {
+                    "default": "HOLZHEIM 5",
+                    "earea": "HOLZHEIM",
+                    "emun": "LEONDING",
+                    "efeanme": "HOLZHEIM",
+                    "estnum": "5",
+                    "ecompl": "LEHNER & NAGL KG"
+                },
+                "wgs84": {
+                    "lng": 14.255233,
+                    "lat": 48.296505000000003
+                },
+                "bezirk": {
+                    "id": 6,
+                    "text": "Linz-Land"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "9": {
+            "einsatz": {
+                "num1": "E220300034",
+                "einsatzort": "KI - RIED IM TRAUNKREIS",
+                "startzeit": "Tue, 01 Mar 2022 11:41:23 +0100",
+                "inzeit": "",
+                "status": "offen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "BRAND",
+                    "text": "BRAND \"MITTEL\" FEUERWEHREINSATZ (A2+3: \"GRO\u00df\")"
+                },
+                "einsatzsubtyp": {
+                    "id": "HAUS-BG",
+                    "text": "BRAND WOHNHAUS"
+                },
+                "adresse": {
+                    "default": "TURMGASSE 5",
+                    "earea": "RIED IM TRAUNKREIS",
+                    "emun": "RIED IM TRAUNKREIS",
+                    "efeanme": "TURMGASSE",
+                    "estnum": "5",
+                    "ecompl": ""
+                },
+                "wgs84": {
+                    "lng": 14.071313999999999,
+                    "lat": 48.025933999999999
+                },
+                "bezirk": {
+                    "id": 5,
+                    "text": "Kirchdorf"
+                },
+                "cntfeuerwehren": 6,
+                "feuerwehren": {
+                    "405205": {
+                        "feuerwehr": "FF Kirchdorf an der Krems"
+                    },
+                    "405302": {
+                        "feuerwehr": "FF Gro\u00dfendorf"
+                    },
+                    "405304": {
+                        "feuerwehr": "FF Kremsm\u00fcnster"
+                    },
+                    "405306": {
+                        "feuerwehr": "FF Ried im Traunkreis"
+                    },
+                    "405308": {
+                        "feuerwehr": "FF Voitsdorf"
+                    },
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "405205",
+                        "fwname": "FF Kirchdorf an der Krems"
+                    },
+                    "1": {
+                        "fwnr": "405302",
+                        "fwname": "FF Gro\u00dfendorf"
+                    },
+                    "2": {
+                        "fwnr": "405304",
+                        "fwname": "FF Kremsm\u00fcnster"
+                    },
+                    "3": {
+                        "fwnr": "405306",
+                        "fwname": "FF Ried im Traunkreis"
+                    },
+                    "4": {
+                        "fwnr": "405308",
+                        "fwname": "FF Voitsdorf"
+                    },
+                    "5": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "10": {
+            "einsatz": {
+                "num1": "E220300031",
+                "einsatzort": "LL - ST. FLORIAN",
+                "startzeit": "Tue, 01 Mar 2022 10:31:19 +0100",
+                "inzeit": "Tue, 01 Mar 2022 11:53:54 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "TK",
+                    "text": "TECHNISCH \"KLEIN\" FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "OELSPUR-TK",
+                    "text": "\u00d6LSPUR, \u00d6LAUSTRITT"
+                },
+                "adresse": {
+                    "default": "ROHRBACH",
+                    "earea": "ROHRBACH",
+                    "emun": "ST. FLORIAN",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "LEITNERBERG"
+                },
+                "wgs84": {
+                    "lng": 14.349244000000001,
+                    "lat": 48.213531000000003
+                },
+                "bezirk": {
+                    "id": 6,
+                    "text": "Linz-Land"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "11": {
+            "einsatz": {
+                "num1": "E220300026",
+                "einsatzort": "GM - PINSDORF",
+                "startzeit": "Tue, 01 Mar 2022 10:08:26 +0100",
+                "inzeit": "Tue, 01 Mar 2022 11:25:58 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": "2",
+                "einsatzart": "PERSON",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "VUBERGE-VU",
+                    "text": "VERKEHRSUNFALL EINGEKLEMMTE PERSON"
+                },
+                "adresse": {
+                    "default": "PINSDORF",
+                    "earea": "",
+                    "emun": "PINSDORF",
+                    "efeanme": "",
+                    "estnum": "",
+                    "ecompl": "KM 23.4 H\u00d6HE B145 SALZKAMMERGUTSTRA\u00dfE"
+                },
+                "wgs84": {
+                    "lng": 13.773401,
+                    "lat": 47.934120999999998
+                },
+                "bezirk": {
+                    "id": 3,
+                    "text": "Gmunden"
+                },
+                "cntfeuerwehren": 2,
+                "feuerwehren": {
+                    "403217": {
+                        "feuerwehr": "FF Pinsdorf"
+                    },
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "403217",
+                        "fwname": "FF Pinsdorf"
+                    },
+                    "1": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "12": {
+            "einsatz": {
+                "num1": "E220300023",
+                "einsatzort": "BR - MAUERKIRCHEN",
+                "startzeit": "Tue, 01 Mar 2022 09:48:08 +0100",
+                "inzeit": "Tue, 01 Mar 2022 12:00:47 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "TEE",
+                "einsatztyp": {
+                    "id": "TK",
+                    "text": "TECHNISCH \"KLEIN\" FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "OELSPUR-TK",
+                    "text": "\u00d6LSPUR, \u00d6LAUSTRITT"
+                },
+                "adresse": {
+                    "default": "UNTERBRUNNING ",
+                    "earea": "MAUERKIRCHEN",
+                    "emun": "MAUERKIRCHEN",
+                    "efeanme": "UNTERBRUNNING",
+                    "estnum": "",
+                    "ecompl": "TURM\u00d6L"
+                },
+                "wgs84": {
+                    "lng": 13.131478,
+                    "lat": 48.183315999999998
+                },
+                "bezirk": {
+                    "id": 0,
+                    "text": "Braunau"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "13": {
+            "einsatz": {
+                "num1": "E220300021",
+                "einsatzort": "LL - TRAUN",
+                "startzeit": "Tue, 01 Mar 2022 09:32:01 +0100",
+                "inzeit": "Tue, 01 Mar 2022 09:58:27 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA2-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "JOHANN ROITHNER-STRA\u00dfE 131",
+                    "earea": "ST. DIONYSEN",
+                    "emun": "TRAUN",
+                    "efeanme": "JOHANN ROITHNER-STRA\u00dfE",
+                    "estnum": "131",
+                    "ecompl": "00000-61191-1"
+                },
+                "wgs84": {
+                    "lng": 14.255001999999999,
+                    "lat": 48.229128000000003
+                },
+                "bezirk": {
+                    "id": 6,
+                    "text": "Linz-Land"
+                },
+                "cntfeuerwehren": 2,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    },
+                    "406263": {
+                        "feuerwehr": "BTF Dr. Franz Feurstein Ges.m.b.H"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    },
+                    "1": {
+                        "fwnr": "406263",
+                        "fwname": "BTF Dr. Franz Feurstein Ges.m.b.H"
+                    }
+                }
+            }
+        },
+        "14": {
+            "einsatz": {
+                "num1": "E220300017",
+                "einsatzort": "VB - REDLHAM",
+                "startzeit": "Tue, 01 Mar 2022 08:17:27 +0100",
+                "inzeit": "Tue, 01 Mar 2022 08:45:46 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA1-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "GEWERBEPARK WEST 40",
+                    "earea": "GEWERBEPARK WEST",
+                    "emun": "REDLHAM",
+                    "efeanme": "GEWERBEPARK WEST",
+                    "estnum": "40",
+                    "ecompl": "00000-135024-1"
+                },
+                "wgs84": {
+                    "lng": 13.74531,
+                    "lat": 48.018183000000001
+                },
+                "bezirk": {
+                    "id": 13,
+                    "text": "V\u00f6cklabruck"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "15": {
+            "einsatz": {
+                "num1": "E220300015",
+                "einsatzort": "RO - SARLEINSBACH",
+                "startzeit": "Tue, 01 Mar 2022 07:44:27 +0100",
+                "inzeit": "Tue, 01 Mar 2022 07:59:38 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA1-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "AM TEICHFELD 6",
+                    "earea": "SARLEINSBACH",
+                    "emun": "SARLEINSBACH",
+                    "efeanme": "AM TEICHFELD",
+                    "estnum": "6",
+                    "ecompl": "00000-91005-1"
+                },
+                "wgs84": {
+                    "lng": 13.892837999999999,
+                    "lat": 48.548302
+                },
+                "bezirk": {
+                    "id": 9,
+                    "text": "Rohrbach"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "16": {
+            "einsatz": {
+                "num1": "E220300007",
+                "einsatzort": "BR - MINING",
+                "startzeit": "Tue, 01 Mar 2022 06:39:10 +0100",
+                "inzeit": "Tue, 01 Mar 2022 08:25:45 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": "2",
+                "einsatzart": "PERSON",
+                "einsatztyp": {
+                    "id": "VU",
+                    "text": "VERKEHRSUNFALL FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "VUBERGE-VU",
+                    "text": "VERKEHRSUNFALL EINGEKLEMMTE PERSON"
+                },
+                "adresse": {
+                    "default": "AMBERG 30",
+                    "earea": "AMBERG",
+                    "emun": "MINING",
+                    "efeanme": "AMBERG",
+                    "estnum": "30",
+                    "ecompl": ""
+                },
+                "wgs84": {
+                    "lng": 13.174118999999999,
+                    "lat": 48.265346000000001
+                },
+                "bezirk": {
+                    "id": 0,
+                    "text": "Braunau"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "17": {
+            "einsatz": {
+                "num1": "E220300005",
+                "einsatzort": "PE - PERG",
+                "startzeit": "Tue, 01 Mar 2022 04:33:42 +0100",
+                "inzeit": "Tue, 01 Mar 2022 05:08:50 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA2-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "DALMATINERSTRA\u00dfE 5",
+                    "earea": "PERG",
+                    "emun": "PERG",
+                    "efeanme": "DALMATINERSTRA\u00dfE",
+                    "estnum": "5",
+                    "ecompl": "00000-71054-1"
+                },
+                "wgs84": {
+                    "lng": 14.61436,
+                    "lat": 48.242247999999996
+                },
+                "bezirk": {
+                    "id": 7,
+                    "text": "Perg"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "18": {
+            "einsatz": {
+                "num1": "E220300003",
+                "einsatzort": "LL - ASTEN",
+                "startzeit": "Tue, 01 Mar 2022 03:16:56 +0100",
+                "inzeit": "Tue, 01 Mar 2022 04:07:55 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "BK",
+                    "text": "BRAND \"KLEIN\" FEUERWEHREINSATZ"
+                },
+                "einsatzsubtyp": {
+                    "id": "ABFALL-BK",
+                    "text": "BRAND ABFALL, CONTAINER"
+                },
+                "adresse": {
+                    "default": "RINGSTRA\u00dfE ",
+                    "earea": "ASTEN",
+                    "emun": "ASTEN",
+                    "efeanme": "RINGSTRA\u00dfE",
+                    "estnum": "",
+                    "ecompl": "SPAR"
+                },
+                "wgs84": {
+                    "lng": 14.420171,
+                    "lat": 48.219166999999999
+                },
+                "bezirk": {
+                    "id": 6,
+                    "text": "Linz-Land"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        },
+        "19": {
+            "einsatz": {
+                "num1": "E220300001",
+                "einsatzort": "GR - ST. GEORGEN BEI GRIESKIRCHEN",
+                "startzeit": "Tue, 01 Mar 2022 00:16:13 +0100",
+                "inzeit": "Tue, 01 Mar 2022 01:30:16 +0100",
+                "status": "abgeschlossen",
+                "alarmstufe": 1,
+                "einsatzart": "BRAND",
+                "einsatztyp": {
+                    "id": "PREK",
+                    "text": "TECHNISCHE PROBEN UND EINSATZKOMMANDOS"
+                },
+                "einsatzsubtyp": {
+                    "id": "BMA1-SONST",
+                    "text": "BRANDMELDEALARM"
+                },
+                "adresse": {
+                    "default": "INDUSTRIEPARK STRITZING 10",
+                    "earea": "STRITZING",
+                    "emun": "ST. GEORGEN BEI GRIESKIRCHEN",
+                    "efeanme": "INDUSTRIEPARK STRITZING",
+                    "estnum": "10",
+                    "ecompl": "00000-41047-1"
+                },
+                "wgs84": {
+                    "lng": 13.777493,
+                    "lat": 48.235013000000002
+                },
+                "bezirk": {
+                    "id": 4,
+                    "text": "Grieskirchen"
+                },
+                "cntfeuerwehren": 1,
+                "feuerwehren": {
+                    "401104": {
+                        "feuerwehr": "FF Test"
+                    }
+                },
+                "feuerwehrenarray": {
+                    "0": {
+                        "fwnr": "401104",
+                        "fwname": "FF Test"
+                    }
+                }
+            }
+        }
+    }
+}
