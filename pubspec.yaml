@@ -37,6 +37,11 @@ dependencies:
   intl:
   socket_io_client: ^2.0.0-beta.4-nullsafety.0
   url_launcher:
+  email_validator:
+  http:
+  crypto:
+  shared_preferences:
+  jwt_decoder:
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,7 @@ import { Controller, Logger, Post, Body, HttpCode, HttpException, HttpStatus, } 
 import { Connection, ReturningStatementNotSupportedError } from 'typeorm';
 import { UserRegistrationDto } from './Dtos';
 
-@Controller('registration')
+@Controller('register')
 export class RegistrationController {
     constructor(private conn:Connection){}
     private logger:Logger = new Logger('RegistrationController');
@@ -10,7 +10,7 @@ export class RegistrationController {
     @Post()
     @HttpCode(400)
     @HttpCode(201)
-    async registration(@Body() regUser:UserRegistrationDto){
+    async register(@Body() regUser:UserRegistrationDto){
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
         await qRunner.startTransaction();

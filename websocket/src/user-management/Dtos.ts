@@ -1,3 +1,5 @@
+import { Socket } from 'socket.io';
+
 export class UserLoginDto{
     email: string;
     passwordhash: string;

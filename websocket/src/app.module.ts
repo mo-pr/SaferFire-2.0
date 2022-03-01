@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { dbConstants, jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { RegistrationController } from './user-management/registration.controller';
+import { TestGateway } from './testing/test.gateway';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { RegistrationController } from './user-management/registration.controlle
     }),
   ],
   controllers: [LoginController, RegistrationController],
-  providers: [AlarmsGateway],
+  providers: [AlarmsGateway, TestGateway],
 })
 export class AppModule {}

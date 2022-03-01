@@ -1,12 +1,16 @@
 import 'package:saferfire/alarm.dart';
 
 class Helper{
+  List<Alarm> alarms = [];
+
   List<Alarm> GetAlarmsFromString(data){
-    List<Alarm> alarms = [];
-    int count = data['cnt_einsaetze'];
-    for(int i = 0; i < count;i++){
-      alarms.add(new Alarm(data['einsaetze'][i.toString()]['einsatz']));
+    Alarm alarm = new Alarm(data);
+    for(int i = 0; i < alarms.length; i++){
+      if(alarms[i].Id == alarm.Id){
+        return alarms;
+      }
     }
+    alarms.add(alarm);
     return alarms;
   }
 }
