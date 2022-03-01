@@ -7,6 +7,7 @@ import { dbConstants, jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { RegistrationController } from './user-management/registration.controller';
 import { TestGateway } from './testing/test.gateway';
+import { GuestController } from './user-management/guest.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { TestGateway } from './testing/test.gateway';
       signOptions: {expiresIn: '365d'}
     }),
   ],
-  controllers: [LoginController, RegistrationController],
+  controllers: [LoginController, RegistrationController, GuestController],
   providers: [AlarmsGateway, TestGateway],
 })
 export class AppModule {}
