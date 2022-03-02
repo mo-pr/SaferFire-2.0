@@ -108,7 +108,7 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
             await qRunner.release();
         }
       }
-      await new Promise(f => setTimeout(f, 15000));
+      await new Promise(f => setTimeout(f, 900000));
     }
   }
 }
