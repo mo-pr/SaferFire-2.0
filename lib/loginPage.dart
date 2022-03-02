@@ -19,14 +19,8 @@ class Login extends StatefulWidget {
 
 class LoginPage extends State<Login> {
   final _keyL = GlobalKey<FormState>(), _keyR = GlobalKey<FormState>(), _keyG = GlobalKey<FormState>();
-  bool isLoginScreen = true;
+  bool isLoginScreen = true,isGuestScreen = false;
   String email="",password = "",firedep="";
-
-  changeTo() {
-    setState(() {
-      isLoginScreen = !isLoginScreen;
-    });
-  }
 
   ///Gets called when the "Sign In" Button is Pressed
   login() async {
@@ -39,6 +33,7 @@ class LoginPage extends State<Login> {
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', res.body);
         prefs.setString('firestation', claims["firestation"].toString());
+        prefs.setBool('guest', false);
         password = email = "";
         Navigator.push(
           context,
@@ -55,7 +50,10 @@ class LoginPage extends State<Login> {
       var res = await UserAuthentication.register(email, password, firedep);
       if(res.statusCode == 201){
         firedep = password = email = "";
-        changeTo();
+        setState(() {
+          isLoginScreen = true;
+          isGuestScreen = false;
+        });
       }
     }
   }
@@ -70,11 +68,26 @@ class LoginPage extends State<Login> {
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', res.body);
         prefs.setString('firestation', claims["firestation"].toString());
+        prefs.setBool('guest',true);
         firedep = "";
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Info()),
         );
+      }
+    }
+  }
+
+  Widget getScreen(){
+    if(isLoginScreen){
+      return _login();
+    }
+    else{
+      if(!isGuestScreen){
+        return _register();
+      }
+      else{
+        return _registerGuest();
       }
     }
   }
@@ -124,7 +137,7 @@ class LoginPage extends State<Login> {
           ),
           Align(
             alignment: Alignment.center,
-            child: isLoginScreen ? _login() : _register(),
+            child: getScreen(),
           ),
         ],
       ),
@@ -135,7 +148,7 @@ class LoginPage extends State<Login> {
   /// returns the Container for the login
   Widget _login() {
     return Container(
-        height: 400,
+        height: 450,
         width: MediaQuery.of(context).size.width / 1.1,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -222,7 +235,12 @@ class LoginPage extends State<Login> {
 
                 ///Button for Sign UP
                 MaterialButton(
-                  onPressed: () => changeTo(),
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = false;
+                      isGuestScreen = false;
+                    });
+                  },
                   minWidth: MediaQuery.of(context).size.width,
                   color: Colors.white,
                   textColor: Colors.black,
@@ -247,7 +265,7 @@ class LoginPage extends State<Login> {
   /// returns the Container for the register
   Widget _register() {
     return Container(
-        height: 500,
+        height: 600,
         width: MediaQuery.of(context).size.width / 1.1,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -351,7 +369,12 @@ class LoginPage extends State<Login> {
 
                 ///Button for Sign In
                 MaterialButton(
-                  onPressed: () => changeTo(),
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = true;
+                      isGuestScreen = false;
+                    });
+                  },
                   minWidth: MediaQuery.of(context).size.width,
                   color: Colors.white,
                   textColor: Colors.black,
@@ -381,7 +404,8 @@ class LoginPage extends State<Login> {
                 MaterialButton(
                   onPressed: () {
                     setState(() {
-                      _registerGuest();
+                      isLoginScreen = false;
+                      isGuestScreen = true;
                     });
                   },
                   minWidth: MediaQuery.of(context).size.width,
@@ -407,7 +431,7 @@ class LoginPage extends State<Login> {
 
   Widget _registerGuest() {
     return Container(
-        height: 400,
+        height: 350,
         width: MediaQuery.of(context).size.width / 1.1,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -445,7 +469,6 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 45),
 
-                ///Button for Sign In
                 MaterialButton(
                   onPressed: () => registerGuestUser(),
                   minWidth: MediaQuery.of(context).size.width,
@@ -479,6 +502,7 @@ class LoginPage extends State<Login> {
                   onPressed: () {
                     setState(() {
                       isLoginScreen = false;
+                      isGuestScreen = false;
                     });
                   },
                   minWidth: MediaQuery.of(context).size.width,
