@@ -9,3 +9,6 @@ export class UserRegistrationDto{
     passwordhash: string;
     firestation: string;
 }
+export class GuestRegistrationDto{
+    firestation: string;
+}

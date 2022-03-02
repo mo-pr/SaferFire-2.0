@@ -7,11 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/helper.dart';
-<<<<<<< HEAD
 import 'package:saferfire/navigation.dart';
-=======
 import 'package:saferfire/loginPage.dart';
->>>>>>> main
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
