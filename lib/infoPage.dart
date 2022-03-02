@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
@@ -12,7 +11,7 @@ import 'package:saferfire/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-var _cardColor = Color(0xFFbb1e10);
+var _cardColor = const Color(0xFFbb1e10);
 const _openNavbarColor = Color(0xFFbb1e10);
 const _backgroundColor = Colors.white;
 const _maxHeight = 350.0;
@@ -39,15 +38,15 @@ class DeploymentInfo {
     _fireDepartments = fireDepartments;
   }
 
-  String GetPlace() {
+  String getPlace() {
     return _place;
   }
 
-  String GetKind() {
+  String getKind() {
     return _kind;
   }
 
-  String GetFireDepartments() {
+  String getFireDepartments() {
     return _fireDepartments;
   }
 }
@@ -66,17 +65,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   String _timeString = "";
   List<Alarm> alarms = [];
 
-  String _alaramID = "000";
-  String _alarmAdress = "Einsatzadresse";
-  String _alarmFireDepartments = "Feuerwehren";
-  String _alarmSubType = "Einsatzart";
-
-<<<<<<< HEAD
   late DeploymentInfo _deployment;
 
-  @override
-  void initState() {
-=======
   String _alarmId = " ";
   String _alarmSubtype = " ";
   String _alarmAdress = " ";
@@ -94,7 +84,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     await prefs.clear();
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => const Login()),
     );
   }
 
@@ -113,11 +103,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
     socket.on('error', (data) => print("Err: " + data));
-    Timer.periodic(Duration(seconds: 5), (Timer t) => _getAlarms());//debug output
->>>>>>> main
+    Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms());//debug output
     _timeString = _formatDateTime(DateTime.now());
-    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-    Timer.periodic(Duration(seconds: 10), (Timer t) => _getAlarms());
+    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -139,9 +128,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     return Scaffold(
         backgroundColor: _backgroundColor,
         body: SingleChildScrollView(
-          child: new Column(
+          child: Column(
             children: [
-              new GestureDetector(
+              GestureDetector(
                 onTap: (){
                   showDialog(
                       context: context,
@@ -155,26 +144,25 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: ListViewBuilder(),
+                              child: const ListViewBuilder(),
                             ),
                           ),
                         );
                       });
-                  print("Container clicked");
                 },
-                child: new Container(
+                child: Container(
                   child: _isDeployment ? _receiveDeployment() : _noDeployment(),
                 ),
               ),
               const SizedBox(height: 10),
-              new Container(
+              Container(
                 height: 60,
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                   child: Text(
                     _timeString,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.w300),
@@ -207,7 +195,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       _expanded = true;
                       _controller.forward(from: _currentHeight / _maxHeight);
                       _currentHeight = _maxHeight;
-                      _cardColor = Color(0xFFbb1e10);
+                      _cardColor = const Color(0xFFbb1e10);
                     }
                   }
                 : null,
@@ -228,7 +216,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       child: Container(
                         decoration: BoxDecoration(
                           color: _cardColor,
-                          borderRadius: BorderRadius.vertical(
+                          borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(5),
                           ),
                         ),
@@ -247,24 +235,24 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   Widget _noDeployment() {
     return Column(
       children: [
-        new Container(
+        Container(
           height: 40,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
-            borderRadius: BorderRadius.only(
+            color: const Color(0xff4D4F4E),
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20)),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
+                color: const Color(0xff333333).withOpacity(1),
                 spreadRadius: 0,
                 blurRadius: 0,
-                offset: Offset(0, 10), // changes position of shadow
+                offset: const Offset(0, 10), // changes position of shadow
               ),
             ],
           ),
-          child: Padding(
+          child: const Padding(
             padding: EdgeInsets.all(10),
             child: Center(
               child: Text(
@@ -278,22 +266,22 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ),
         ),
         const SizedBox(height: 20),
-        new Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Container(
+            Container(
               color: Colors.black,
               height: 4,
               width: 80,
             ),
-            new Text(
+            const Text(
               'Statistik',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            new Container(
+            Container(
               color: Colors.black,
               height: 4,
               width: 80,
@@ -301,13 +289,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ],
         ),
         const SizedBox(height: 5),
-        new Container(
+        Container(
           child: Image.asset('assets/heatmap.jpg'),
         ),
-        new Container(
+        Container(
           height: 30,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xffB2B1B1),
             boxShadow: [
               BoxShadow(
@@ -318,7 +306,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          child: Center(
+          child: const Center(
             child: Text(
               'Mehr',
               textAlign: TextAlign.center,
@@ -330,22 +318,22 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ),
         ),
         const SizedBox(height: 15),
-        new Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Container(
+            Container(
               color: Colors.black,
               height: 4,
               width: 80,
             ),
-            Text(
+            const Text(
               'Einsätze',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            new Container(
+            Container(
               color: Colors.black,
               height: 4,
               width: 80,
@@ -353,21 +341,21 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ],
         ),
         const SizedBox(height: 10),
-        new Container(
+        Container(
           height: 65,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
+            color: const Color(0xff4D4F4E),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
+                color: const Color(0xff333333).withOpacity(1),
                 spreadRadius: 0,
                 blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
+                offset: const Offset(0, 5), // changes position of shadow
               ),
             ],
           ),
-          child: Center(
+          child: const Center(
             child: Text(
               'Vergangener Einsatz 001',
               textAlign: TextAlign.center,
@@ -379,21 +367,21 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           ),
         ),
         const SizedBox(height: 10),
-        new Container(
+        Container(
           height: 65,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
+            color: const Color(0xff4D4F4E),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
+                color: const Color(0xff333333).withOpacity(1),
                 spreadRadius: 0,
                 blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
+                offset: const Offset(0, 5), // changes position of shadow
               ),
             ],
           ),
-          child: Center(
+          child: const Center(
             child: Text(
               'Vergangener Einsatz 002',
               textAlign: TextAlign.center,
@@ -412,122 +400,97 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   Widget _receiveDeployment() {
     return Column(
       children: [
-        new Container(
+        Container(
           height: MediaQuery.of(context).size.height / 1.8,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
-            borderRadius: BorderRadius.only(
+            color: const Color(0xff4D4F4E),
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(5)),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
+                color: const Color(0xff333333).withOpacity(1),
                 spreadRadius: 0,
                 blurRadius: 0,
-                offset: Offset(0, 10), // changes position of shadow
+                offset: const Offset(0, 10), // changes position of shadow
               ),
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              children: <Widget>[
-                //#region Text
-                const SizedBox(height: 30),
-                Text(
-                  'Einsatzdaten',
-                  style: TextStyle(
+            padding: const EdgeInsets.all(30),
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  //#region Text
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Einsatzdaten',
+                    style: TextStyle(
+                        color: _openNavbarColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "ID: " + _alarmId,
+                    style: const TextStyle(
                       color: _openNavbarColor,
                       fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                Text(
-<<<<<<< HEAD
-                  _alaramID,
-                  style: TextStyle(color: Colors.red[500]),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  _alarmSubType,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-=======
-                  "ID: " + _alarmId,
-                  style: TextStyle(
-                    color: _openNavbarColor,
-                    fontSize: 25,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Subtype',
-                  style: TextStyle(
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Subtype',
+                    style: TextStyle(
                       color: _openNavbarColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                    ),
                   ),
->>>>>>> main
-                ),
-                const SizedBox(height: 15),
-                Text(
-<<<<<<< HEAD
-                  _alarmAdress,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  _alarmFireDepartments,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),/*
-=======
-                  _alarmSubtype,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Adresse',
-                  style: TextStyle(
-                    color: _openNavbarColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 15),
+                  Text(
+                    _alarmSubtype,
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                ),
->>>>>>> main
-                Text(
-                  _alarmAdress,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Text(
-                  _alarmLat,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Feuerwehren',
-                  style: TextStyle(
-                    color: _openNavbarColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Adresse',
+                    style: TextStyle(
+                      color: _openNavbarColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-<<<<<<< HEAD
-                  _deployment.GetFireDepartments().split(";")[1],
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),*/
-=======
-                  _alarmFireDepts,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
->>>>>>> main
-                //#endregion
-              ],
+                  Text(
+                    _alarmAdress,
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  Text(
+                    _alarmLat,
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Feuerwehren',
+                    style: TextStyle(
+                      color: _openNavbarColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    _alarmFireDepts,
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  //#endregion
+                ],
+              ),
             ),
           ),
         ),
         const SizedBox(height: 50),
-        new Material(
+        Material(
           elevation: 10,
           borderRadius: BorderRadius.circular(2.0),
           child: InkWell(
@@ -535,7 +498,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
               MapUtils.openMap(alarms.first.Lat,alarms.first.Lng);
             },
             child: Container(
-              padding: EdgeInsets.all(0.0),
+              padding: const EdgeInsets.all(0.0),
               height: 60.0,//MediaQuery.of(context).size.width * .08,
               width: 220.0,//MediaQuery.of(context).size.width * .3,
               decoration: BoxDecoration(
@@ -544,7 +507,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
               child: Row(
                 children: <Widget>[
                   LayoutBuilder(builder: (context, constraints) {
-                    print(constraints);
                     return Container(
                       height: constraints.maxHeight,
                       width: constraints.maxHeight,
@@ -552,13 +514,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         color: _openNavbarColor,
                         borderRadius: BorderRadius.circular(2.0),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.navigation,
                         color: Colors.white,
                       ),
                     );
                   }),
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Open Maps',
                       textAlign: TextAlign.center,
@@ -696,20 +658,20 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       children: [
         GestureDetector(
           onTap: () {},
-          child: Icon(Icons.masks, size: 30.0),
+          child: const Icon(Icons.masks, size: 30.0),
         ),
-        new MaterialButton(
+        MaterialButton(
           onPressed: () {
             setState(() {
               _expanded = true;
               _currentHeight = _maxHeight;
               _controller.forward(from: 0.0);
-              _cardColor = Color(0xFFbb1e10);
+              _cardColor = const Color(0xFFbb1e10);
             });
           },
-          color: Color(0xFFA81A0D),
-          child: Icon(Icons.add, size: 60.0),
-          padding: EdgeInsets.all(5),
+          color: const Color(0xFFA81A0D),
+          child: const Icon(Icons.add, size: 60.0),
+          padding: const EdgeInsets.all(5),
         ),
         /*GestureDetector(
           onTap: (){
@@ -723,7 +685,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
         ),*/
         GestureDetector(
           onTap: () {},
-          child: Icon(Icons.timer, size: 30.0),
+          child: const Icon(Icons.timer, size: 30.0),
         ),
       ],
     );
@@ -739,38 +701,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   }
 
   void _getAlarms(){
-<<<<<<< HEAD
-    bool isAlarm = false;
-
-    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{
-      'transports': ['websocket'],
-      'forceNew': true
-    });
-    socket.connect();
-    socket.on('alarmsRes', (data) {
-      Helper h = new Helper();
-      alarms =h.GetAlarmsFromString(data);
-      alarms.forEach((element) {print(element.toString());});
-    });
-    socket.on(
-        'connect_error', (data) => print("ConnErr: " + data)); //debug output
-    socket.on('error', (data) => print("Err: " + data)); //debug output
-
-    if (alarms.isEmpty) {
-      isAlarm = false;
-    } else {
-      isAlarm = true;
-    }
-    setState(() {
-      _isDeployment = isAlarm;
-      if(_isDeployment == true){
-        _alaramID = alarms.first.Id.toString();
-        _alarmAdress = alarms.first.Address ?? ' ';
-        _alarmSubType = alarms.first.Subtype ?? ' ';
-        _alarmFireDepartments = alarms.first.FireDeps.toString();
-      }
-    });
-=======
     if (alarms.isEmpty) {
       setState(() {
         _isDeployment = false;
@@ -785,7 +715,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
         _isDeployment = true;
       });
     }
->>>>>>> main
   }
 
   /// converts the DateTime in a string (uses intl 0.17.0)
@@ -795,6 +724,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 }
 
 class ListViewBuilder extends StatelessWidget {
+  const ListViewBuilder({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -807,22 +738,22 @@ class ListViewBuilder extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 5),
-                new Text(
+                const Text(
                   "ID",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                new Text(
+                Text(
                   alarms[index].Id ?? ' ',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 5),
-                new Text(
+                const Text(
                   "Subtype",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                new Text(
+                Text(
                   alarms[index].Subtype ?? ' ',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 5),
               ],
