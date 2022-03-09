@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
-import 'package:saferfire/navigation.dart';
+import 'package:saferfire/constants.dart';
 import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import 'package:saferfire/constants.dart';
 
 var _cardColor = const Color(0xFFbb1e10);
 const _openNavbarColor = Color(0xFFbb1e10);
@@ -39,7 +40,14 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    socket.emit('alarmsReq', json.encode({'token': prefs.getString('token'),"count":5}));
+    if(isTest){
+      socket.emit('alarmsReq',
+          json.encode({'token': prefs.getString('token'), "count": 1}));
+    }
+    if(!isTest){
+      socket.emit('alarmsReq',
+          json.encode({'token': prefs.getString('token')}));
+    }
   }
 
   void logout() async {
@@ -56,17 +64,25 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     setState(() {
       _getSharedPreference().then((value) => _isGuest = value);
     });
-    socket = io('http://86.56.241.47:3030/testalarms', <String, dynamic>{
-      'transports': ['websocket'],
-      'forceNew': true
-    });
+    if(isTest){
+      socket = io('http://$ipAddress:3030/testalarms', <String, dynamic>{
+        'transports': ['websocket'],
+        'forceNew': true
+      });
+    }
+    if(!isTest){
+      socket = io('http://$ipAddress:3030/alarms', <String, dynamic>{
+        'transports': ['websocket'],
+        'forceNew': true
+      });
+    }
     socket.connect();
     _websocketReq();
     socket.on('alarmsRes', (data) {
       print(data);
       Alarm alarm = new Alarm(data);
-      for(int i = 0; i < alarms.length; i++){
-        if(alarms[i].Id == alarm.Id){
+      for (int i = 0; i < alarms.length; i++) {
+        if (alarms[i].Id == alarm.Id) {
           return alarms;
         }
       }
@@ -212,13 +228,16 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   /// there is no deployment right now
   Widget _noDeployment() {
     return _isGuest
-        ? Column(
-            children:[
-              Container(
-                color: Colors.red,
+        ? Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
+            child: const Center(
+              child: Text(
+                "Zur Zeit liegt kein Alarm vor",
+                style: TextStyle(color: Colors.black87, fontSize: 28),
+                textAlign: TextAlign.center,
               ),
-              Text("GUEST"),
-            ]
+            ),
           )
         : Column(
             children: [
