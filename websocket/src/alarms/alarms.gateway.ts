@@ -5,6 +5,8 @@ import axios, { AxiosResponse } from 'axios';
 import { JwtService } from '@nestjs/jwt';
 import { Connection } from "typeorm";
 import { Mission } from './Datamodel';
+import { Cron } from '@nestjs/schedule';
+import { CronJob } from 'cron';
 
 @WebSocketGateway({cors: true, namespace:'/alarms'})
 export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect{
@@ -16,11 +18,16 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   private clients = new Map();
   private clientCnt = 0;
   private isClientConnected = false;
+  private databaseJob;
 
+  @Cron('1-3 0 0 * * *')
+  handleCron(){
+    this.writeAlarmsToDatabase();
+  }
+  
   afterInit(server: Server) {
     this.logger.log('Initialized');
-    this.writeAlarmsToDatabase();
-  } 
+  }
   handleConnection(client: Socket, ...args: any[]) {
     this.clientCnt++;
     this.isClientConnected= true;
@@ -48,11 +55,11 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
           for(let el of this.clients.keys()){
             let alarmCnt = alarms['cnt_einsaetze'];
             for(let i = 0; i < alarmCnt;i++){
-              //if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
+              if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
                 if(JSON.stringify(alarms['einsaetze'][i]['einsatz']).includes(this.jwtService.decode(access_token)['firestation'])){
                   el.emit('alarmsRes',alarms['einsaetze'][i]['einsatz']);
                 }
-              //}
+              }
             }
           }
           
@@ -77,38 +84,36 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   private async writeAlarmsToDatabase(){
     let alarms,temp:String;
     let tempMission:Mission;
-    while(true){
-      await this.getAlarms().then(x=>alarms=x);
-      let alarmCnt = alarms['cnt_einsaetze'];
-      for(let i = 0; i < alarmCnt;i++){
-        temp = alarms['einsaetze'][i]['einsatz'];
-        let firedeps = [];
-        for(let i = 0; i < temp['cntfeuerwehren'];i++){
-          firedeps.push(temp['feuerwehrenarray'][i.toString()]['fwname']+`${temp['cntfeuerwehren']>1?"\n":""}`);
-        }
-        tempMission = new Mission();
-        tempMission.Mission(temp['num1'],temp['startzeit'],temp['alarmstufe'],temp['einsatztyp']['text'],
-          temp['einsatzsubtyp']['text'],temp['adresse']['efeanme'],temp['adresse']['estnum'],
-          temp['adresse']['earea']+"/ "+temp['adresse']['emun'],temp['adresse']['ecompl'],
-          temp['wgs84']['lng'],temp['wgs84']['lat'],firedeps.toString());
-        const qRunner = this.conn.createQueryRunner();
-        await qRunner.connect();
-        await qRunner.startTransaction();
-        try{
-          const res = await qRunner.query(`INSERT INTO missiondata (mission_id,alarm_time,stage,alarmtype,alarmsubtype,street,street_no,
-            area,additional_info,latitude,longitude,firedepartments) VALUES ('${tempMission.id}','${tempMission.time}',
-            ${tempMission.stage},'${tempMission.alarmType}','${tempMission.alarmsubtype}','${tempMission.street}',
-            ${tempMission.street_no==""?-1:Number(tempMission.street_no)},'${tempMission.area}','${tempMission.additional_info}','${tempMission.latitude}',
-            '${tempMission.longitude}','${tempMission.firedepartments}')`);
-          await qRunner.commitTransaction();
-        }catch(err){
-          await qRunner.rollbackTransaction();
-        }
-        finally{
-            await qRunner.release();
-        }
+    this.logger.log("Writing Alarms to Database");
+    await this.getAlarms().then(x=>alarms=x);
+    let alarmCnt = alarms['cnt_einsaetze'];
+    for(let i = 0; i < alarmCnt;i++){
+      temp = alarms['einsaetze'][i]['einsatz'];
+      let firedeps = [];
+      for(let i = 0; i < temp['cntfeuerwehren'];i++){
+        firedeps.push(temp['feuerwehrenarray'][i.toString()]['fwname']+`${temp['cntfeuerwehren']>1?"\n":""}`);
       }
-      await new Promise(f => setTimeout(f, 900000));
+      tempMission = new Mission();
+      tempMission.Mission(temp['num1'],temp['startzeit'],temp['alarmstufe'],temp['einsatztyp']['text'],
+        temp['einsatzsubtyp']['text'],temp['adresse']['efeanme'],temp['adresse']['estnum'],
+        temp['adresse']['earea']+"/ "+temp['adresse']['emun'],temp['adresse']['ecompl'],
+        temp['wgs84']['lng'],temp['wgs84']['lat'],firedeps.toString());
+      const qRunner = this.conn.createQueryRunner();
+      await qRunner.connect();
+      await qRunner.startTransaction();
+      try{
+        const res = await qRunner.query(`INSERT INTO missiondata (mission_id,alarm_time,stage,alarmtype,alarmsubtype,street,street_no,
+          area,additional_info,latitude,longitude,firedepartments) VALUES ('${tempMission.id}','${tempMission.time}',
+          ${tempMission.stage},'${tempMission.alarmType}','${tempMission.alarmsubtype}','${tempMission.street}',
+          ${tempMission.street_no==""?-1:Number(tempMission.street_no)},'${tempMission.area}','${tempMission.additional_info}','${tempMission.latitude}',
+          '${tempMission.longitude}','${tempMission.firedepartments}')`);
+        await qRunner.commitTransaction();
+      }catch(err){
+        await qRunner.rollbackTransaction();
+      }
+      finally{
+          await qRunner.release();
+      }
     }
   }
 }

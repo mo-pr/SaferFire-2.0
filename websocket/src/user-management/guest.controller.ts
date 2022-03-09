@@ -13,7 +13,6 @@ export class GuestController {
     @HttpCode(200)
     @HttpCode(400)
     async login(@Body() guestUser: GuestRegistrationDto) {
-        console.log(guestUser);
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
         await qRunner.startTransaction();

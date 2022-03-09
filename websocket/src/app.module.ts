@@ -8,9 +8,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { RegistrationController } from './user-management/registration.controller';
 import { TestGateway } from './testing/test.gateway';
 import { GuestController } from './user-management/guest.controller';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: dbConstants.host,
