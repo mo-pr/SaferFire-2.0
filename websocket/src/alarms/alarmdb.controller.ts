@@ -15,7 +15,6 @@ export class AlarmDBController {
     @HttpCode(400)
     @HttpCode(401)
     async alarmdb(@Body() token:string) {
-        console.log(this.jwtService.decode(token['token']));
         if(this.jwtService.decode(token['token'])['user'] == "Admin"){
             let ag  = new AlarmsGateway(this.conn,this.jwtService);
             try{
