@@ -18,9 +18,8 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   private clients = new Map();
   private clientCnt = 0;
   private isClientConnected = false;
-  private databaseJob;
 
-  @Cron('1-3 0 0 * * *')
+  @Cron('1-3 50 23 * * *')
   handleCron(){
     this.writeAlarmsToDatabase();
   }
@@ -81,7 +80,7 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     return await getalarms();
   }
 
-  private async writeAlarmsToDatabase(){
+  public async writeAlarmsToDatabase(){
     let alarms,temp:String;
     let tempMission:Mission;
     this.logger.log("Writing Alarms to Database");
@@ -95,16 +94,16 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       }
       tempMission = new Mission();
       tempMission.Mission(temp['num1'],temp['startzeit'],temp['alarmstufe'],temp['einsatztyp']['text'],
-        temp['einsatzsubtyp']['text'],temp['adresse']['efeanme'],temp['adresse']['estnum'],
+        temp['einsatzsubtyp']['text'],temp['bezirk']['text'],temp['adresse']['efeanme'],temp['adresse']['estnum'],
         temp['adresse']['earea']+"/ "+temp['adresse']['emun'],temp['adresse']['ecompl'],
         temp['wgs84']['lng'],temp['wgs84']['lat'],firedeps.toString());
       const qRunner = this.conn.createQueryRunner();
       await qRunner.connect();
       await qRunner.startTransaction();
       try{
-        const res = await qRunner.query(`INSERT INTO missiondata (mission_id,alarm_time,stage,alarmtype,alarmsubtype,street,street_no,
+        const res = await qRunner.query(`INSERT INTO missiondata (mission_id,alarm_time,stage,alarmtype,alarmsubtype,district,street,street_no,
           area,additional_info,latitude,longitude,firedepartments) VALUES ('${tempMission.id}','${tempMission.time}',
-          ${tempMission.stage},'${tempMission.alarmType}','${tempMission.alarmsubtype}','${tempMission.street}',
+          ${tempMission.stage},'${tempMission.alarmType}','${tempMission.alarmsubtype}','${tempMission.district}','${tempMission.street}',
           ${tempMission.street_no==""?-1:Number(tempMission.street_no)},'${tempMission.area}','${tempMission.additional_info}','${tempMission.latitude}',
           '${tempMission.longitude}','${tempMission.firedepartments}')`);
         await qRunner.commitTransaction();

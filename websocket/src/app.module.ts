@@ -9,6 +9,7 @@ import { RegistrationController } from './user-management/registration.controlle
 import { TestGateway } from './testing/test.gateway';
 import { GuestController } from './user-management/guest.controller';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AlarmDBController } from './alarms/alarmdb.controller';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       signOptions: {expiresIn: '365d'}
     }),
   ],
-  controllers: [LoginController, RegistrationController, GuestController],
+  controllers: [LoginController, RegistrationController, GuestController, AlarmDBController],
   providers: [AlarmsGateway, TestGateway],
 })
 export class AppModule {}
