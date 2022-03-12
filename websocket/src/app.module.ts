@@ -10,6 +10,7 @@ import { TestGateway } from './testing/test.gateway';
 import { GuestController } from './user-management/guest.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AlarmDBController } from './alarms/alarmdb.controller';
+import { AllAlarmsGateway } from './alarms/allAlarms.gateway';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { AlarmDBController } from './alarms/alarmdb.controller';
     }),
   ],
   controllers: [LoginController, RegistrationController, GuestController, AlarmDBController],
-  providers: [AlarmsGateway, TestGateway],
+  providers: [AlarmsGateway, TestGateway,AllAlarmsGateway],
 })
 export class AppModule {}
