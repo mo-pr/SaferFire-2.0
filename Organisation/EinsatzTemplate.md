@@ -9,7 +9,9 @@
 | Nachbarschaftshilfe |    Bool    |                          Ja oder Nein |
 | Kategorie           |    ENUM    | Brandeinsatz oder Technischer EInsatz |
 ## Stammdaten
-IN ARBEIT WARTE AUF PREINING
+| Feld                         | Datentyp |    Anmerkungen |
+| :--------------------------- | :------: | -------------: |
+
 ## Brand
 ### Personenrettung
 | Feld                         | Datentyp |    Anmerkungen |
@@ -36,3 +38,33 @@ IN ARBEIT WARTE AUF PREINING
 | Brand, Bauart     |   ENUM   |
 | Brand, Lage       |   ENUM   |
 | Brand, Verlauf    |   ENUM   |
+
+## Technischer-ES
+
+### Tierrettung 
+| Feld              | Datentyp |    Anmerkungen |
+| :---------------- | :------: | -------------: |
+| gerettete Tiere   |   int    | Default Wert 0 |
+| totgeborene Tiere |   int    | Default Wert 0 |
+
+### Brand-Statistik
+| Feld              | Datentyp |            Anmerkungen |
+| :---------------- | :------: | ---------------------: |
+| Brand, Entdeckugn |   ENUM   |
+| Brand, Ausmaß     |   ENUM   |
+| Brand, Klasse     |  String  |
+| Brand             |   ENUM   | Gebäude oder sonstiges |
+| Objektart         |   ENUM   |
+| Brand, Bauart     |   ENUM   |
+| Brand, Lage       |   ENUM   |
+| Brand, Verlauf    |   ENUM   |
+
+### Technische-Statistik
+| Feld                | Datentyp |    Anmerkungen |
+| :------------------ | :------: | -------------: |
+| Ursache             |   ENUM   |
+| Haupt-Tätigkeit     |   ENUM   |
+| Gefährliche Stoffe  |   ENUM   | Kann leer sein |
+| Weitere Tätigkeiten |  string  |
+
+
