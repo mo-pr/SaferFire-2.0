@@ -24,7 +24,7 @@ class RespiratoryProtectionPage extends State<RespiratoryProtection> {
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              height: MediaQuery.of(context).size.height / 1.8,
+              height: MediaQuery.of(context).size.height * 0.15,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: _cardBackgroundColor,
@@ -35,7 +35,7 @@ class RespiratoryProtectionPage extends State<RespiratoryProtection> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 90.0),
+            margin: const EdgeInsets.only(top: 50.0),
             alignment: Alignment.topCenter,
             child: const Text(
               'SaferFire',

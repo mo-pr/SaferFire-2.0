@@ -3,6 +3,7 @@ import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/navigation.dart';
 import "package:saferfire/authentication.dart";
+import 'package:saferfire/tool_respiratory_protection.dart';
 
 void main() async {
   runApp(MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Login(),
+      home: RespiratoryProtection(),
     );
   }
 }

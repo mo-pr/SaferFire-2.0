@@ -9,8 +9,15 @@
 | Nachbarschaftshilfe |    Bool    |                          Ja oder Nein |
 | Kategorie           |    ENUM    | Brandeinsatz oder Technischer EInsatz |
 ## Stammdaten
-| Feld                         | Datentyp |    Anmerkungen |
-| :--------------------------- | :------: | -------------: |
+| Feld                           | Datentyp |                                                                                Anmerkungen |
+| :----------------------------- | :------: | -----------------------------------------------------------------------------------------: |
+| Uhrzeit Ausfahrt (1. KFZ)      |   DATE   |
+| Uhrzeit Am Einsatzort (1. KFZ) |   DATE   |
+| Uhrzeit wieder Einsatzbereit   |   DATE   |
+| Uhrzeit Einsatz-Ende           |   Date   |
+| Strasse / Objekt               |  String  |                                                     Adresse oder Kilometrierung der Straße |
+| Koordinaten WGS84 N/E          |  String  |                                                  Beispiel: 50° 0′ 30,75″ N / 8° 1′ 11,5″ E |
+| Alarmarten                     |   Enum   | Echtalarm, Fehlalarm, Böswilliger Alarm, BMA Täuschungsalarm, BMA Fehlalarm, Blinder Alarm |
 
 ## Brand
 ### Personenrettung
