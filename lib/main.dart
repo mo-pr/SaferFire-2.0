@@ -3,6 +3,7 @@ import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/navigation.dart';
 import "package:saferfire/authentication.dart";
+import 'package:saferfire/toolProtocol.dart';
 
 void main() async {
   runApp(MyApp());
@@ -17,9 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: Login(),
+      home: Protocol(),
     );
   }
 }
