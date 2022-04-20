@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Connection } from "typeorm";
 import testdata = require("./testdata.json");
 
-@WebSocketGateway(4040, { cors: true, namespace: '/alarms' })
+@WebSocketGateway({ cors: true, namespace: '/testalarms' })
 export class TestGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private conn: Connection, private jwtService: JwtService) { }
 

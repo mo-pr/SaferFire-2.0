@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'dart:ui';
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
-import 'package:saferfire/helper.dart';
-import 'package:saferfire/navigation.dart';
+import 'package:saferfire/constants.dart';
 import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -17,39 +17,6 @@ const _backgroundColor = Colors.white;
 const _maxHeight = 350.0;
 const _minHeight = 70.0;
 List _allDeployments = [];
-List<Alarm> alarms = List.empty();
-
-class DeploymentInfo {
-  late int id;
-  late String missionNumber;
-  late String location;
-  late DateTime timestamp;
-  late int alertLevel;
-  late String typeOfOperation;
-  late String fireStation;
-
-  String _place = "";
-  String _kind = "";
-  String _fireDepartments = "";
-
-  DeploymentInfo(String place, String kind, String fireDepartments) {
-    _place = place;
-    _kind = kind;
-    _fireDepartments = fireDepartments;
-  }
-
-  String getPlace() {
-    return _place;
-  }
-
-  String getKind() {
-    return _kind;
-  }
-
-  String getFireDepartments() {
-    return _fireDepartments;
-  }
-}
 
 class Info extends StatefulWidget {
   @override
@@ -61,25 +28,29 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   bool _expanded = false;
   bool _isDeployment = false;
+  bool _isGuest = false;
   double _currentHeight = _minHeight;
   String _timeString = "";
-  List<Alarm> alarms = [];
-
-  late DeploymentInfo _deployment;
 
   String _alarmId = " ";
   String _alarmSubtype = " ";
   String _alarmAdress = " ";
   String _alarmLat = " ";
   String _alarmFireDepts = " ";
-  Helper h = new Helper();
 
-  Future<void> _websocketReq()async{
+  Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    socket.emit('alarmsReq', json.encode({'token': prefs.getString('token')}));
+    if(isTest){
+      socket.emit('alarmsReq',
+          json.encode({'token': prefs.getString('token'), "count": 1}));
+    }
+    if(!isTest){
+      socket.emit('alarmsReq',
+          json.encode({'token': prefs.getString('token')}));
+    }
   }
 
-  void logout() async{
+  void logout() async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     Navigator.push(
@@ -90,20 +61,39 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    socket = io('http://86.56.241.47:3030/alarms', <String, dynamic>{
-      'transports': ['websocket'],
-      'forceNew': true
+    setState(() {
+      _getSharedPreference().then((value) => _isGuest = value);
     });
+    if(isTest){
+      socket = io('http://$ipAddress:3030/testalarms', <String, dynamic>{
+        'transports': ['websocket'],
+        'forceNew': true
+      });
+    }
+    if(!isTest){
+      socket = io('http://$ipAddress:3030/alarms', <String, dynamic>{
+        'transports': ['websocket'],
+        'forceNew': true
+      });
+    }
     socket.connect();
     _websocketReq();
     socket.on('alarmsRes', (data) {
       print(data);
-      alarms = h.GetAlarmsFromString(data);
+      Alarm alarm = new Alarm(data);
+      for (int i = 0; i < alarms.length; i++) {
+        if (alarms[i].Id == alarm.Id) {
+          return alarms;
+        }
+      }
+      alarms.add(alarm);
+      return alarms;
     });
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
     socket.on('error', (data) => print("Err: " + data));
-    Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms());//debug output
+    Timer.periodic(
+        const Duration(seconds: 5), (Timer t) => _getAlarms()); //debug output
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
@@ -112,6 +102,11 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 500),
     );
     super.initState();
+  }
+
+  Future<bool> _getSharedPreference() async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('guest')!;
   }
 
   @override
@@ -131,7 +126,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -190,7 +185,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       _controller.reverse();
                       _expanded = false;
                       _cardColor = Colors.white;
-
                     } else {
                       _expanded = true;
                       _controller.forward(from: _currentHeight / _maxHeight);
@@ -233,167 +227,179 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   /// there is no deployment right now
   Widget _noDeployment() {
-    return Column(
-      children: [
-        Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 10), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Padding(
-            padding: EdgeInsets.all(10),
-            child: Center(
+    return _isGuest
+        ? Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
+            child: const Center(
               child: Text(
-                'Kein laufender Einsatz',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+                "Zur Zeit liegt kein Alarm vor",
+                style: TextStyle(color: Colors.black87, fontSize: 28),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-            const Text(
-              'Statistik',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Container(
-          child: Image.asset('assets/heatmap.jpg'),
-        ),
-        Container(
-          height: 30,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            color: Color(0xffB2B1B1),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff959090),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
+          )
+        : Column(
+            children: [
+              Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 10), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      'Kein laufender Einsatz',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                  const Text(
+                    'Statistik',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Container(
+                child: Image.asset('assets/heatmap.jpg'),
+              ),
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Color(0xffB2B1B1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xff959090),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Mehr',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                  const Text(
+                    'Einsätze',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 65,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Vergangener Einsatz 001',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 65,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Vergangener Einsatz 002',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ],
-          ),
-          child: const Center(
-            child: Text(
-              'Mehr',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-            const Text(
-              'Einsätze',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'Vergangener Einsatz 001',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'Vergangener Einsatz 002',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   /// Deployment received
@@ -495,12 +501,14 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           borderRadius: BorderRadius.circular(2.0),
           child: InkWell(
             onTap: () {
-              MapUtils.openMap(alarms.first.Lat,alarms.first.Lng);
+              MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
             },
             child: Container(
               padding: const EdgeInsets.all(0.0),
-              height: 60.0,//MediaQuery.of(context).size.width * .08,
-              width: 220.0,//MediaQuery.of(context).size.width * .3,
+              height: 60.0,
+              //MediaQuery.of(context).size.width * .08,
+              width: 220.0,
+              //MediaQuery.of(context).size.width * .3,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(2.0),
               ),
@@ -700,7 +708,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     });
   }
 
-  void _getAlarms(){
+  void _getAlarms() {
     if (alarms.isEmpty) {
       setState(() {
         _isDeployment = false;
@@ -710,8 +718,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
         _alarmId = alarms.first.Id.toString();
         _alarmSubtype = alarms.first.Subtype.toString();
         _alarmAdress = alarms.first.Address.toString();
-        _alarmLat = alarms.first.Lat.toString()+" "+alarms.first.Lng.toString();
-        _alarmFireDepts = alarms.first.FireDeps.toString().replaceAll('[', '').replaceAll(']', '').replaceAll(', ', '');
+        _alarmLat =
+            alarms.first.Lat.toString() + " " + alarms.first.Lng.toString();
+        _alarmFireDepts = alarms.first.FireDeps
+            .toString()
+            .replaceAll('[', '')
+            .replaceAll(']', '')
+            .replaceAll(', ', '');
         _isDeployment = true;
       });
     }
@@ -726,7 +739,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 class ListViewBuilder extends StatelessWidget {
   const ListViewBuilder({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -740,7 +752,8 @@ class ListViewBuilder extends StatelessWidget {
                 const SizedBox(height: 5),
                 const Text(
                   "ID",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   alarms[index].Id ?? ' ',
@@ -749,7 +762,8 @@ class ListViewBuilder extends StatelessWidget {
                 const SizedBox(height: 5),
                 const Text(
                   "Subtype",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   alarms[index].Subtype ?? ' ',

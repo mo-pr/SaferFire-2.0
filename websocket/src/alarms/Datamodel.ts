@@ -4,6 +4,7 @@ export class Mission {
   stage:Number;
   alarmType:String;
   alarmsubtype:String;
+  district:String;
   street:String;
   street_no:String;
   area:String;
@@ -11,12 +12,13 @@ export class Mission {
   longitude:String;
   latitude:String;
   firedepartments:String;
-  Mission(ID:String,TIME:Date,STAGE:Number,TYPE:String,SUBTYPE:String,STREET:String,STREETNO:String,AREA:String,ADD_INFO:String,LNG:String,LAT:String,FIREDEPS:String){
+  Mission(ID:String,TIME:Date,STAGE:Number,TYPE:String,SUBTYPE:String,DISTRICT:String,STREET:String,STREETNO:String,AREA:String,ADD_INFO:String,LNG:String,LAT:String,FIREDEPS:String){
     this.id = ID;
     this.time = TIME;
     this.stage = STAGE;
     this.alarmType = TYPE;
     this.alarmsubtype = SUBTYPE;
+    this.district = DISTRICT;
     this.street = STREET;
     this.street_no = STREETNO;
     this.area = AREA;
