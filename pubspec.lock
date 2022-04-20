@@ -162,11 +162,7 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "0.12.11"
-=======
-    version: "0.12.10"
->>>>>>> 4d69e2c7bcd19fd52d855a1943853dc73608c9ba
   meta:
     dependency: transitive
     description:
@@ -332,11 +328,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "0.4.3"
-=======
-    version: "0.4.2"
->>>>>>> 4d69e2c7bcd19fd52d855a1943853dc73608c9ba
   typed_data:
     dependency: transitive
     description:
