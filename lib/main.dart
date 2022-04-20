@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
-import 'package:saferfire/navigation.dart';
-import "package:saferfire/authentication.dart";
+import "package:sizer/sizer.dart";
 
 void main() async {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,12 +12,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Login(),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const Login(),
+        );
+      },
     );
   }
 }

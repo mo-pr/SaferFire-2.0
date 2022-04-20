@@ -11,33 +11,66 @@ const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
 class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
   @override
   LoginPage createState() => LoginPage();
 }
 
 class LoginPage extends State<Login> {
-  final _keyL = new GlobalKey<FormState>(), _keyR = new GlobalKey<FormState>();
-  bool isLoginScreen = true;
-  String email="",password = "",firedep="";
-
-  ChangeTo() {
-    setState(() {
-      isLoginScreen = !isLoginScreen;
-    });
-  }
+  final _keyL = GlobalKey<FormState>(),
+      _keyR = GlobalKey<FormState>(),
+      _keyG = GlobalKey<FormState>();
+  bool isLoginScreen = true, isGuestScreen = false;
+  String email = "", password = "", firedep = "";
 
   ///Gets called when the "Sign In" Button is Pressed
-  Login() async {
+  login() async {
     final form = _keyL.currentState;
     if (form!.validate()) {
       form.save();
-      var res = await UserAuthentication.login(email, password);
-      if(res.statusCode == 200){
+      baseLogin(email, password);
+    }
+  }
+  baseLogin(String email, String password) async{
+    var res = await UserAuthentication.login(email, password);
+    if (res.statusCode == 200) {
+      Map<String, dynamic> claims = JwtDecoder.decode(res.body);
+      var prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', res.body);
+      prefs.setString('firestation', claims["firestation"].toString());
+      prefs.setBool('guest', false);
+      password = email = "";
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Info()),
+      );
+    }
+  }
+  ///Gets called when the "Sign Up" Button is Pressed
+  register() async {
+    final form = _keyR.currentState;
+    if (form!.validate()) {
+      form.save();
+      var res = await UserAuthentication.register(email, password, firedep);
+      if (res.statusCode == 201) {
+        await baseLogin(email, password);
+      }
+    }
+  }
+
+  registerGuestUser() async {
+    final form = _keyG.currentState;
+    if (form!.validate()) {
+      form.save();
+      var res = await UserAuthentication.createGuest(firedep);
+      if (res.statusCode == 200) {
         Map<String, dynamic> claims = JwtDecoder.decode(res.body);
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', res.body);
         prefs.setString('firestation', claims["firestation"].toString());
-        password = email = "";
+        prefs.setBool('guest', true);
+        firedep = "";
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Info()),
@@ -45,31 +78,30 @@ class LoginPage extends State<Login> {
       }
     }
   }
-  ///Gets called when the "Sign Up" Button is Pressed
-  Register() async{
-    final form = _keyR.currentState;
-    if(form!.validate()){
-      form.save();
-      var res = await UserAuthentication.register(email, password, firedep);
-      if(res.statusCode == 201){
-        firedep = password = email = "";
-        ChangeTo();
+
+  Widget getScreen() {
+    if (isLoginScreen) {
+      return _login();
+    } else {
+      if (!isGuestScreen) {
+        return _register();
+      } else {
+        return _registerGuest();
       }
     }
   }
+
   String _timeString = "";
 
   @override
   void initState() {
     _timeString = _formatDateTime(DateTime.now());
-    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final menuWidh = size.width;
     return Scaffold(
       backgroundColor: _backgroundColor,
       body: Stack(
@@ -79,12 +111,12 @@ class LoginPage extends State<Login> {
             width: MediaQuery.of(context).size.width,
             color: _backgroundColor,
           ),
-          new Align(
+          Align(
             alignment: Alignment.topCenter,
             child: Container(
               height: MediaQuery.of(context).size.height / 1.8,
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: _cardBackgroundColor,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10),
@@ -92,10 +124,10 @@ class LoginPage extends State<Login> {
               ),
             ),
           ),
-          new Container(
-            margin: new EdgeInsets.only(top: 90.0),
+          Container(
+            margin: const EdgeInsets.only(top: 90.0),
             alignment: Alignment.topCenter,
-            child: Text(
+            child: const Text(
               'SaferFire',
               style: TextStyle(
                   color: Colors.white,
@@ -103,9 +135,9 @@ class LoginPage extends State<Login> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          new Align(
+          Align(
             alignment: Alignment.center,
-            child: isLoginScreen ? _login() : _register(),
+            child: getScreen(),
           ),
         ],
       ),
@@ -116,14 +148,14 @@ class LoginPage extends State<Login> {
   /// returns the Container for the login
   Widget _login() {
     return Container(
-        height: 400,
+        height: 450,
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(30, 15, 30, 10),
+          padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
           child: Form(
             key: _keyL,
             child: Column(
@@ -137,33 +169,35 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "E-Mail darf nicht leer sein!";
                     }
-                    if(Validator.validateEmail(e) == false){
+                    if (Validator.validateEmail(e) == false) {
                       return "Ungültige E-Mail!";
                     }
+                    return null;
                   },
-                  onSaved: (e)=>email=e!,
-                  decoration: InputDecoration(
+                  onSaved: (e) => email = e!,
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Email',
                   ),
                 ),
                 const SizedBox(height: 25),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Passwort darf nicht leer sein!";
                     }
-                    if(Validator.validatePassword(e) == false){
+                    if (Validator.validatePassword(e) == false) {
                       return "Ungültiges Passwort!";
                     }
+                    return null;
                   },
                   obscureText: true,
-                  onSaved: (e)=>password=e!,
-                  decoration: InputDecoration(
+                  onSaved: (e) => password = e!,
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Password',
                   ),
@@ -171,26 +205,26 @@ class LoginPage extends State<Login> {
                 const SizedBox(height: 45),
 
                 ///Button for Sign In
-                new MaterialButton(
-                  onPressed: () => Login(),
+                MaterialButton(
+                  onPressed: () => login(),
                   minWidth: MediaQuery.of(context).size.width,
                   color: _cardBackgroundColor,
                   textColor: Colors.black,
-                  child: Text(
+                  child: const Text(
                     "Sign In",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     //side: BorderSide(color: Colors.red)
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
+                const Text(
                   'or',
                   style: TextStyle(
                       color: _cardBackgroundColor,
@@ -200,22 +234,27 @@ class LoginPage extends State<Login> {
                 const SizedBox(height: 5),
 
                 ///Button for Sign UP
-                new MaterialButton(
-                  onPressed: () => ChangeTo(),
+                MaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = false;
+                      isGuestScreen = false;
+                    });
+                  },
                   minWidth: MediaQuery.of(context).size.width,
                   color: Colors.white,
                   textColor: Colors.black,
-                  child: Text(
+                  child: const Text(
                     "Sign Up",
                     style: TextStyle(
                         color: _cardBackgroundColor,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: _cardBackgroundColor)),
+                      side: const BorderSide(color: _cardBackgroundColor)),
                 ),
               ],
             ),
@@ -226,14 +265,14 @@ class LoginPage extends State<Login> {
   /// returns the Container for the register
   Widget _register() {
     return Container(
-        height: 500,
+        height: 600,
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(30, 15, 30, 10),
+          padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
           child: Form(
             key: _keyR,
             child: Column(
@@ -247,49 +286,52 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "E-Mail darf nicht leer sein!";
                     }
-                    if(Validator.validateEmail(e) == false){
+                    if (Validator.validateEmail(e) == false) {
                       return "Ungültige E-Mail!";
                     }
+                    return null;
                   },
-                  onSaved: (e)=>email=e!,
-                  decoration: InputDecoration(
+                  onSaved: (e) => email = e!,
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Email',
                   ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Feuerwehr darf nicht leer sein!";
                     }
-                    if(Validator.validateFirestation(e) == false){
+                    if (Validator.validateFirestation(e) == false) {
                       return "Ungültige Feuerwehr!";
                     }
+                    return null;
                   },
-                  onSaved: (e)=>firedep=e!,
-                  decoration: InputDecoration(
+                  onSaved: (e) => firedep = e!,
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Feuerwehr',
                   ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Passwort darf nicht leer sein!";
                     }
-                    if(Validator.validatePassword(e) == false){
+                    if (Validator.validatePassword(e) == false) {
                       return "Ungültiges Passwort!";
                     }
+                    return null;
                   },
                   obscureText: true,
-                  onSaved: (e)=>password=e!,
-                  decoration: InputDecoration(
+                  onSaved: (e) => password = e!,
+                  decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Password',
                   ),
@@ -297,26 +339,26 @@ class LoginPage extends State<Login> {
                 const SizedBox(height: 40),
 
                 ///Button for Sign UP
-                new MaterialButton(
-                  onPressed: () => Register(),
+                MaterialButton(
+                  onPressed: () => register(),
                   minWidth: MediaQuery.of(context).size.width,
                   color: _cardBackgroundColor,
                   textColor: Colors.black,
-                  child: Text(
+                  child: const Text(
                     "Sign Up",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     //side: BorderSide(color: Colors.red)
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
+                const Text(
                   'or',
                   style: TextStyle(
                       color: _cardBackgroundColor,
@@ -326,22 +368,157 @@ class LoginPage extends State<Login> {
                 const SizedBox(height: 5),
 
                 ///Button for Sign In
-                new MaterialButton(
-                  onPressed: () => ChangeTo(),
+                MaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = true;
+                      isGuestScreen = false;
+                    });
+                  },
                   minWidth: MediaQuery.of(context).size.width,
                   color: Colors.white,
                   textColor: Colors.black,
-                  child: Text(
+                  child: const Text(
                     "Sign In",
                     style: TextStyle(
                         color: _cardBackgroundColor,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: _cardBackgroundColor)),
+                      side: const BorderSide(color: _cardBackgroundColor)),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  'or',
+                  style: TextStyle(
+                      color: _cardBackgroundColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+
+                ///Button for Sign In
+                MaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = false;
+                      isGuestScreen = true;
+                    });
+                  },
+                  minWidth: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  child: const Text(
+                    "Create Guest User",
+                    style: TextStyle(
+                        color: _cardBackgroundColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(color: _cardBackgroundColor)),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget _registerGuest() {
+    return Container(
+        height: 350,
+        width: MediaQuery.of(context).size.width / 1.1,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
+          child: Form(
+            key: _keyG,
+            child: Column(
+              children: [
+                Text(
+                  'Willkommen zu SaferFire',
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  validator: (e) {
+                    if (e!.isEmpty) {
+                      return "Feuerwehr darf nicht leer sein!";
+                    }
+                    if (Validator.validateFirestation(e) == false) {
+                      return "Ungültige Feuerwehr!";
+                    }
+                    return null;
+                  },
+                  onSaved: (e) => firedep = e!,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: 'Feuerwehr',
+                  ),
+                ),
+                const SizedBox(height: 45),
+
+                MaterialButton(
+                  onPressed: () => registerGuestUser(),
+                  minWidth: MediaQuery.of(context).size.width,
+                  color: _cardBackgroundColor,
+                  textColor: Colors.black,
+                  child: const Text(
+                    "Create Guest User",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    //side: BorderSide(color: Colors.red)
+                  ),
+                ),
+                const SizedBox(height: 5),
+                const Text(
+                  'or',
+                  style: TextStyle(
+                      color: _cardBackgroundColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 5),
+
+                ///Button for Sign UP
+                MaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      isLoginScreen = false;
+                      isGuestScreen = false;
+                    });
+                  },
+                  minWidth: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        color: _cardBackgroundColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: const BorderSide(color: _cardBackgroundColor)),
                 ),
               ],
             ),

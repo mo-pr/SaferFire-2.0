@@ -42,6 +42,7 @@ dependencies:
   crypto:
   shared_preferences:
   jwt_decoder:
+  sizer:
 
 dev_dependencies:
   flutter_test:
