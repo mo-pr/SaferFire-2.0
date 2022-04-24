@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/alarm.dart';
+import 'package:saferfire/views/grundinformationen_view.dart';
+import 'package:saferfire/models/Protocol.dart';
 
 
-
-class Protocol extends StatefulWidget {
-  @override
-  ProtocolPage createState() => ProtocolPage();
-}
-
-class ProtocolPage extends State<Protocol> {
+class ProtocolPage extends StatelessWidget {
+  final Alarm? alarm;
+  ProtocolPage({Key? key, @required this.alarm}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final newProtocol = new Protocol(alarm!.Id, alarm!.Type, alarm!.Address, "${alarm!.Lat} + ${alarm!.Lng}", alarm!.AlarmType);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -29,19 +29,20 @@ class ProtocolPage extends State<Protocol> {
                 ),
                 const SizedBox(height: 15),
                 ElevatedButton(
+                  child: Icon(Icons.add, size: 50.0),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Grundinformationen())
+                        context,
+                        MaterialPageRoute(builder: (context) => GrundinformationenView(protocol: newProtocol,))
                     );
                   },
-                  child: Icon(Icons.add, size: 50.0),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(20),
-                  ),
-                )
+                      primary: Colors.red,
+                      padding: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
+                      textStyle: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ),
