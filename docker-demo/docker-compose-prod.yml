@@ -3,5 +3,5 @@ services:
   web-container:
     image: ghcr.io/mo-pr/web-test
     ports:
-      - 8080:8080
+      - 8080:80
     container_name: web-container
