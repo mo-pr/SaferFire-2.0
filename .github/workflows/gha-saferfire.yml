@@ -40,12 +40,12 @@ jobs:
           user: ${{ secrets.SERVER_USER }}
           server: ${{ secrets.SERVER }}
           alias: server
-       - name: Run install.sh on VM  
-          working-directory: docker-demo
-          run: |
-            pwd
-            ls -al
-            ssh server "rm -rf ~/dist && mkdir -p ~/dist"
-            echo "running installation on server..."
-            ssh server "cd ~/dist && touch iwashere.txt"
-            echo "done $(date)"
+      - name: Run install.sh on VM  
+        working-directory: docker-demo
+        run: |
+          pwd
+          ls -al
+          ssh server "rm -rf ~/dist && mkdir -p ~/dist"
+          echo "running installation on server..."
+          ssh server "cd ~/dist && touch iwashere.txt"
+          echo "done $(date)"
