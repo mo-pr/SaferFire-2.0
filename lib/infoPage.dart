@@ -37,19 +37,16 @@ class Info extends StatefulWidget {
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   PageController _pageController = PageController();
-  List<Widget> _screens = [
-    OverviewPage(), ProtocolPage(alarm: alarms.first)
+  List<Widget> _screens = <Widget>[
+    OverviewPage(),
+    ProtocolPage()
   ];
 
   int _selectedIndex = 0;
-  void _onPageChanged(int index){
+  void _onItemTapped(int index){
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  void _onItemTapped(int selectedIndex){
-    _pageController.jumpToPage(selectedIndex);
   }
 
 
@@ -142,11 +139,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     final menuWidh = size.width;
     return Scaffold(
         backgroundColor: _backgroundColor,
-        body: PageView(
-          controller: _pageController,
-          children: _screens,
-          onPageChanged: _onPageChanged,
-        ),
+        body: _screens[_selectedIndex],
         extendBody: true,
         bottomNavigationBar: GestureDetector(
             //#region Drag
@@ -729,9 +722,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 }
 
 class OverviewPage extends StatefulWidget{
-  List<Alarm>? alarms;
-  OverviewPage({Key? key, @required this.alarms}) : super(key: key);
-
   @override
   _OverViewPageState createState() => _OverViewPageState();
 }
@@ -740,8 +730,6 @@ class _OverViewPageState extends State<OverviewPage>{
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final menuWidh = size.width;
     return Scaffold(
         backgroundColor: _backgroundColor,
         body: SingleChildScrollView(
