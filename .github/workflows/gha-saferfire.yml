@@ -26,3 +26,26 @@ jobs:
         run: |
           docker-compose push
         working-directory: docker-demo
+  deployment:
+    needs:
+      - build
+    name: ssh and scp to deployment vm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install ssh key
+        uses: caberger/install-ssh-key@v1.0
+        with: 
+          ssh-private-key:  ${{ secrets.SSH_SERVER_PRIVATE_KEY }}
+          user: ${{ secrets.SERVER_USER }}
+          server: ${{ secrets.SERVER }}
+          alias: server
+       - name: Run install.sh on VM  
+          working-directory: docker-demo
+          run: |
+            pwd
+            ls -al
+            ssh server "rm -rf ~/dist && mkdir -p ~/dist"
+            echo "running installation on server..."
+            ssh server "cd ~/dist && touch iwashere.txt"
+            echo "done $(date)"
