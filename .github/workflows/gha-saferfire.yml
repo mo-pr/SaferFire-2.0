@@ -46,6 +46,9 @@ jobs:
           pwd
           ls -al
           ssh server "rm -rf ~/dist && mkdir -p ~/dist"
+          scp docker-compose.yml server:~/dist/
+          scp install.sh server:~/dist/
+          ssh server "chmod +x ~/dist/*.sh"
           echo "running installation on server..."
-          ssh server "cd ~/dist && touch iwashere.txt"
+          ssh server "cd ~/dist && sudo ./install.sh ${{ github.actor }} ${{ secrets.REGISTRY_ACCESS_TOKEN }}"
           echo "done $(date)"
