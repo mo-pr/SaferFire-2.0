@@ -14,4 +14,15 @@ jobs:
         run: | 
           pwd
           ls -al
+          docker-compose build
+        working-directory: docker-demo
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
+      - name: push docker images
+        run: |
+          docker-compose push
         working-directory: docker-demo
