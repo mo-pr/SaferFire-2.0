@@ -1,0 +1,17 @@
+name: build and deploy docker images
+on:
+ push:
+    branches: [ release ]
+env:
+  REGISTRY: ghcr.io
+jobs:
+  build:
+    name: build and push docker images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build docker images
+        run: | 
+          pwd
+          ls -al
+        working-directory: docker-demo
