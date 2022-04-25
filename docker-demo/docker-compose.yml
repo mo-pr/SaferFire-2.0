@@ -5,5 +5,5 @@ services:
     build:
       context: ./web
     ports:
-      - 80:80
+      - 8080:8080
     container_name: web-container
