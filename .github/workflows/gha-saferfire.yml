@@ -46,7 +46,7 @@ jobs:
           pwd
           ls -al
           ssh server "rm -rf ~/dist && mkdir -p ~/dist"
-          scp docker-compose.yml server:~/dist/
+          scp docker-compose-prod.yml server:~/dist/docker-compose.yml
           scp install.sh server:~/dist/
           ssh server "chmod +x ~/dist/*.sh"
           echo "running installation on server..."

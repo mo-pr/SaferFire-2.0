@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  web-container:
+    image: ghcr.io/mo-pr/web-test
+    ports:
+      - 80:80
+    container_name: web-container
