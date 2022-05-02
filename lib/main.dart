@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           },
           theme: ThemeData(
             primaryColor: Color(0xFFbb1e10),
+            buttonColor: Color(0xFFbb1e10),
           ),
         );
       },

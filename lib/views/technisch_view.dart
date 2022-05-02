@@ -5,6 +5,8 @@ import 'package:saferfire/toolProtocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:numberpicker/numberpicker.dart';
 
+import '../infoPage.dart';
+
 class TechnischView extends StatefulWidget{
   final Protocol? protocol;
   TechnischView({Key? key, @required this.protocol}) : super(key: key);
@@ -82,6 +84,18 @@ class _TechnischViewState extends State<TechnischView> {
                     MaterialPageRoute(builder: (context) => Technisch_Statistik(protocol: widget.protocol))
                 );
                 //Navigator.of(context).popUntil((route) => route.isFirst);
+                // Navigator.of(context).pushAndRemoveUntil(
+                //     MaterialPageRoute(builder: (context) {
+                //       return Info();
+                //     }), (route) {
+                //   // if( route is (MaterialPageRoute('/')))
+                //   // {
+                //
+                //   // }
+                //   // print(route);
+                //   return false;
+                // });
+                // Navigator.of(context).popUntil((route) => route.isFirst);
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.grey,
@@ -227,8 +241,18 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                   //      ModalRoute.withName('/protocol') // Replace this with your root screen's route name (usually '/')
                   //  );
                   // //Navigator.popUntil(context, ModalRoute.withName('/protocol'));
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
+                  //Navigator.of(context)
+                     // .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) {
+                        return Info();
+                      }), (route) {
+                    // if( route is (MaterialPageRoute('/')))
+                    // {
+                                    //   // }
+                    // print(route);
+                    return false;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.grey,

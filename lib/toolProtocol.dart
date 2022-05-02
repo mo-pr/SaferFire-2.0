@@ -10,9 +10,9 @@ class ProtocolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Protokoll erstellen'),
-        ),
+        // appBar: AppBar(
+        //   title: Text('Protokoll erstellen'),
+        // ),
         body: isProtocol? showProtocol(context) : noProtocol(context)
     );
   }
@@ -90,13 +90,28 @@ class ProtocolPage extends StatelessWidget {
                           color: Colors.grey),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  Text("${protocol.einstznummer}"),
-                  const SizedBox(height: 15),
-                  Text("${protocol.kategorie}"),
-                  const SizedBox(height: 15),
-                  Text("${protocol.ursache}"),
-                  const SizedBox(height: 15),
+                  Table(
+                    children: [
+                      TableRow(
+                        children: [
+                          Text("Einsatznummer"),
+                          Text("${protocol.einstznummer}"),
+                        ]
+                      ),
+                      TableRow(
+                          children: [
+                            Text("Kategorie"),
+                            Text("${protocol!.kategorie!.split(' ')[0]}"),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            Text("Ursache"),
+                            Text("${protocol.ursache}"),
+                          ]
+                      ),
+                    ],
+                  ),
                   Text("..."),
                 ],
               ),
