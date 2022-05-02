@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
-import 'package:saferfire/navigation.dart';
-import "package:saferfire/authentication.dart";
 import 'package:saferfire/toolProtocol.dart';
 import "package:sizer/sizer.dart";
 
+const _cardBackgroundColor = Color(0xFFbb1e10);
 
 void main() async {
   runApp(MyApp());
@@ -20,11 +19,19 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Safer - Fire',
+          initialRoute: '/',
+          routes: {
+            // When navigating to the "/" route, build the FirstScreen widget.
+            '/': (context) => const Login(),
+            // When navigating to the "/second" route, build the SecondScreen widget.
+            '/info': (context) => Info(),
+            '/protocol': (context) => ProtocolPage(),
+            '/einsatzuebersicht': (context) => const OperationInfo(),
+          },
           theme: ThemeData(
-            primarySwatch: Colors.red,
+            primaryColor: Color(0xFFbb1e10),
           ),
-          home: Login(),
         );
       },
     );

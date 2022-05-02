@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/models/Protocol.dart';
+import 'package:saferfire/toolProtocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -219,7 +220,15 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                   //     context,
                   //     MaterialPageRoute(builder: (context) => TechnischView(protocol: widget.protocol))
                   // );
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  //Navigator.of(context).popUntil((route) => route.isFirst);
+                  //  Navigator.pushAndRemoveUntil(
+                  //      context,
+                  //      MaterialPageRoute(builder: (BuildContext context) => ProtocolPage()),
+                  //      ModalRoute.withName('/protocol') // Replace this with your root screen's route name (usually '/')
+                  //  );
+                  // //Navigator.popUntil(context, ModalRoute.withName('/protocol'));
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.grey,

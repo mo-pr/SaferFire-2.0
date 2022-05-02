@@ -5,19 +5,15 @@ import 'package:saferfire/models/Protocol.dart';
 
 
 class ProtocolPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
   Protocol? newProtocol;
 
   @override
   Widget build(BuildContext context) {
-    newProtocol = new Protocol(
-        alarms.first!.Id, alarms.first!.Type, alarms.first!.Address,
-        "${alarms.first!.Lat} + ${alarms.first!.Lng}", alarms.first!.AlarmType);
-    final size = MediaQuery
-        .of(context)
-        .size;
     return Scaffold(
-        body: isProtocol? noProtocol(context) : showProtocol(context)
+        appBar: AppBar(
+          title: Text('Protokoll erstellen'),
+        ),
+        body: isProtocol? showProtocol(context) : noProtocol(context)
     );
   }
 
@@ -42,6 +38,9 @@ class ProtocolPage extends StatelessWidget {
               ElevatedButton(
                 child: Icon(Icons.add, size: 50.0),
                 onPressed: () {
+                  newProtocol = new Protocol(
+                      alarms.first.Id, alarms.first.Type, alarms.first.Address,
+                      "${alarms.first.Lat} + ${alarms.first.Lng}", alarms.first.AlarmType);
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>
@@ -85,30 +84,20 @@ class ProtocolPage extends StatelessWidget {
                     alignment: Alignment.center,
                     // Align however you like (i.e .centerRight, centerLeft)
                     child: Text(
-                      "Es wurde noch kein Protokoll erstellt",
+                      "Protokoll wurde erstellt",
                       style: TextStyle(fontWeight: FontWeight.bold,
                           fontSize: 20,
                           color: Colors.grey),
                     ),
                   ),
                   const SizedBox(height: 15),
-                  ElevatedButton(
-                    child: Icon(Icons.add, size: 50.0),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) =>
-                              GrundinformationenView(protocol: newProtocol,))
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 100, vertical: 5),
-                        textStyle: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold)),
-                  ),
+                  Text("${protocol.einstznummer}"),
+                  const SizedBox(height: 15),
+                  Text("${protocol.kategorie}"),
+                  const SizedBox(height: 15),
+                  Text("${protocol.ursache}"),
+                  const SizedBox(height: 15),
+                  Text("..."),
                 ],
               ),
             ),

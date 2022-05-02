@@ -27,7 +27,7 @@ String _alarmAdress = " ";
 String _alarmLat = " ";
 String _alarmFireDepts = " ";
 
-String _timeString = "";
+//String _timeString = "";
 
 class Info extends StatefulWidget {
   @override
@@ -109,11 +109,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
     socket.on('error', (data) => print("Err: " + data));
-    Timer.periodic(
-        const Duration(seconds: 5), (Timer t) => _getAlarms()); //debug output
-    _timeString = _formatDateTime(DateTime.now());
-    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
+    Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms()); //debug output
+    //_timeString = _formatDateTime(DateTime.now());
+    //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    //Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -136,7 +135,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final menuWidh = size.width;
+    final menuWidth = size.width;
     return Scaffold(
         backgroundColor: _backgroundColor,
         body: _screens[_selectedIndex],
@@ -177,8 +176,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   children: [
                     Positioned(
                       height: lerpDouble(_minHeight, _currentHeight, value),
-                      left: lerpDouble(size.width / 2 - menuWidh / 2, 0, value),
-                      width: lerpDouble(menuWidh, size.width, value),
+                      left: lerpDouble(size.width / 2 - menuWidth / 2, 0, value),
+                      width: lerpDouble(menuWidth, size.width, value),
                       bottom: lerpDouble(0.0, 0.0, value),
                       child: Container(
                         decoration: BoxDecoration(
@@ -198,353 +197,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
             )));
   }
 
-  /// there is no deployment right now
-  Widget _noDeployment() {
-    return _isGuest
-        ? Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
-            child: const Center(
-              child: Text(
-                "Zur Zeit liegt kein Alarm vor",
-                style: TextStyle(color: Colors.black87, fontSize: 28),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-        : Column(
-            children: [
-              Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 10), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Center(
-                    child: Text(
-                      'Kein laufender Einsatz',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                  const Text(
-                    'Statistik',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
-              Container(
-                child: Image.asset('assets/heatmap.jpg'),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: Color(0xffB2B1B1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xff959090),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Mehr',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                  const Text(
-                    'Einsätze',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 65,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Vergangener Einsatz 001',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 65,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Vergangener Einsatz 002',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          );
-  }
-
-  /// Deployment received
-  Widget _receiveDeployment() {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 1.8,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 10), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  //#region Text
-                  const SizedBox(height: 30),
-                  const Text(
-                    'Einsatzdaten',
-                    style: TextStyle(
-                        color: _openNavbarColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "ID: " + _alarmId,
-                    style: const TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 25,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Subtype',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    _alarmSubtype,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Adresse',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    _alarmAdress,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Text(
-                    _alarmLat,
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Feuerwehren',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    _alarmFireDepts,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  //#endregion
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 50),
-        Material(
-          elevation: 10,
-          borderRadius: BorderRadius.circular(2.0),
-          child: InkWell(
-            onTap: () {
-              MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(0.0),
-              height: 60.0,
-              //MediaQuery.of(context).size.width * .08,
-              width: 220.0,
-              //MediaQuery.of(context).size.width * .3,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: Row(
-                children: <Widget>[
-                  LayoutBuilder(builder: (context, constraints) {
-                    return Container(
-                      height: constraints.maxHeight,
-                      width: constraints.maxHeight,
-                      decoration: BoxDecoration(
-                        color: _openNavbarColor,
-                        borderRadius: BorderRadius.circular(2.0),
-                      ),
-                      child: const Icon(
-                        Icons.navigation,
-                        color: Colors.white,
-                      ),
-                    );
-                  }),
-                  const Expanded(
-                    child: Text(
-                      'Open Maps',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 90),
-        /*new Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              'Vergangene Einsätze',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),*/
-      ],
-    );
-  }
-
   /// Content for the extended bottomNavigationBar
   Widget _buildExpandedContent() {
     return Padding(
@@ -555,26 +207,42 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
             children: [
               Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _onItemTapped(0);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
-                      // );
-                    },
-                    child: const Text('InfoPage'),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    height: 80,
+                    width: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(80, 80), //////// HERE
+                      ),
+                      onPressed: () {
+                        _onItemTapped(0);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
+                        // );
+                      },
+                      child: const Text('InfoPage'),
+                    ),
                   ),
                   const SizedBox(height: 15),
-                  ElevatedButton(
-                    onPressed: () {
-                      _onItemTapped(1);
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
-                      // );
-                    },
-                    child: const Text('Protocol'),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    height: 80,
+                    width: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(80, 80), //////// HERE
+                      ),
+                      onPressed: () {
+                        _onItemTapped(1);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
+                        // );
+                      },
+                      child: const Text('Protocol'),
+                    ),
                   ),
                   const SizedBox(height: 15),
                   Container(
@@ -685,13 +353,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   }
 
   /// returns the current time for the clock
-  void _getTime() {
-    final DateTime now = DateTime.now();
-    final String formattedDateTime = _formatDateTime(now);
-    setState(() {
-      _timeString = formattedDateTime;
-    });
-  }
+  // void _getTime() {
+  //   final DateTime now = DateTime.now();
+  //   final String formattedDateTime = _formatDateTime(now);
+  //   setState(() {
+  //     _timeString = formattedDateTime;
+  //   });
+  // }
 
   void _getAlarms() {
     if (alarms.isEmpty) {
@@ -742,16 +410,9 @@ class _OverViewPageState extends State<OverviewPage>{
                       builder: (BuildContext context) {
                         return Scaffold(
                           appBar: AppBar(
-                            title: const Text('Second Route'),
+                            title: const Text('Einsatzinformationen'),
                           ),
-                          body: Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const ListViewBuilder(),
-                            ),
-                          ),
+                          body: OperationInfo(),
                         );
                       });
                 },
@@ -765,7 +426,7 @@ class _OverViewPageState extends State<OverviewPage>{
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                   child: Text(
-                    _timeString,
+                    "_timeString",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         color: Colors.black,
@@ -1132,6 +793,132 @@ class _OverViewPageState extends State<OverviewPage>{
   }
 }
 
+class OperationInfo extends StatelessWidget {
+  const OperationInfo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 15),
+          Material(
+            elevation: 10,
+            borderRadius: BorderRadius.circular(2.0),
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: const Text('Einsatz Protocol'),
+                        ),
+                        body: ProtocolPage(),
+                      );
+                    });
+              },
+              child: Container(
+                padding: const EdgeInsets.all(0.0),
+                height: 60.0,
+                //MediaQuery.of(context).size.width * .08,
+                width: MediaQuery.of(context).size.width * .9,
+                //MediaQuery.of(context).size.width * .3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    LayoutBuilder(builder: (context, constraints) {
+                      return Container(
+                        height: constraints.maxHeight,
+                        width: constraints.maxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFA81A0D),
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: const Icon(
+                          Icons.wysiwyg_sharp,
+                          color: Colors.white,
+                        ),
+                      );
+                    }),
+                    const Expanded(
+                      child: Text(
+                        'Einsatzprotokoll',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 15),
+          Material(
+            elevation: 10,
+            borderRadius: BorderRadius.circular(2.0),
+            child: InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: const Text('Alle Einsätze'),
+                        ),
+                        body: ListViewBuilder(),
+                      );
+                    });
+              },
+              child: Container(
+                padding: const EdgeInsets.all(0.0),
+                height: 60.0,
+                //MediaQuery.of(context).size.width * .08,
+                width: MediaQuery.of(context).size.width * .9,
+                //MediaQuery.of(context).size.width * .3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    LayoutBuilder(builder: (context, constraints) {
+                      return Container(
+                        height: constraints.maxHeight,
+                        width: constraints.maxHeight,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFA81A0D),
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: const Icon(
+                          Icons.wysiwyg_sharp,
+                          color: Colors.white,
+                        ),
+                      );
+                    }),
+                    const Expanded(
+                      child: Text(
+                        'Alle Einsätze',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ListViewBuilder extends StatelessWidget {
   const ListViewBuilder({Key? key}) : super(key: key);
 
@@ -1142,30 +929,56 @@ class ListViewBuilder extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(12.0),
           child: Container(
-            color: _openNavbarColor,
+            decoration: BoxDecoration(
+              color: Color(0xFFE5E5E5),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
             child: Column(
               children: [
-                const SizedBox(height: 5),
+                const SizedBox(height: 15),
                 const Text(
                   "ID",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   alarms[index].Id ?? ' ',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 15),
                 const Text(
                   "Subtype",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   alarms[index].Subtype ?? ' ',
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 15),
+                const Text(
+                  "Addrese",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  alarms[index].Address ?? ' ',
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(height: 15),
               ],
             ),
           ),
