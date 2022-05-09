@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   saferFire-backend:
-    image: ghcr.io/mo-pr/saferfire-backend
+    image: ghcr.io/mo-pr/saferfire
     build:
       context: ./src
     ports:
