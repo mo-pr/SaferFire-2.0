@@ -110,6 +110,24 @@ class ProtocolPage extends StatelessWidget {
                             Text("${protocol.ursache}"),
                           ]
                       ),
+                      TableRow(
+                          children: [
+                            Text("Haupt - Tätigkeit"),
+                            Text("${protocol.hauptTaetigkeit}"),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            Text("Gefährliche Stoffe"),
+                            Text("${protocol.gerfaehrlicheStoffe}"),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            Text("weiter Tätigkeiten"),
+                            Text("${protocol.weiterTaetigkeiten}"),
+                          ]
+                      ),
                     ],
                   ),
                   Text("..."),
@@ -117,17 +135,17 @@ class ProtocolPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            Text(
-              "Kommentare",
-              style: TextStyle(fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  color: Colors.grey),
-            ),
-            Divider(
-                height: 20,
-                thickness: 2,
-                color: Colors.grey
-            ),
+            // Text(
+            //   "Kommentare",
+            //   style: TextStyle(fontWeight: FontWeight.w500,
+            //       fontSize: 20,
+            //       color: Colors.grey),
+            // ),
+            // Divider(
+            //     height: 20,
+            //     thickness: 2,
+            //     color: Colors.grey
+            // ),
           ],
         )
     );
