@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   saferfire-backend:
-    image: ghcr.io/mo-pr/saferfire
+    image: ghcr.io/mo-pr/saferfire:0.1
     ports:
       - 3030:3030
     container_name: saferfire-backend
