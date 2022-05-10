@@ -6,9 +6,12 @@ WORKDIR "/SaferFire-2.0"
 RUN git checkout release
 WORKDIR "/SaferFire-2.0/websocket"
 RUN npm install pm2 @nestjs/cli -g
+RUN npm install pm2 -g
 RUN npm install --production
 EXPOSE 3030
 RUN npm run build
-RUN pm2 start dist/main.js --name SaferFire-Backend
+ENV PM2_PUBLIC_KEY a7cmhleidxmzbe6
+ENV PM2_SECRET_KEY 7l9ala1vopm5184
+CMD ["pm2-runtime", "./dist/main.js"]
 RUN pm2 startup
 RUN pm2 save
