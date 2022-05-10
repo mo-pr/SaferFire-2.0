@@ -9,3 +9,6 @@ RUN npm install pm2 @nestjs/cli -g
 RUN npm install --production
 EXPOSE 3030
 RUN npm run build
+RUN pm2 start dist/main.js --name SaferFire-Backend
+RUN pm2 startup
+RUN pm2 save
