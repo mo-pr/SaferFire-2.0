@@ -11,7 +11,7 @@ RUN npm install --production
 RUN npm run build
 ENV PM2_PUBLIC_KEY a7cmhleidxmzbe6
 ENV PM2_SECRET_KEY 7l9ala1vopm5184
-CMD ["pm2-runtime", "./dist/main.js"]
+CMD ["pm2-start", "./dist/main.js"]
 EXPOSE 3030
 RUN pm2 startup
 RUN pm2 save
