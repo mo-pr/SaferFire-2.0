@@ -1,8 +1,8 @@
 version: "3.3"
 services:
-  saferfire-backend:
+  saferfire-websocket:
     image: ghcr.io/mo-pr/saferfire
     ports:
       - 3030:3030
-    container_name: saferfire-backend
+    container_name: saferfire-websocket
     restart: always
