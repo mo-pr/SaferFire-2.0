@@ -43,6 +43,7 @@ dependencies:
   shared_preferences:
   jwt_decoder:
   sizer:
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:
