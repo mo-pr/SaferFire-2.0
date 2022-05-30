@@ -12,4 +12,3 @@ ENV PM2_SECRET_KEY 7l9ala1vopm5184
 EXPOSE 3030
 RUN pm2 startup
 RUN pm2 save
-CMD ["pm2-runtime", "start", "./dist/main.js"]

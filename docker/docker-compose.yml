@@ -8,3 +8,4 @@ services:
       - 3030:3030
     container_name: saferfire-websocket
     restart: always
+    command: pm2-runtime start ./dist/main.js
