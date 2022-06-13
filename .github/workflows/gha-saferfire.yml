@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
       - name: push docker images
         run: |
-          docker-compose push -f
+          docker-compose push
         working-directory: docker
   deployment:
     needs:
