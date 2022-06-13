@@ -5,4 +5,4 @@ UI-Mockups
 https://framer.com/projects/7GZlQETyMAZ9aBw2zBme-brH16
 
 Neue IP für den Server
-152.67.78.120
+140.238.211.240
