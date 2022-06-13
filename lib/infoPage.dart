@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/toolProtocol.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   PageController _pageController = PageController();
   List<Widget> _screens = <Widget>[
     OverviewPage(),
-    ProtocolPage()
+    ProtocolPage(),
+    OxygenPage()
   ];
 
   int _selectedIndex = 0;
@@ -599,7 +601,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         minimumSize: Size(80, 80), //////// HERE
                       ),
                       onPressed: () {
-                        _onItemTapped(0);
+                        _onItemTapped(2);
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))

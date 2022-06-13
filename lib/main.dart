@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/toolProtocol.dart';
 import "package:sizer/sizer.dart";
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) => const Login(),
+            '/': (context) =>  OxygenPage(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Info(),
             '/protocol': (context) => ProtocolPage(),
