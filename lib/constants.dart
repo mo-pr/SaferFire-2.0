@@ -1,5 +1,5 @@
 import 'alarm.dart';
 
 List<Alarm> alarms = [];
-String ipAddress = "192.168.0.8";
+String ipAddress = "140.238.211.240";
 bool isTest = true;
