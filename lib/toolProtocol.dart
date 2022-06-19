@@ -40,7 +40,7 @@ class ProtocolPage extends StatelessWidget {
                 onPressed: () {
                   newProtocol = new Protocol(
                       alarms.first.Id, alarms.first.Type, alarms.first.Address,
-                      "${alarms.first.Lat} + ${alarms.first.Lng}", alarms.first.AlarmType);
+                      "${alarms.first.Lat} + ${alarms.first.Lng}", alarms.first.AlarmType, DateTime.now());
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>

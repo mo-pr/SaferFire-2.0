@@ -72,7 +72,7 @@ class _TechnischViewState extends State<TechnischView> {
             Divider(
                 height: 50,
                 thickness: 2,
-                color: Colors.grey
+                color: buttonColor
             ),
             ElevatedButton(
               child: Text("Next"),
@@ -98,7 +98,7 @@ class _TechnischViewState extends State<TechnischView> {
                 // Navigator.of(context).popUntil((route) => route.isFirst);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: buttonColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle: TextStyle(
                       fontSize: 30,
@@ -255,7 +255,7 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    primary: buttonColor,
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                     textStyle: TextStyle(
                         fontSize: 30,

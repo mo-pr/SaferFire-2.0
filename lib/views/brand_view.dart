@@ -104,7 +104,7 @@ class _BrandViewState extends State<BrandView> {
                 border: Border.all(color: Colors.black26),
               ),
             ),
-            Divider(height: 50, thickness: 2, color: Colors.grey),
+            Divider(height: 50, thickness: 2, color: buttonColor),
             ElevatedButton(
               child: Text("Next"),
               onPressed: () {
@@ -120,7 +120,7 @@ class _BrandViewState extends State<BrandView> {
                             _Brand_TiereGerettet(protocol: widget.protocol)));
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: Color(0xFFDB1010BF),
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle:
                       TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -236,7 +236,7 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
                 border: Border.all(color: Colors.black26),
               ),
             ),
-            Divider(height: 50, thickness: 2, color: Colors.grey),
+            Divider(height: 50, thickness: 2, color: buttonColor),
             ElevatedButton(
               child: Text("Next"),
               onPressed: () {
@@ -250,7 +250,7 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
                 //Navigator.of(context).popUntil((route) => route.isFirst);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: buttonColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle:
                       TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -408,7 +408,7 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
                     enabledBorder: myinputborder(),
                     focusedBorder: myfocusborder(),
                   )),
-              Divider(height: 50, thickness: 2, color: Colors.grey),
+              Divider(height: 50, thickness: 2, color: buttonColor),
               ElevatedButton(
                 child: Text("Next"),
                 onPressed: () {
@@ -454,7 +454,7 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
                   //             TechnischView(protocol: widget.protocol)));
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    primary: buttonColor,
                     padding:
                         EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                     textStyle:

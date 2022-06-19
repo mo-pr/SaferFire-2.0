@@ -47,5 +47,6 @@ class Protocol{
       this.kategorie,
       this.strasse,
       this.koordinaten,
-      this.alarmart);
+      this.alarmart,
+      this.leitstellenJahr);
 }

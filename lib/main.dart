@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
+import 'package:saferfire/models/Protocol.dart';
+
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) => const Login(),
+            '/': (context) =>  Login(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Info(),
             '/protocol': (context) => ProtocolPage(),
@@ -33,7 +36,6 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xFFbb1e10),
             buttonColor: Color(0xFFbb1e10),
           ),
-          home: const Login(),
         );
       },
     );

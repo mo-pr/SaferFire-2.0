@@ -3,6 +3,8 @@ import 'package:saferfire/models/Protocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
+import '../constants.dart';
+
 
 class GrundinformationenView extends StatefulWidget{
   final Protocol? protocol;
@@ -16,8 +18,6 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
   @override
   Widget build(BuildContext context) {
     DateTime _leitstellenJahr = DateTime.now();
-    String _leitstellenjahrString = "2022";
-
     Future<void> _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
@@ -31,7 +31,7 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
         });
       }
     }
-
+  /*
     // Call this in the select year button.
     void _pickYear(BuildContext context) {
       showDialog(
@@ -86,7 +86,7 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
         },
       );
     }
-
+    */
     return Scaffold(
       appBar: AppBar(
         title: Text('Protokoll erstellen'),
@@ -101,18 +101,13 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
             ),
             const SizedBox(height: 30),
             Text("Einsatznummer: ${widget.protocol!.einstznummer}"),
-            Text("Leitstellenjahr"),
-            SizedBox(height: 10.0,),
-            ElevatedButton(
-              onPressed: () => _pickYear(context),
-              child: Text('${_leitstellenjahrString}'),
-            ),
+            Text("Leitstellenjahr: ${widget.protocol!.leitstellenJahr!.year}"),
             const SizedBox(height: 15),
             Text("Kategorie: ${widget.protocol!.kategorie!.split(' ')[0]}"),
             Divider(
                 height: 50,
                 thickness: 2,
-                color: Colors.grey
+                color: buttonColor
             ),
             ElevatedButton(
               child: Text("Next"),
@@ -124,7 +119,7 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: buttonColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle: TextStyle(
                       fontSize: 30,
