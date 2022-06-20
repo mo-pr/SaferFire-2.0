@@ -632,9 +632,20 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   const SizedBox(height: 15),
                   Container(
                     margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
                     height: 80,
                     width: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(80, 80), //////// HERE
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OxygenPage()),
+                        );
+                      },
+                      child: const Text('Oxygen'),
+                    ),
                   ),
                 ],
               ),
