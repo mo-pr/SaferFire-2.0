@@ -325,7 +325,8 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
   TextEditingController _bauartController = new TextEditingController();
   TextEditingController _lageController = new TextEditingController();
   TextEditingController _verlaufController = new TextEditingController();
-
+  List<String> entdeckungItems = ['Test 1', 'Test 2'];
+  String? selectedEntdeckung  = 'Test 1';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,14 +338,25 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              Text("Brand-Entdeckung"),
+              DropdownButton<String>(
+                value: selectedEntdeckung,
+                items: entdeckungItems
+                      .map((item)=> DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 24)),
+                ))
+                .toList(),
+                onChanged: (item) => setState(()=> selectedEntdeckung = item),
+              ),
+              /*TextField(
                   controller: _entdeckungController,
                   decoration: InputDecoration(
                     labelText: "Brand - Entdeckung",
                     border: myinputborder(),
                     enabledBorder: myinputborder(),
                     focusedBorder: myfocusborder(),
-                  )),
+                  )),*/
               const SizedBox(height: 10),
               TextField(
                   controller: _ausmassController,
@@ -412,7 +424,7 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
               ElevatedButton(
                 child: Text("Next"),
                 onPressed: () {
-                  widget.protocol!.brandEndeckung = _entdeckungController.text;
+                  widget.protocol!.brandEndeckung = selectedEntdeckung;
                   widget.protocol!.brandAusmass = _ausmassController.text;
                   widget.protocol!.brandKlasse = _klasseController.text;
                   widget.protocol!.brand = _brandController.text;
