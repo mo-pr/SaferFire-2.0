@@ -18,57 +18,58 @@ class Login extends StatefulWidget {
 }
 
 class LoginPage extends State<Login> {
-  final _keyL = GlobalKey<FormState>(), _keyR = GlobalKey<FormState>(), _keyG = GlobalKey<FormState>();
-  bool isLoginScreen = true,isGuestScreen = false;
-  String email="",password = "",firedep="";
+  final _keyL = GlobalKey<FormState>(),
+      _keyR = GlobalKey<FormState>(),
+      _keyG = GlobalKey<FormState>();
+  bool isLoginScreen = true, isGuestScreen = false;
+  String email = "", password = "", firedep = "";
 
   ///Gets called when the "Sign In" Button is Pressed
   login() async {
     final form = _keyL.currentState;
     if (form!.validate()) {
       form.save();
-      var res = await UserAuthentication.login(email, password);
-      if(res.statusCode == 200){
-        Map<String, dynamic> claims = JwtDecoder.decode(res.body);
-        var prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', res.body);
-        prefs.setString('firestation', claims["firestation"].toString());
-        prefs.setBool('guest', false);
-        password = email = "";
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Info()),
-        );
-      }
+      baseLogin(email, password);
+    }
+  }
+  baseLogin(String email, String password) async{
+    var res = await UserAuthentication.login(email, password);
+    if (res.statusCode == 200) {
+      Map<String, dynamic> claims = JwtDecoder.decode(res.body);
+      var prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', res.body);
+      prefs.setString('firestation', claims["firestation"].toString());
+      prefs.setBool('guest', false);
+      password = email = "";
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Info()),
+      );
     }
   }
   ///Gets called when the "Sign Up" Button is Pressed
-  register() async{
+  register() async {
     final form = _keyR.currentState;
-    if(form!.validate()){
+    if (form!.validate()) {
       form.save();
       var res = await UserAuthentication.register(email, password, firedep);
-      if(res.statusCode == 201){
-        firedep = password = email = "";
-        setState(() {
-          isLoginScreen = true;
-          isGuestScreen = false;
-        });
+      if (res.statusCode == 201) {
+        await baseLogin(email, password);
       }
     }
   }
 
-  registerGuestUser()async{
+  registerGuestUser() async {
     final form = _keyG.currentState;
-    if(form!.validate()){
+    if (form!.validate()) {
       form.save();
       var res = await UserAuthentication.createGuest(firedep);
-      if(res.statusCode == 200){
+      if (res.statusCode == 200) {
         Map<String, dynamic> claims = JwtDecoder.decode(res.body);
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', res.body);
         prefs.setString('firestation', claims["firestation"].toString());
-        prefs.setBool('guest',true);
+        prefs.setBool('guest', true);
         firedep = "";
         Navigator.push(
           context,
@@ -78,21 +79,20 @@ class LoginPage extends State<Login> {
     }
   }
 
-  Widget getScreen(){
-    if(isLoginScreen){
+  Widget getScreen() {
+    if (isLoginScreen) {
       return _login();
-    }
-    else{
-      if(!isGuestScreen){
+    } else {
+      if (!isGuestScreen) {
         return _register();
-      }
-      else{
+      } else {
         return _registerGuest();
       }
     }
   }
 
   String _timeString = "";
+
   @override
   void initState() {
     _timeString = _formatDateTime(DateTime.now());
@@ -169,16 +169,16 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "E-Mail darf nicht leer sein!";
                     }
-                    if(Validator.validateEmail(e) == false){
+                    if (Validator.validateEmail(e) == false) {
                       return "Ungültige E-Mail!";
                     }
                     return null;
                   },
-                  onSaved: (e)=>email=e!,
+                  onSaved: (e) => email = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Email',
@@ -186,17 +186,17 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 25),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Passwort darf nicht leer sein!";
                     }
-                    if(Validator.validatePassword(e) == false){
+                    if (Validator.validatePassword(e) == false) {
                       return "Ungültiges Passwort!";
                     }
                     return null;
                   },
                   obscureText: true,
-                  onSaved: (e)=>password=e!,
+                  onSaved: (e) => password = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Password',
@@ -286,16 +286,16 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "E-Mail darf nicht leer sein!";
                     }
-                    if(Validator.validateEmail(e) == false){
+                    if (Validator.validateEmail(e) == false) {
                       return "Ungültige E-Mail!";
                     }
                     return null;
                   },
-                  onSaved: (e)=>email=e!,
+                  onSaved: (e) => email = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Email',
@@ -303,16 +303,16 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Feuerwehr darf nicht leer sein!";
                     }
-                    if(Validator.validateFirestation(e) == false){
+                    if (Validator.validateFirestation(e) == false) {
                       return "Ungültige Feuerwehr!";
                     }
                     return null;
                   },
-                  onSaved: (e)=>firedep=e!,
+                  onSaved: (e) => firedep = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Feuerwehr',
@@ -320,17 +320,17 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Passwort darf nicht leer sein!";
                     }
-                    if(Validator.validatePassword(e) == false){
+                    if (Validator.validatePassword(e) == false) {
                       return "Ungültiges Passwort!";
                     }
                     return null;
                   },
                   obscureText: true,
-                  onSaved: (e)=>password=e!,
+                  onSaved: (e) => password = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Password',
@@ -452,16 +452,16 @@ class LoginPage extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  validator: (e){
-                    if(e!.isEmpty){
+                  validator: (e) {
+                    if (e!.isEmpty) {
                       return "Feuerwehr darf nicht leer sein!";
                     }
-                    if(Validator.validateFirestation(e) == false){
+                    if (Validator.validateFirestation(e) == false) {
                       return "Ungültige Feuerwehr!";
                     }
                     return null;
                   },
-                  onSaved: (e)=>firedep=e!,
+                  onSaved: (e) => firedep = e!,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Feuerwehr',

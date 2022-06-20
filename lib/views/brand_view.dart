@@ -104,7 +104,7 @@ class _BrandViewState extends State<BrandView> {
                 border: Border.all(color: Colors.black26),
               ),
             ),
-            Divider(height: 50, thickness: 2, color: Colors.grey),
+            Divider(height: 50, thickness: 2, color: buttonColor),
             ElevatedButton(
               child: Text("Next"),
               onPressed: () {
@@ -120,7 +120,7 @@ class _BrandViewState extends State<BrandView> {
                             _Brand_TiereGerettet(protocol: widget.protocol)));
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: Color(0xFFDB1010BF),
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle:
                       TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -236,7 +236,7 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
                 border: Border.all(color: Colors.black26),
               ),
             ),
-            Divider(height: 50, thickness: 2, color: Colors.grey),
+            Divider(height: 50, thickness: 2, color: buttonColor),
             ElevatedButton(
               child: Text("Next"),
               onPressed: () {
@@ -250,7 +250,7 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
                 //Navigator.of(context).popUntil((route) => route.isFirst);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: buttonColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle:
                       TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
@@ -325,7 +325,8 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
   TextEditingController _bauartController = new TextEditingController();
   TextEditingController _lageController = new TextEditingController();
   TextEditingController _verlaufController = new TextEditingController();
-
+  List<String> entdeckungItems = ['Test 1', 'Test 2'];
+  String? selectedEntdeckung  = 'Test 1';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,14 +338,25 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              Text("Brand-Entdeckung"),
+              DropdownButton<String>(
+                value: selectedEntdeckung,
+                items: entdeckungItems
+                      .map((item)=> DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 24)),
+                ))
+                .toList(),
+                onChanged: (item) => setState(()=> selectedEntdeckung = item),
+              ),
+              /*TextField(
                   controller: _entdeckungController,
                   decoration: InputDecoration(
                     labelText: "Brand - Entdeckung",
                     border: myinputborder(),
                     enabledBorder: myinputborder(),
                     focusedBorder: myfocusborder(),
-                  )),
+                  )),*/
               const SizedBox(height: 10),
               TextField(
                   controller: _ausmassController,
@@ -408,11 +420,11 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
                     enabledBorder: myinputborder(),
                     focusedBorder: myfocusborder(),
                   )),
-              Divider(height: 50, thickness: 2, color: Colors.grey),
+              Divider(height: 50, thickness: 2, color: buttonColor),
               ElevatedButton(
                 child: Text("Next"),
                 onPressed: () {
-                  widget.protocol!.brandEndeckung = _entdeckungController.text;
+                  widget.protocol!.brandEndeckung = selectedEntdeckung;
                   widget.protocol!.brandAusmass = _ausmassController.text;
                   widget.protocol!.brandKlasse = _klasseController.text;
                   widget.protocol!.brand = _brandController.text;
@@ -454,7 +466,7 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
                   //             TechnischView(protocol: widget.protocol)));
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    primary: buttonColor,
                     padding:
                         EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                     textStyle:

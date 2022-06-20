@@ -3,6 +3,8 @@ import 'package:saferfire/models/Protocol.dart';
 import 'package:saferfire/views/brand_view.dart';
 import 'package:saferfire/views/technisch_view.dart';
 
+import '../constants.dart';
+
 class StammdatenView extends StatefulWidget{
   final Protocol? protocol;
   StammdatenView({Key? key, @required this.protocol}) : super(key: key);
@@ -43,7 +45,6 @@ class _StammdatenViewState extends State<StammdatenView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Protokoll erstellen'),
@@ -108,7 +109,7 @@ class _StammdatenViewState extends State<StammdatenView> {
               Divider(
                   height: 50,
                   thickness: 2,
-                  color: Colors.grey
+                  color: buttonColor
               ),
               ElevatedButton(
                   child: Text("Next"),
@@ -127,7 +128,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                     }
                   },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    primary: buttonColor,
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                     textStyle: TextStyle(
                         fontSize: 30,
