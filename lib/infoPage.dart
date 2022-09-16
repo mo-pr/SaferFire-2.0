@@ -80,6 +80,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+
     setState(() {
       _getSharedPreference().then((value) => _isGuest = value);
     });
@@ -97,7 +98,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     }
     socket.connect();
     _websocketReq();
-    socket.on('alarmsRes', (data) {
+    socket.on('alarmsRes', (data) async {
       print(data);
       Alarm alarm = new Alarm(data);
       for (int i = 0; i < alarms.length; i++) {
@@ -106,6 +107,15 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
         }
       }
       alarms.add(alarm);
+
+      //If you get alarm for your firestation, get push notification
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (alarm != null && alarm.FireDeps!.contains(prefs.getString('firestation')))
+      {
+
+      }
+
       return alarms;
     });
     socket.on(
