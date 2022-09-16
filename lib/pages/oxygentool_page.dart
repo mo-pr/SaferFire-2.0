@@ -362,7 +362,7 @@ class _OxygenPageState extends State<OxygenPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                "Sauerstoff",
+                "Sauerstoff (Bar)",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(
