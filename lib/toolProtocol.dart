@@ -4,6 +4,9 @@ import 'package:saferfire/views/grundinformationen_view.dart';
 import 'package:saferfire/models/Protocol.dart';
 
 
+
+const _mainColor = Color(0xFFbb1e10);
+
 class ProtocolPage extends StatelessWidget {
   Protocol? newProtocol;
 
@@ -31,7 +34,7 @@ class ProtocolPage extends StatelessWidget {
                   "Es wurde noch kein Protokoll erstellt",
                   style: TextStyle(fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.grey),
+                      color: Colors.black),
                 ),
               ),
               const SizedBox(height: 15),
@@ -48,7 +51,7 @@ class ProtocolPage extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+                    primary: _mainColor,
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
                     textStyle: TextStyle(
                         fontSize: 30,
@@ -59,14 +62,14 @@ class ProtocolPage extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          "Kommentare",
+          "Notizen",
           style: TextStyle(
-              fontWeight: FontWeight.w500, fontSize: 20, color: Colors.grey),
+              fontWeight: FontWeight.w500, fontSize: 20, color: Colors.black54),
         ),
         Divider(
             height: 20,
             thickness: 2,
-            color: Colors.grey
+            color: Colors.black54
         ),
       ],
     );

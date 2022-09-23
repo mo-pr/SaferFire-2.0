@@ -595,10 +595,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   Container(
                     margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                     height: 80,
-                    width: 80,
+                    width: 310,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
+                        primary: Colors.grey,
                         minimumSize: Size(80, 80),
                       ),
                       onPressed: () {
@@ -611,11 +611,15 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       child: const Text('Info'),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                     height: 80,
-                    width: 80,
+                    width: 100,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black,
@@ -632,35 +636,22 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                     height: 80,
-                    width: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
-                    height: 80,
-                    width: 80,
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
-                    height: 80,
-                    width: 80,
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
-                    height: 80,
-                    width: 80,
+                    width: 100,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        minimumSize: Size(80, 80), //////// HERE
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OxygenPage()),
+                        );
+                      },
+                      child: const Text('Foto'),
+                    ),
                   ),
                 ],
               ),
