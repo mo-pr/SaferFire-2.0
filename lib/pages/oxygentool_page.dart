@@ -392,7 +392,11 @@ class _OxygenPageState extends State<OxygenPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
+<<<<<<< HEAD
                 "Sauerstoff [bar]",
+=======
+                "Sauerstoff (Bar)",
+>>>>>>> 7eeef3b2443babd7b1e76961d0c59f9f696cf26e
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(
