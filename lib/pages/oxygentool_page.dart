@@ -62,13 +62,13 @@ class _OxygenPageState extends State<OxygenPage> {
           return new AlertDialog(
               title: new Text("Trupp " + (index + 1).toString() + ": Wählen Sie eine Aktion"),
               actions: <Widget>[
-                new FlatButton(
+                new TextButton(
                     child: new Text('Start'),
                     onPressed: () {
                       handleStartStop(index);
                       Navigator.of(context).pop();
                     }),
-                new FlatButton(
+                new TextButton(
                     child: new Text('Stop'),
                     onPressed: () {
                       handleStartStop(index);
@@ -297,7 +297,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       showDialog(
@@ -395,7 +395,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       if (_controller01.text != "") {
                         setState(() {
