@@ -3,10 +3,11 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:saferfire/constants.dart';
 
-abstract class UserAuthentication{
-  static Future<http.Response> register(String email, String password, String fireStation) async{
+abstract class UserAuthentication {
+  static Future<http.Response> register(
+      String email, String password, String fireStation) async {
     return http.post(
-      Uri.parse('http://$ipAddress:3030/register'),
+      Uri.parse('http://$ipAddress/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -17,9 +18,10 @@ abstract class UserAuthentication{
       }),
     );
   }
-  static Future<http.Response> login(String email, String password){
+
+  static Future<http.Response> login(String email, String password) {
     return http.post(
-      Uri.parse('http://$ipAddress:3030/login'),
+      Uri.parse('http://$ipAddress/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -29,9 +31,10 @@ abstract class UserAuthentication{
       }),
     );
   }
-  static Future<http.Response> createGuest(String fireStation)async{
+
+  static Future<http.Response> createGuest(String fireStation) async {
     return http.post(
-      Uri.parse('http://$ipAddress:3030/guest'),
+      Uri.parse('http://$ipAddress/guest'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -41,7 +44,7 @@ abstract class UserAuthentication{
     );
   }
 
-  static String _hashPassword(String password){
+  static String _hashPassword(String password) {
     var bytes1 = utf8.encode(password);
     return sha256.convert(bytes1).toString();
   }
