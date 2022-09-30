@@ -3,9 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/authentication.dart';
 import 'package:saferfire/infoPage.dart';
+import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/validation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import "main.dart";
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter/material.dart';
+import 'package:saferfire/notificationservice.dart';
+import 'package:flutter/material.dart';
+import 'package:saferfire/infoPage.dart';
+import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/pages/oxygentool_page.dart';
+import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/views/brand_view.dart';
+import 'package:saferfire/views/grundinformationen_view.dart';
+import "package:sizer/sizer.dart";
+import 'package:saferfire/models/Protocol.dart';
 
 const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
@@ -98,6 +114,8 @@ class LoginPage extends State<Login> {
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
+
+    tz.initializeTimeZones();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/toolProtocol.dart';
 import 'package:sizer/sizer.dart';
@@ -85,13 +86,13 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       _getSharedPreference().then((value) => _isGuest = value);
     });
     if(isTest){
-      socket = io('http://$ipAddress:3030/testalarms', <String, dynamic>{
+      socket = io('http://$ipAddress/testalarms', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
     }
     if(!isTest){
-      socket = io('http://$ipAddress:3030/alarms', <String, dynamic>{
+      socket = io('http://$ipAddress/alarms', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
@@ -111,8 +112,11 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       //If you get alarm for your firestation, get push notification
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      if (alarm != null && alarm.FireDeps!.contains(prefs.getString('firestation')))
+      var firestation = prefs.getString('firestation');
+      if (alarm.FireDeps.toString().contains(firestation!)) //if alarm is for your firestation
       {
+        NotificationService().showNotification(15, "Title", "Body", 7); //you get a push notification
+        //TODO : change notification body -> check firebase input
 
       }
 
