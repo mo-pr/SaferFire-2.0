@@ -115,9 +115,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       var firestation = prefs.getString('firestation');
       if (alarm.FireDeps.toString().contains(firestation!)) //if alarm is for your firestation
       {
-        NotificationService().showNotification(15, "Title", "Body", 7); //you get a push notification
-        //TODO : change notification body -> check firebase input
-
+        NotificationService().showNotification(0, "A new alarm has appeared", "Alarm type: ${alarm.AlarmType}   Address: ${alarm.Address}", 2); //you get a push notification
       }
 
       return alarms;

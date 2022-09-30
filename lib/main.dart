@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/notificationservice.dart';
-import 'package:flutter/material.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
-import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/toolProtocol.dart';
-import 'package:saferfire/views/brand_view.dart';
-import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
-import 'package:saferfire/models/Protocol.dart';
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
