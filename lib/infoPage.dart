@@ -595,10 +595,11 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   Container(
                     margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                     height: 80,
-                    width: 80,
+                    width: 310,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(80, 80), //////// HERE
+                        primary: Colors.grey,
+                        minimumSize: Size(80, 80),
                       ),
                       onPressed: () {
                         _onItemTapped(2);
@@ -607,35 +608,21 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
                         // );
                       },
-                      child: const Text('InfoPage'),
+                      child: const Text('Info'),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
                   Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                     height: 80,
-                    width: 80,
+                    width: 100,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(80, 80), //////// HERE
-                      ),
-                      onPressed: () {
-                        _onItemTapped(1);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => ProtocolPage(alarm: alarms.first))
-                        // );
-                      },
-                      child: const Text('Protocol'),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    height: 80,
-                    width: 80,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
                         minimumSize: Size(80, 80), //////// HERE
                       ),
                       onPressed: () {
@@ -647,30 +634,24 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       child: const Text('Oxygen'),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
-                    height: 80,
-                    width: 80,
-                  ),
                   const SizedBox(height: 15),
                   Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                     height: 80,
-                    width: 80,
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    color: Colors.black,
-                    height: 80,
-                    width: 80,
+                    width: 100,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        minimumSize: Size(80, 80), //////// HERE
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OxygenPage()),
+                        );
+                      },
+                      child: const Text('Foto'),
+                    ),
                   ),
                 ],
               ),
@@ -741,7 +722,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           child: Icon(Icons.add, size: 80.0),
         ),*/
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OxygenPage()),
+            );
+          },
           child: const Icon(Icons.timer, size: 30.0),
         ),
       ],
