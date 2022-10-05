@@ -65,14 +65,13 @@ export class AllAlarmsDBController{
         await qRunner.connect();
         await qRunner.startTransaction();
         try{
-        var res = await qRunner.query(`SELECT * FROM missiondata WHERE firedepartments LIKE %${firestation}%`);
-        await qRunner.commitTransaction();
+            var res = qRunner.getTable(`missiondata`);
+            console.log(res);
         }catch(err){
         await qRunner.rollbackTransaction();
         }
         finally{
             await qRunner.release();
         }
-        console.log(res);
     }
 }
