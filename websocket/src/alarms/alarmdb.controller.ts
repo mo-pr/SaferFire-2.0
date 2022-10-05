@@ -31,6 +31,13 @@ export class AlarmDBController {
             throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
         }
     }
+}
+@Controller('allalarmsdb')
+export class AllAlarmsDBController{
+    constructor(private conn: Connection, private jwtService:JwtService) {}
+
+    private logger:Logger = new Logger('AllAlarmsDBController');
+
     @Post()
     @HttpCode(200)
     @HttpCode(400)
