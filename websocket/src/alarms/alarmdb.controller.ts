@@ -3,6 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Connection } from "typeorm";
 import "./alarms.gateway";
 import { AlarmsGateway } from "./alarms.gateway";
+import { AlarmsDBUser } from "./Datamodel";
 
 @Controller('alarmdb')
 export class AlarmDBController {
@@ -29,5 +30,42 @@ export class AlarmDBController {
         else{
             throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
         }
+    }
+    @Post()
+    @HttpCode(200)
+    @HttpCode(400)
+    @HttpCode(401)
+    async allalarmsdb(@Body() payload:AlarmsDBUser) {
+        if(this.jwtService.decode(payload.token)['user'] == "Admin"){
+            let ag  = new AlarmsGateway(this.conn,this.jwtService);
+            try{
+                this.readAlarmsFromDatabase(payload.firestation);
+            }
+            catch(err){
+                throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
+            }
+            this.logger.log('Alarms written to database');
+            throw new HttpException('Alarms successfully written to database',HttpStatus.OK);
+        }
+        else{
+            throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    public async readAlarmsFromDatabase(firestation:String){
+        this.logger.log("Reading Alarms from Database");
+        const qRunner = this.conn.createQueryRunner();
+        await qRunner.connect();
+        await qRunner.startTransaction();
+        try{
+        var res = await qRunner.query(`SELECT * FROM missiondata WHERE firedepartments LIKE %${firestation}%`);
+        await qRunner.commitTransaction();
+        }catch(err){
+        await qRunner.rollbackTransaction();
+        }
+        finally{
+            await qRunner.release();
+        }
+        console.log(res);
     }
 }

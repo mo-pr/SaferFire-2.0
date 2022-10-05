@@ -28,3 +28,7 @@ export class Mission {
     this.firedepartments = FIREDEPS;
   }
 }
+export class AlarmsDBUser{
+  token:string;
+  firestation:String;
+}
