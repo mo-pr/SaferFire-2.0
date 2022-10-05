@@ -64,13 +64,13 @@ class _OxygenPageState extends State<OxygenPage> {
               content: Row (
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('Start - Stop'),
                         onPressed: () {
                           handleStartStop(index);
                           Navigator.of(context).pop();
                         }),
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('isDone'),
                         onPressed: () {
                           entries[index]._timer.stop();

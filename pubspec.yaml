@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: 2.18.1
+  sdk: 2.18.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -48,6 +48,9 @@ dependencies:
   firebase_messaging: ^13.0.2
   flutter_local_notifications: ^9.9.1
   timezone: ^0.8.0
+  camera:
+  path_provider:
+  path:
 
 dev_dependencies:
   flutter_test:
