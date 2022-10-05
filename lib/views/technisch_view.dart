@@ -15,6 +15,8 @@ class TechnischView extends StatefulWidget{
   _TechnischViewState createState() => _TechnischViewState();
 }
 
+const buttonColor = Colors.red;
+
 class _TechnischViewState extends State<TechnischView> {
   int tiereGerettet = 0;
   int tiereTot = 0;
