@@ -51,15 +51,15 @@ export class AllAlarmsDBController{
             catch(err){
                 throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
             }
-            this.logger.log('Alarms written to database');
-            throw new HttpException('Alarms successfully written to database',HttpStatus.OK);
+            this.logger.log('Alarms read from database');
+            throw new HttpException('Alarms successfully read from database',HttpStatus.OK);
         }
         else{
             throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
         }
     }
 
-    public async readAlarmsFromDatabase(firestation:String){
+    public async readAlarmsFromDatabase(firestation:string){
         this.logger.log("Reading Alarms from Database");
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();

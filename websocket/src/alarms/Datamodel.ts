@@ -30,5 +30,5 @@ export class Mission {
 }
 export class AlarmsDBUser{
   token:string;
-  firestation:String;
+  firestation:string;
 }
