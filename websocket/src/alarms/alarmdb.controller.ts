@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpException, HttpStatus, Logger, Post } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { Connection } from "typeorm";
+import { Connection, createQueryBuilder } from "typeorm";
 import "./alarms.gateway";
 import { AlarmsGateway } from "./alarms.gateway";
 import { AlarmsDBUser } from "./Datamodel";
@@ -66,9 +66,8 @@ export class AllAlarmsDBController{
         await qRunner.connect();
         await qRunner.startTransaction();
         try{
-            var res = qRunner.getTable(`missiondata`);
-            res.then(x=>alarms=x);
-            console.log(alarms);
+            var res = createQueryBuilder("missiondata").where("missiondata.firedepartments = :firedep",{firedep: `%${firestation}%`})
+            console.log(res)
         }catch(err){
         await qRunner.rollbackTransaction();
         }
