@@ -70,6 +70,6 @@ export class AllAlarmsDBController{
         }catch(err){
         await qRunner.rollbackTransaction();
         }
-        await qRunner.release();
+        //await qRunner.release();
     }
 }
