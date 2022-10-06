@@ -60,13 +60,15 @@ export class AllAlarmsDBController{
     }
 
     public async readAlarmsFromDatabase(firestation:string){
+        var alarms
         this.logger.log("Reading Alarms from Database");
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
         await qRunner.startTransaction();
         try{
             var res = qRunner.getTable(`missiondata`);
-            console.log(res);
+            res.then(x=>alarms=x);
+            console.log(alarms);
         }catch(err){
         await qRunner.rollbackTransaction();
         }
