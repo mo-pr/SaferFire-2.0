@@ -47,7 +47,7 @@ export class AllAlarmsDBController{
         if(this.jwtService.decode(payload.token)['user'] == "Admin"){
             let ag  = new AlarmsGateway(this.conn,this.jwtService);
             try{
-                alarms = this.readAlarmsFromDatabase(payload.firestation);
+                alarms = await this.readAlarmsFromDatabase(payload.firestation);
             }
             catch(err){
                 throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
