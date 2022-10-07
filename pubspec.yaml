@@ -43,14 +43,15 @@ dependencies:
   shared_preferences:
   jwt_decoder:
   sizer:
-  numberpicker: ^2.1.1
-  firebase_core: ^1.22.0
-  firebase_messaging: ^13.0.2
+  numberpicker:
+  firebase_core:
+  firebase_messaging:
   firebase_storage:
-  flutter_local_notifications: ^9.9.1
-  timezone: ^0.8.0
+  flutter_local_notifications:
+  timezone:
   image_picker:
   permission_handler:
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:
