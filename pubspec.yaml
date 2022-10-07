@@ -46,12 +46,13 @@ dependencies:
   numberpicker: ^2.1.1
   firebase_core: ^1.22.0
   firebase_messaging: ^13.0.2
+  firebase_storage:
   flutter_local_notifications: ^9.9.1
   timezone: ^0.8.0
   path_provider:
   path:
   image_picker:
-
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
