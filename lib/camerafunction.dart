@@ -7,11 +7,13 @@ import 'package:permission_handler/permission_handler.dart';
 
 openCamera() async {
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
+  uploadImage(image!);
 }
 openGallery() async {
   final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  uploadImage(image!);
 }
-uploadImage(PickedFile image) async {
+uploadImage(XFile image) async {
   final _firebaseStorage = FirebaseStorage.instance;
   //Check Permissions
   await Permission.photos.request();
