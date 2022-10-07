@@ -48,9 +48,10 @@ dependencies:
   firebase_messaging: ^13.0.2
   flutter_local_notifications: ^9.9.1
   timezone: ^0.8.0
-  camera:
   path_provider:
   path:
+  image_picker:
+
 
 dev_dependencies:
   flutter_test:
