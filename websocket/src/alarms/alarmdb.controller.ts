@@ -43,16 +43,17 @@ export class AllAlarmsDBController{
     @HttpCode(400)
     @HttpCode(401)
     async allalarmsdb(@Body() payload:AlarmsDBUser) {
+        var alarms;
         if(this.jwtService.decode(payload.token)['user'] == "Admin"){
             let ag  = new AlarmsGateway(this.conn,this.jwtService);
             try{
-                this.readAlarmsFromDatabase(payload.firestation);
+                alarms = this.readAlarmsFromDatabase(payload.firestation);
             }
             catch(err){
                 throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
             }
             this.logger.log('Alarms read from database');
-            throw new HttpException('Alarms successfully read from database',HttpStatus.OK);
+            throw new HttpException(alarms,HttpStatus.OK);
         }
         else{
             throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
@@ -65,7 +66,7 @@ export class AllAlarmsDBController{
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
         await qRunner.query(`SELECT * FROM missiondata WHERE firedepartments LIKE '%${firestation}%'`).then(x => alarms=x);
-        console.log(alarms);
         await qRunner.release();
+        return alarms;
     }
 }
