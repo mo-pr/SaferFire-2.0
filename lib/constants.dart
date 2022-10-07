@@ -10,3 +10,4 @@ String ipAddress = "152.67.71.8";
 bool isProtocol = false;
 bool isTest = true;
 Color buttonColor = Colors.red;
+List <Alarm> alarms = [];
