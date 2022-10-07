@@ -53,7 +53,7 @@ export class AllAlarmsDBController{
                 throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
             }
             this.logger.log('Alarms read from database');
-            throw new HttpException(alarms,HttpStatus.OK);
+            throw new HttpException(JSON.stringify(alarms),HttpStatus.OK);
         }
         else{
             throw new HttpException('Access denied',HttpStatus.UNAUTHORIZED);
