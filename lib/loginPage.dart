@@ -43,7 +43,7 @@ class LoginPage extends State<Login> {
       password = email = "";
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Info()),
+        MaterialPageRoute(builder: (context) => Start()),
       );
     }
   }
@@ -73,7 +73,7 @@ class LoginPage extends State<Login> {
         firedep = "";
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Info()),
+          MaterialPageRoute(builder: (context) => Start()),
         );
       }
     }

@@ -5,6 +5,8 @@ import 'package:saferfire/views/technisch_view.dart';
 
 import '../constants.dart';
 
+
+const _cardBackgroundColor = Color(0xFFbb1e10);
 class StammdatenView extends StatefulWidget{
   final Protocol? protocol;
   StammdatenView({Key? key, @required this.protocol}) : super(key: key);
@@ -61,50 +63,126 @@ class _StammdatenViewState extends State<StammdatenView> {
               const SizedBox(height: 30),
               Text(
                 'Uhrzeit Ausfahrt:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              Text("${_uhrzeitAusfahrt.hour}:${_uhrzeitAusfahrt.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitAusfahrt);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitAusfahrt.hour}:${_uhrzeitAusfahrt.minute}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
               Text(
                 'Uhrzeit Ankunft:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitAnkunft.hour}:${_uhrzeitAnkunft.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitAnkunft);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitAnkunft.hour}:${_uhrzeitAnkunft.minute}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
               Text(
                 'Uhrzeit wieder Einsatzbereit:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitEinsatzbereit.hour}:${_uhrzeitEinsatzbereit.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitEinsatzbereit);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitEinsatzbereit.hour}:${_uhrzeitEinsatzbereit.minute}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
               Text(
                 'Uhrzeit Einsatz-Ende:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitEnde.hour}:${_uhrzeitEnde.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitEnde);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitEnde.hour}:${_uhrzeitEnde.minute}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               Divider(
                   height: 50,
