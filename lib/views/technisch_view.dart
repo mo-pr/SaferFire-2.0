@@ -245,7 +245,7 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                      // .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) {
-                        return Info();
+                        return Start();
                       }), (route) {
                     // if( route is (MaterialPageRoute('/')))
                     // {

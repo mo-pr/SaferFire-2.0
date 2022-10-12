@@ -201,7 +201,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () {
               setState(() {
-                _currentIndex = 0;
+                MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
               });
             },
             onLongPress: () => print('Navigation'),
@@ -771,7 +771,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   children: <Widget>[
                     GestureDetector(
                       onTap: (){
-                        print("Container clicked");
+                        MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
                       },
                       child: Container(
                         child: Column(
