@@ -13,7 +13,7 @@ export class DangerousGoodsController{
     @HttpCode(200)
     @HttpCode(400)
     @HttpCode(401)
-    async allalarmsdb(@Body() payload:DangerousGoodsDto) {
+    async dangerousGoods(@Body() payload:DangerousGoodsDto) {
         var dGood;
         if(this.jwtService.decode(payload.token)['user'] == "Admin"){
             try{
