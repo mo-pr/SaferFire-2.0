@@ -5,6 +5,6 @@ services:
     build:
       context: ./src
     ports:
-      - 3030:3030
+      - 80:80
     container_name: saferfire-websocket
     restart: always

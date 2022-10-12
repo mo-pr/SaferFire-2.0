@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:sizer/sizer.dart';
@@ -44,7 +45,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    if (isTest) {
+    if  (isTest)  {
       socket.emit('alarmsReq',
           json.encode({'token': prefs.getString('token'), "count": 4}));
     }
@@ -82,7 +83,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     }
     socket.connect();
     _websocketReq();
-    socket.on('alarmsRes', (data) {
+    socket.on('alarmsRes', (data) async {
       print(data);
       Alarm alarm = new Alarm(data);
       for (int i = 0; i < alarms.length; i++) {
@@ -91,6 +92,21 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         }
       }
       alarms.add(alarm);
+
+      //If you get alarm for your firestation, get push notification
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      var firestation = prefs.getString('firestation');
+      if (alarm.FireDeps.toString()
+          .contains(firestation!)) //if alarm is for your firestation
+      {
+        NotificationService().showNotification(
+            0,
+            "A new alarm has appeared",
+            "Alarm type: ${alarm.AlarmType}   Address: ${alarm.Address}",
+            2); //you get a push notification
+      }
+
       return alarms;
     });
     socket.on(

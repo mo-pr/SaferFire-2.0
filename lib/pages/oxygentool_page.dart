@@ -64,13 +64,13 @@ class _OxygenPageState extends State<OxygenPage> {
               content: Row (
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('Start - Stop'),
                         onPressed: () {
                           handleStartStop(index);
                           Navigator.of(context).pop();
                         }),
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('isDone'),
                         onPressed: () {
                           entries[index]._timer.stop();
@@ -324,7 +324,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       showDialog(
@@ -422,7 +422,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       if (_controller01.text != "") {
                         setState(() {
