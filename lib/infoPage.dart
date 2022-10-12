@@ -654,89 +654,104 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   Widget _receiveDeployment2() {
     return Column(
       children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 2.4,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5)),
-            boxShadow: [
-              BoxShadow(
-                color: _openNavbarColor,
-                spreadRadius: 0,
-                blurRadius: 10,
-                offset: const Offset(0, 2), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  //#region Text
-                  const SizedBox(height: 30),
-                  Text(
-                    "ID: " + _alarmId,
-                    style: const TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 12,
+        GestureDetector(
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      backgroundColor: _openNavbarColor,
+                      title: const Text('Einsatzinformationen'),
                     ),
-                  ),
-                  const Text(
-                    'Einsatzdaten',
-                    style: TextStyle(
+                    body: OperationInfo(),
+                  );
+                });
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height / 2.4,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5)),
+              boxShadow: [
+                BoxShadow(
+                  color: _openNavbarColor,
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: const Offset(0, 2), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    //#region Text
+                    const SizedBox(height: 30),
+                    Text(
+                      "ID: " + _alarmId,
+                      style: const TextStyle(
                         color: _openNavbarColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 2),
-                  const Text(
-                    'Subtype',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                  Text(
-                    _alarmSubtype,
-                    style: const TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Adresse',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    const Text(
+                      'Einsatzdaten',
+                      style: TextStyle(
+                          color: _openNavbarColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  Text(
-                    _alarmAdress,
-                    style: const TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  Text(
-                    _alarmLat,
-                    style: const TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Feuerwehren',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                    const SizedBox(height: 2),
+                    const Text(
+                      'Subtype',
+                      style: TextStyle(
+                        color: _openNavbarColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  Text(
-                    _alarmFireDepts,
-                    style: const TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  //#endregion
-                ],
+                    Text(
+                      _alarmSubtype,
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Adresse',
+                      style: TextStyle(
+                        color: _openNavbarColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      _alarmAdress,
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    Text(
+                      _alarmLat,
+                      style: const TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Feuerwehren',
+                      style: TextStyle(
+                        color: _openNavbarColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      _alarmFireDepts,
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    //#endregion
+                  ],
+                ),
               ),
             ),
           ),
