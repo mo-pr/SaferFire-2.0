@@ -14,6 +14,8 @@ class GrundinformationenView extends StatefulWidget{
   _GrundinformationenViewState createState() => _GrundinformationenViewState();
 }
 
+const buttonColor = Colors.red;
+
 class _GrundinformationenViewState extends State<GrundinformationenView> {
   @override
   Widget build(BuildContext context) {
