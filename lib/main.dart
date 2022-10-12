@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
-import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:saferfire/views/brand_view.dart';
 import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
-import 'package:saferfire/models/Protocol.dart';
-
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
+
   runApp(const MyApp());
 }
 
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
             // When navigating to the "/" route, build the FirstScreen widget.
             '/': (context) =>  Login(),
             // When navigating to the "/second" route, build the SecondScreen widget.
-            '/info': (context) => Info(),
+            '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),
             '/einsatzuebersicht': (context) => const OperationInfo(),
           },
@@ -62,5 +64,3 @@ class _MainPageState extends State<MainPage>{
   }
 
 }
-
-

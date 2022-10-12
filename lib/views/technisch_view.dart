@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/models/Protocol.dart';
-import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -14,8 +14,6 @@ class TechnischView extends StatefulWidget{
   @override
   _TechnischViewState createState() => _TechnischViewState();
 }
-
-const buttonColor = Colors.red;
 
 class _TechnischViewState extends State<TechnischView> {
   int tiereGerettet = 0;
@@ -247,7 +245,7 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                      // .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) {
-                        return Info();
+                        return Start();
                       }), (route) {
                     // if( route is (MaterialPageRoute('/')))
                     // {

@@ -6,6 +6,8 @@ import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/validation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
 
 const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
@@ -43,7 +45,7 @@ class LoginPage extends State<Login> {
       password = email = "";
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Info()),
+        MaterialPageRoute(builder: (context) => Start()),
       );
     }
   }
@@ -73,7 +75,7 @@ class LoginPage extends State<Login> {
         firedep = "";
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Info()),
+          MaterialPageRoute(builder: (context) => Start()),
         );
       }
     }
@@ -98,6 +100,8 @@ class LoginPage extends State<Login> {
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
+
+    tz.initializeTimeZones();
   }
 
   @override

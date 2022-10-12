@@ -64,13 +64,13 @@ class _OxygenPageState extends State<OxygenPage> {
               content: Row (
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('Start - Stop'),
                         onPressed: () {
                           handleStartStop(index);
                           Navigator.of(context).pop();
                         }),
-                    new FlatButton(
+                    new TextButton(
                         child: new Text('isDone'),
                         onPressed: () {
                           entries[index]._timer.stop();
@@ -109,9 +109,6 @@ class _OxygenPageState extends State<OxygenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFf2f6f8),
-      appBar: AppBar(
-        title: const Text('Atemschutz'),
-      ),
       body: Center(
         child: entries.isEmpty == true
             ? Container(
@@ -327,7 +324,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       showDialog(
@@ -392,11 +389,7 @@ class _OxygenPageState extends State<OxygenPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-<<<<<<< HEAD
                 "Sauerstoff [bar]",
-=======
-                "Sauerstoff (Bar)",
->>>>>>> 7eeef3b2443babd7b1e76961d0c59f9f696cf26e
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(
@@ -429,7 +422,7 @@ class _OxygenPageState extends State<OxygenPage> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                     onPressed: () {
                       if (_controller01.text != "") {
                         setState(() {
