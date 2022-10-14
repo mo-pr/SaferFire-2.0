@@ -9,7 +9,7 @@ class HydrantMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebView(
-      initialUrl: "https://portal.wasserkarte.info/watermap/waterSources/view?all=1&tpl=map",
+      initialUrl: "https://wasserkarte.info/watermap/waterSources/view?all=1&tpl=map",
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (WebViewController webViewController){
         _controller.complete(webViewController);

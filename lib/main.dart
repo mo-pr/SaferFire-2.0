@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/hydrantMap.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) =>  Login(),
+            '/': (context) =>  HydrantMap(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Info(),
             '/protocol': (context) => ProtocolPage(),
