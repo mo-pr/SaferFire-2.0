@@ -138,12 +138,12 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       });
     } else {
       setState(() {
-        _alarmId = alarms.first.Id.toString();
-        _alarmSubtype = alarms.first.Subtype.toString();
-        _alarmAdress = alarms.first.Address.toString();
+        _alarmId = alarms.elementAt(0).Id.toString();
+        _alarmSubtype = alarms.elementAt(0).Subtype.toString();
+        _alarmAdress = alarms.elementAt(0).Address.toString();
         _alarmLat =
-            alarms.first.Lat.toString() + " " + alarms.first.Lng.toString();
-        _alarmFireDepts = alarms.first.FireDeps
+            alarms.elementAt(0).Lat.toString() + " " + alarms.elementAt(0).Lng.toString();
+        _alarmFireDepts = alarms.elementAt(0).FireDeps
             .toString()
             .replaceAll('[', '')
             .replaceAll(']', '')
@@ -161,9 +161,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       backgroundColor: _backgroundColor,
       //floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: SpeedDial(
-        shape: BeveledRectangleBorder(
+        /*shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10)
-        ),
+        ),*/
         marginBottom: 10, //margin bottom
         icon: Icons.menu, //icon on Floating action button
         activeIcon: Icons.close, //icon when menu is expanded on button
@@ -171,7 +171,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         foregroundColor: Colors.white, //font color, icon color in button
         activeBackgroundColor: Colors.grey, //background color when menu is expanded
         activeForegroundColor: Colors.white,
-        buttonSize: 56.0, //button size
+        buttonSize: 60, //button size
         visible: true,
         closeManually: false,
         curve: Curves.bounceIn,
@@ -1005,6 +1005,7 @@ class OperationInfo extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Scaffold(
                         appBar: AppBar(
+                          backgroundColor: mainColor,
                           title: const Text('Alle Einsätze'),
                         ),
                         body: ListViewBuilder(),

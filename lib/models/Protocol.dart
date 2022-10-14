@@ -1,4 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 class Protocol{
+
+  bool isTechnisch=true;
 
   //Grunddaten
   String? einstznummer;
@@ -7,10 +12,10 @@ class Protocol{
   String? kategorie;
 
   //Stammdaten
-  DateTime? uhrzeitAusfahrt;
-  DateTime? uhrzeitAnkunft;
-  DateTime? uhrzeitWiederbereit;
-  DateTime? uhrzeitEnde;
+  TimeOfDay? uhrzeitAusfahrt;
+  TimeOfDay? uhrzeitAnkunft;
+  TimeOfDay? uhrzeitWiederbereit;
+  TimeOfDay? uhrzeitEnde;
   String? strasse;
   String? koordinaten;
   String? alarmart;
