@@ -59,8 +59,3 @@ The aim of our software is to help firefighters in austria to save time with the
 * free of charge
 * compact collection of various tools
 * also for non-firefighters<br/><br/>
-
-## Market analysis
----
-
-There are a few companies that offer some partial elements of SaferFire, but only one vendor that sells similar software that is functional for austria. This provider is Rosenbauer with the software EMEREC but this solution is not free of charge.
