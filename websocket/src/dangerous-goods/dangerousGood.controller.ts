@@ -17,7 +17,7 @@ export class DangerousGoodsController{
         var dGood;
         if(this.jwtService.decode(payload.token)['user'] == "Admin"){
             try{
-                dGood = await this.readDangerousGoodFromDatabase(payload.unNo);
+                dGood = await this.readDangerousGoodFromDatabase();
             }
             catch(err){
                 throw new HttpException('Alarms could not be read from database',HttpStatus.BAD_REQUEST);
@@ -30,12 +30,12 @@ export class DangerousGoodsController{
         }
     }
 
-    public async readDangerousGoodFromDatabase(unNo:number){
+    public async readDangerousGoodFromDatabase(){
         var goods
         this.logger.log("Reading substance from Database");
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
-        await qRunner.query(`SELECT * FROM dangerousgoods WHERE un_nr = '${unNo}'`).then(x => goods=x);
+        await qRunner.query(`SELECT * FROM dangerousgoods`).then(x => goods=x);
         await qRunner.release();
         return goods;
     }
