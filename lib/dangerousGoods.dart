@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:saferfire/dangerousGood.dart';
+import 'constants.dart';
 
 class DangerousGoods extends StatefulWidget {
   const DangerousGoods({super.key});
@@ -9,8 +14,8 @@ class DangerousGoods extends StatefulWidget {
 
 class DangerousGoodsState extends State<DangerousGoods> {
   TextEditingController teSeach = TextEditingController();
-  List<ADRobj> adrs = [];
-  List<ADRobj> items = [];
+  List<DangerousGood> adrs = [];
+  List<DangerousGood> items = [];
 
   @override
   void initState() {
@@ -18,10 +23,23 @@ class DangerousGoodsState extends State<DangerousGoods> {
     adrs.clear();
     items.clear();
     getData();
+    filterSeach("");
   }
 
   Future getData() async {
-
+    var res = await http.post(
+      Uri.parse('http://$ipAddress/dangerousgoods'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiQWRtaW4iLCJpYXQiOjE2NDY5MDY1NDQsImV4cCI6MTY3ODQ0MjU0NH0.6YuZjOA_t-SGFg3cVZH0IYrBIUOEMbTRXHcBupmih2Q',
+      }),
+    );
+    Iterable l = json.decode(res.body);
+    List<DangerousGood> goods = List<DangerousGood>.from(l.map((model)=> DangerousGood.fromJson(model)));
+    goods.sort((a,b)=> a.unNr.compareTo(b.unNr));
+    adrs = items = goods;
   }
 
   void _showDetail(int index) {
@@ -30,12 +48,12 @@ class DangerousGoodsState extends State<DangerousGoods> {
         builder: (BuildContext context) {
           return AlertDialog(
               title: Text("UN-Nummer: " +
-                  adrs.asMap()[index].unnr.padLeft(4, '0') +
+                  adrs.asMap()[index]!.unNr.toString().padLeft(4, '0') +
                   "\n\n" +
-                  adrs.asMap()[index].bez),
+                  adrs.asMap()[index]!.name),
               actions: <Widget>[
                 TextButton(
-                    child: const Text('Abbrechen'),
+                    child: const Text('Schließen'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     })
@@ -44,30 +62,24 @@ class DangerousGoodsState extends State<DangerousGoods> {
   }
 
   void filterSeach(String query) async {
-    List<ADRobj> searchList = adrs;
-    List<ADRobj> dummySearch = [];
-    if (query == "" || query == " ") {
-      setState(() {
-        items.clear();
-        items = adrs;
-      });
+    List<DangerousGood> results = [];
+    if (query.isEmpty) {
+      results = adrs;
     } else {
-      for (ADRobj item in searchList) {
-        if (item.unnr.toLowerCase().contains(query.toLowerCase())) {
-          dummySearch.add(item);
-        }
-      }
-      setState(() {
-        items.clear();
-        items.addAll(dummySearch);
-      });
+      results = adrs
+          .where((good) =>
+          good.unNr.toString().toLowerCase().contains(query.toLowerCase()))
+          .toList();
     }
+    setState(() {
+      items = results;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Padding(
@@ -91,9 +103,9 @@ class DangerousGoodsState extends State<DangerousGoods> {
                   borderRadius: BorderRadius.circular(25.0),
                   borderSide: const BorderSide(color: Color(0xffb32b19)),
                 ),
-                hintText: 'Search...',
+                hintText: 'Suchen...',
                 hintStyle: const TextStyle(color: Colors.black87),
-                labelText: 'Search',
+                labelText: 'Suchen',
                 labelStyle: const TextStyle(color: Colors.black87),
                 prefixIcon: const Icon(
                   Icons.search,
@@ -126,7 +138,7 @@ class DangerousGoodsState extends State<DangerousGoods> {
                                         "assets/2000px-ADR33_UN1203.svg.png")),
                               ),
                               title: Text(
-                                items[index].unnr.padLeft(4, '0'),
+                                items[index].unNr.toString().padLeft(4, '0'),
                                 style: const TextStyle(
                                     fontSize: 19.0, color: Colors.black87),
                               ),
@@ -138,15 +150,6 @@ class DangerousGoodsState extends State<DangerousGoods> {
       ),
     );
   }
-}
-
-class ADRobj {
-  String unnr;
-  String gefnr;
-  String klasse;
-  String bez;
-
-  ADRobj(this.unnr, this.gefnr, this.klasse, this.bez);
 }
 
 class Constants {
