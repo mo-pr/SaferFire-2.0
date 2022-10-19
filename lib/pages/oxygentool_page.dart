@@ -109,9 +109,6 @@ class _OxygenPageState extends State<OxygenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFf2f6f8),
-      appBar: AppBar(
-        title: const Text('Atemschutz'),
-      ),
       body: Center(
         child: entries.isEmpty == true
             ? Container(

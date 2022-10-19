@@ -5,9 +5,11 @@ import 'package:saferfire/views/technisch_view.dart';
 
 import '../constants.dart';
 
+
+const _cardBackgroundColor = Color(0xFFbb1e10);
 class StammdatenView extends StatefulWidget{
   final Protocol? protocol;
-  StammdatenView({Key? key, @required this.protocol}) : super(key: key);
+  const StammdatenView({Key? key, @required this.protocol}) : super(key: key);
 
   @override
   _StammdatenViewState createState() => _StammdatenViewState();
@@ -47,80 +49,163 @@ class _StammdatenViewState extends State<StammdatenView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Protokoll erstellen'),
+        backgroundColor: mainColor,
+        title: const Text('Protokoll erstellen'),
       ),
       body: Center(
         child: Container(
           margin: const EdgeInsets.only(top: 40),
           child: Column(
             children: <Widget>[
-              Text(
+              const Text(
                 'Stammdaten',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               const SizedBox(height: 30),
-              Text(
+              const Text(
                 'Uhrzeit Ausfahrt:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              Text("${_uhrzeitAusfahrt.hour}:${_uhrzeitAusfahrt.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitAusfahrt);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitAusfahrt.hour}:${_uhrzeitAusfahrt.minute}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              const Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit Ankunft:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitAnkunft.hour}:${_uhrzeitAnkunft.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitAnkunft);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitAnkunft.hour}:${_uhrzeitAnkunft.minute}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              const Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit wieder Einsatzbereit:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitEinsatzbereit.hour}:${_uhrzeitEinsatzbereit.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitEinsatzbereit);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitEinsatzbereit.hour}:${_uhrzeitEinsatzbereit.minute}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              const Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit Einsatz-Ende:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("${_uhrzeitEnde.hour}:${_uhrzeitEnde.minute}"),
-              ElevatedButton(
+              MaterialButton(
                 onPressed: () {
                   _selectTime(context, _uhrzeitEnde);
                 },
-                child: Text("Choose Time"),
+                minWidth: 150,
+                color: _cardBackgroundColor,
+                textColor: Colors.black,
+                child: Text(
+                  "${_uhrzeitEnde.hour}:${_uhrzeitEnde.minute}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal),
+                ),
+                padding: const EdgeInsets.all(6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  //side: BorderSide(color: Colors.red)
+                ),
+              ),
+              const Text("Tap to change",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)
               ),
               Divider(
                   height: 50,
                   thickness: 2,
-                  color: buttonColor
+                  color: mainColor
               ),
               ElevatedButton(
-                  child: Text("Next"),
+                  child: const Text("Next"),
                   onPressed: (){
+                    widget.protocol!.uhrzeitAnkunft = _uhrzeitAnkunft;
+                    widget.protocol!.uhrzeitAusfahrt = _uhrzeitAusfahrt;
+                    widget.protocol!.uhrzeitEnde = _uhrzeitEnde;
+                    widget.protocol!.uhrzeitWiederbereit = _uhrzeitEinsatzbereit;
                     if(widget.protocol!.kategorie!.split(' ')[0] == "TECHNISCH"){
+                      widget.protocol!.isTechnisch = true;
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => TechnischView(protocol: widget.protocol))
                       );
                     }
                     if(widget.protocol!.kategorie!.split(' ')[0] == "BRAND"){
+                      widget.protocol!.isTechnisch = false;
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => BrandView(protocol: widget.protocol))
@@ -128,9 +213,9 @@ class _StammdatenViewState extends State<StammdatenView> {
                     }
                   },
                 style: ElevatedButton.styleFrom(
-                    primary: buttonColor,
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
-                    textStyle: TextStyle(
+                    backgroundColor: mainColor,
+                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                    textStyle: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
               )
