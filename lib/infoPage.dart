@@ -5,16 +5,20 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
+import 'package:saferfire/pages/protocoltool_page.dart';
 import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
-import 'package:saferfire/constants.dart';
+import 'package:saferfire/constants.dart' as cons;
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:saferfire/models/Protocol.dart';
+
+import 'models/Protocol.dart';
 
 var _cardColor = Colors.white;
 const _openNavbarColor = Color(0xFFbb1e10);
@@ -30,6 +34,7 @@ String _alarmSubtype = " ";
 String _alarmAdress = " ";
 String _alarmLat = " ";
 String _alarmFireDepts = " ";
+String _alarmTime = " ";
 late Socket socket;
 
 //String _timeString = "";
@@ -45,11 +50,11 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    if  (isTest)  {
+    if  (cons.isTest)  {
       socket.emit('alarmsReq',
           json.encode({'token': prefs.getString('token'), "count": 4}));
     }
-    if (!isTest) {
+    if (!cons.isTest) {
       socket.emit(
           'alarmsReq', json.encode({'token': prefs.getString('token')}));
     }
@@ -69,14 +74,14 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     setState(() {
       _getSharedPreference().then((value) => _isGuest = value);
     });
-    if (isTest) {
-      socket = io('http://$ipAddress/testalarms', <String, dynamic>{
+    if (cons.isTest) {
+      socket = io('http://${cons.ipAddress}/testalarms', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
     }
-    if (!isTest) {
-      socket = io('http://$ipAddress/alarms', <String, dynamic>{
+    if (!cons.isTest) {
+      socket = io('http://${cons.ipAddress}/alarms', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
@@ -86,13 +91,15 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     socket.on('alarmsRes', (data) async {
       print(data);
       Alarm alarm = new Alarm(data);
-      for (int i = 0; i < alarms.length; i++) {
-        if (alarms[i].Id == alarm.Id) {
-          return alarms;
+      for (int i = 0; i < cons.alarms.length; i++) {
+        if (cons.alarms[i].Id == alarm.Id) {
+          return cons.alarms;
         }
       }
-      alarms.add(alarm);
-
+      cons.alarms.add(alarm);
+      if(cons.protocol.einstznummer == null){
+        cons.protocol = Protocol(cons.alarms.elementAt(0).Id, cons.alarms.elementAt(0).Type, cons.alarms.elementAt(0).Address, "${cons.alarms.elementAt(0).Lat} + ${cons.alarms.elementAt(0).Lng}", cons.alarms.elementAt(0).AlarmType, DateTime.now());
+      }
       //If you get alarm for your firestation, get push notification
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -107,7 +114,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             2); //you get a push notification
       }
 
-      return alarms;
+      return cons.alarms;
     });
     socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
@@ -132,18 +139,19 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
   }
 
   void _getAlarms() {
-    if (alarms.isEmpty) {
+    if (cons.alarms.isEmpty) {
       setState(() {
         _isDeployment = false;
       });
     } else {
       setState(() {
-        _alarmId = alarms.elementAt(0).Id.toString();
-        _alarmSubtype = alarms.elementAt(0).Subtype.toString();
-        _alarmAdress = alarms.elementAt(0).Address.toString();
+        _alarmId = cons.alarms.elementAt(0).Id.toString();
+        _alarmSubtype = cons.alarms.elementAt(0).Subtype.toString();
+        _alarmAdress = cons.alarms.elementAt(0).Address.toString();
+        _alarmTime = cons.alarms.elementAt(0).Time.toString();
         _alarmLat =
-            alarms.elementAt(0).Lat.toString() + " " + alarms.elementAt(0).Lng.toString();
-        _alarmFireDepts = alarms.elementAt(0).FireDeps
+            cons.alarms.elementAt(0).Lat.toString() + " " + cons.alarms.elementAt(0).Lng.toString();
+        _alarmFireDepts = cons.alarms.elementAt(0).FireDeps
             .toString()
             .replaceAll('[', '')
             .replaceAll(']', '')
@@ -201,7 +209,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () {
               setState(() {
-                MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
+                MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
               });
             },
             onLongPress: () => print('Navigation'),
@@ -241,7 +249,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         },
         children: [
           Info(),
-          ProtocolPage(),
+          ProtocolPage2(),
           OxygenPage(),
         ],
       ),
@@ -481,176 +489,6 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   }
 
   /// Deployment received
-  Widget _receiveDeployment() {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 1.8,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 10), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  //#region Text
-                  const SizedBox(height: 30),
-                  Text(
-                    "ID: " + _alarmId,
-                    style: const TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Einsatzdaten',
-                    style: TextStyle(
-                        color: _openNavbarColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Subtype',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    _alarmSubtype,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Adresse',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    _alarmAdress,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Text(
-                    _alarmLat,
-                    style: const TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Feuerwehren',
-                    style: TextStyle(
-                      color: _openNavbarColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    _alarmFireDepts,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  //#endregion
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 50),
-        Material(
-          elevation: 10,
-          borderRadius: BorderRadius.circular(2.0),
-          child: InkWell(
-            onTap: () {
-              MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(0.0),
-              height: 60.0,
-              //MediaQuery.of(context).size.width * .08,
-              width: 220.0,
-              //MediaQuery.of(context).size.width * .3,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: Row(
-                children: <Widget>[
-                  LayoutBuilder(builder: (context, constraints) {
-                    return Container(
-                      height: constraints.maxHeight,
-                      width: constraints.maxHeight,
-                      decoration: BoxDecoration(
-                        color: _openNavbarColor,
-                        borderRadius: BorderRadius.circular(2.0),
-                      ),
-                      child: const Icon(
-                        Icons.navigation,
-                        color: Colors.white,
-                      ),
-                    );
-                  }),
-                  const Expanded(
-                    child: Text(
-                      'Open Maps',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 90),
-        /*new Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              'Vergangene Einsätze',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),*/
-      ],
-    );
-  }
-
-  /// Deployment received
   Widget _receiveDeployment2() {
     return Column(
       children: [
@@ -671,9 +509,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           child: Container(
             height: MediaQuery.of(context).size.height / 2.4,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(5),
                   bottomRight: Radius.circular(5)),
               boxShadow: [
@@ -681,7 +519,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   color: _openNavbarColor,
                   spreadRadius: 0,
                   blurRadius: 10,
-                  offset: const Offset(0, 2), // changes position of shadow
+                  offset: Offset(0, 2), // changes position of shadow
                 ),
               ],
             ),
@@ -691,22 +529,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: <Widget>[
                     //#region Text
-                    const SizedBox(height: 30),
-                    Text(
-                      "ID: " + _alarmId,
-                      style: const TextStyle(
-                        color: _openNavbarColor,
-                        fontSize: 12,
-                      ),
-                    ),
-                    const Text(
-                      'Einsatzdaten',
-                      style: TextStyle(
-                          color: _openNavbarColor,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 10),
                     const Text(
                       'Subtype',
                       style: TextStyle(
@@ -736,7 +559,20 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       _alarmLat,
                       style: const TextStyle(color: Colors.black, fontSize: 15),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Zeit',
+                      style: TextStyle(
+                        color: _openNavbarColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      _alarmTime,
+                      style: const TextStyle(color: Colors.black, fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
                     const Text(
                       'Feuerwehren',
                       style: TextStyle(
@@ -748,6 +584,19 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     Text(
                       _alarmFireDepts,
                       style: const TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(height: 5),
+                          Text(
+                            "ID: " + _alarmId,
+                            style: const TextStyle(
+                              color: _openNavbarColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ]
                     ),
                     //#endregion
                   ],
@@ -771,7 +620,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   children: <Widget>[
                     GestureDetector(
                       onTap: (){
-                        MapUtils.openMap(alarms.first.Lat, alarms.first.Lng);
+                        MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
                       },
                       child: Container(
                         child: Column(
@@ -1005,7 +854,7 @@ class OperationInfo extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Scaffold(
                         appBar: AppBar(
-                          backgroundColor: mainColor,
+                          backgroundColor: cons.mainColor,
                           title: const Text('Alle Einsätze'),
                         ),
                         body: ListViewBuilder(),
@@ -1092,7 +941,7 @@ class ListViewBuilder extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  alarms[index].Id ?? ' ',
+                  cons.alarms[index].Id ?? ' ',
                   style: const TextStyle(color: Colors.black),
                 ),
                 const SizedBox(height: 15),
@@ -1102,7 +951,7 @@ class ListViewBuilder extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  alarms[index].Subtype ?? ' ',
+                  cons.alarms[index].Subtype ?? ' ',
                   style: const TextStyle(color: Colors.black),
                 ),
                 const SizedBox(height: 15),
@@ -1112,7 +961,7 @@ class ListViewBuilder extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  alarms[index].Address ?? ' ',
+                  cons.alarms[index].Address ?? ' ',
                   style: const TextStyle(color: Colors.black),
                 ),
                 const SizedBox(height: 15),
@@ -1121,7 +970,7 @@ class ListViewBuilder extends StatelessWidget {
           ),
         );
       },
-      itemCount: alarms.length,
+      itemCount: cons.alarms.length,
     );
   }
 }

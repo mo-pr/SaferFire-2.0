@@ -11,3 +11,7 @@ bool isTest = true;
 Color mainColor = const Color(0xFFbb1e10);
 Color buttonColor = Colors.red;
 List<Alarm> alarms = [];
+
+class PublicVariables{
+  Protocol protocol = Protocol(null, null, null, null, null, null);
+}
