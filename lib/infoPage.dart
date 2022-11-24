@@ -736,6 +736,39 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
+                    GestureDetector(
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.bar_chart,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Statistik"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _openNavbarColor,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
