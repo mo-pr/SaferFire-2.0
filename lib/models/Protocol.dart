@@ -3,7 +3,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Protocol{
 
-  bool isTechnisch=true;
+  bool IsEmpty(){
+    if(einstznummer == null){
+      return false;
+    }
+    return true;
+  }
+
+  bool isTechnisch = true;
 
   //Grunddaten
   String? einstznummer;
@@ -28,8 +35,8 @@ class Protocol{
   int? personenTot;
 
   // Tierrettung
-  int? tiereGerettet;
-  int? tiereTot;
+  int tiereGerettet = 0;
+  int tiereTot = 0;
 
   //Brand - Statistik
   String? brandEndeckung;
@@ -42,10 +49,10 @@ class Protocol{
   String? brandVerlauf;
 
   //Technische Statistik
-  String? ursache;
-  String? hauptTaetigkeit;
-  String? gerfaehrlicheStoffe;
-  String? weiterTaetigkeiten;
+  String? ursache = "Ursache";
+  String? hauptTaetigkeit = "Haupt-Tätigkeit";
+  String? gerfaehrlicheStoffe = "Gefährliche Stoffe";
+  String? weiterTaetigkeiten = "Weitere Tätigkeiten";
 
   Protocol(
       this.einstznummer,

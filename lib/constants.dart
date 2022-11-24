@@ -10,6 +10,11 @@ bool isProtocol = false;
 bool isTest = true;
 Color buttonColor = Colors.red;
 List<Alarm> alarms = [];
+
+class PublicVariables {
+  Protocol protocol = Protocol(null, null, null, null, null, null);
+}
+
 Color mainColor = Colors.red;
 
 //Hydrant map
