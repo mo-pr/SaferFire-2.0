@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),
-            '/einsatzuebersicht': (context) => const OperationInfo(),
+            '/einsatzuebersicht': (context) => OperationInfo(),
           },
           theme: ThemeData(
             primaryColor: Color(0xFFbb1e10),

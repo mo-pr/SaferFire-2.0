@@ -9,7 +9,7 @@ import '../constants.dart';
 const _cardBackgroundColor = Color(0xFFbb1e10);
 class StammdatenView extends StatefulWidget{
   final Protocol? protocol;
-  StammdatenView({Key? key, @required this.protocol}) : super(key: key);
+  const StammdatenView({Key? key, @required this.protocol}) : super(key: key);
 
   @override
   _StammdatenViewState createState() => _StammdatenViewState();
@@ -49,19 +49,20 @@ class _StammdatenViewState extends State<StammdatenView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Protokoll erstellen'),
+        backgroundColor: mainColor,
+        title: const Text('Protokoll erstellen'),
       ),
       body: Center(
         child: Container(
           margin: const EdgeInsets.only(top: 40),
           child: Column(
             children: <Widget>[
-              Text(
+              const Text(
                 'Stammdaten',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               const SizedBox(height: 30),
-              Text(
+              const Text(
                 'Uhrzeit Ausfahrt:',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
@@ -74,7 +75,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                 textColor: Colors.black,
                 child: Text(
                   "${_uhrzeitAusfahrt.hour}:${_uhrzeitAusfahrt.minute}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.normal),
@@ -85,14 +86,14 @@ class _StammdatenViewState extends State<StammdatenView> {
                   //side: BorderSide(color: Colors.red)
                 ),
               ),
-              Text("Tap to change",
+              const Text("Tap to change",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit Ankunft:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -105,7 +106,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                 textColor: Colors.black,
                 child: Text(
                   "${_uhrzeitAnkunft.hour}:${_uhrzeitAnkunft.minute}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.normal),
@@ -116,14 +117,14 @@ class _StammdatenViewState extends State<StammdatenView> {
                   //side: BorderSide(color: Colors.red)
                 ),
               ),
-              Text("Tap to change",
+              const Text("Tap to change",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit wieder Einsatzbereit:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -136,7 +137,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                 textColor: Colors.black,
                 child: Text(
                   "${_uhrzeitEinsatzbereit.hour}:${_uhrzeitEinsatzbereit.minute}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.normal),
@@ -147,14 +148,14 @@ class _StammdatenViewState extends State<StammdatenView> {
                   //side: BorderSide(color: Colors.red)
                 ),
               ),
-              Text("Tap to change",
+              const Text("Tap to change",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.w300)
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Uhrzeit Einsatz-Ende:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -167,7 +168,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                 textColor: Colors.black,
                 child: Text(
                   "${_uhrzeitEnde.hour}:${_uhrzeitEnde.minute}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.normal),
@@ -178,7 +179,7 @@ class _StammdatenViewState extends State<StammdatenView> {
                   //side: BorderSide(color: Colors.red)
                 ),
               ),
-              Text("Tap to change",
+              const Text("Tap to change",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -187,18 +188,23 @@ class _StammdatenViewState extends State<StammdatenView> {
               Divider(
                   height: 50,
                   thickness: 2,
-                  color: buttonColor
+                  color: mainColor
               ),
               ElevatedButton(
-                  child: Text("Next"),
+                  child: const Text("Next"),
                   onPressed: (){
+                    widget.protocol!.uhrzeitAnkunft = _uhrzeitAnkunft;
+                    widget.protocol!.uhrzeitEnde = _uhrzeitEnde;
+                    widget.protocol!.uhrzeitWiederbereit = _uhrzeitEinsatzbereit;
                     if(widget.protocol!.kategorie!.split(' ')[0] == "TECHNISCH"){
+                      widget.protocol!.isTechnisch = true;
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => TechnischView(protocol: widget.protocol))
                       );
                     }
                     if(widget.protocol!.kategorie!.split(' ')[0] == "BRAND"){
+                      widget.protocol!.isTechnisch = false;
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => BrandView(protocol: widget.protocol))
@@ -206,9 +212,9 @@ class _StammdatenViewState extends State<StammdatenView> {
                     }
                   },
                 style: ElevatedButton.styleFrom(
-                    primary: buttonColor,
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
-                    textStyle: TextStyle(
+                    backgroundColor: mainColor,
+                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                    textStyle: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold)),
               )
