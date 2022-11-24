@@ -40,6 +40,9 @@ String _alarmFireDepts = " ";
 String _alarmTime = " ";
 late Socket socket;
 
+late AnimationController _animationController;
+late Animation _animation;
+
 //String _timeString = "";
 PageController _pageController = PageController(initialPage: 0);
 
@@ -79,6 +82,13 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    _animationController = AnimationController(vsync:this,duration: const Duration(seconds: 1));
+    _animationController.repeat(reverse: true);
+    _animation =  Tween(begin: 8.0,end: 12.0).animate(_animationController)..addListener((){
+      setState(() {
+
+      });
+    });
     setState(() {
       _getSharedPreference().then((value) => _isGuest = value);
     });
@@ -273,21 +283,6 @@ class Info extends StatefulWidget {
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   bool _expanded = false;
   double _currentHeight = _minHeight;
-
-  late AnimationController _animationController;
-  late Animation _animation;
-
-  @override
-  void initState(){
-    _animationController = AnimationController(vsync:this,duration: Duration(seconds: 2));
-    _animationController.repeat(reverse: true);
-    _animation =  Tween(begin: 2.0,end: 15.0).animate(_animationController)..addListener((){
-      setState(() {
-
-      });
-    });
-    super.initState();
-  }
 
   changeAlarm2 (int newAlarmId){
     setState(() {
@@ -536,19 +531,17 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
           child: Container(
             height: MediaQuery.of(context).size.height / 2.4,
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5)),
-              boxShadow: [
-                BoxShadow(
-                  color: _openNavbarColor,
-                  spreadRadius: 0,
-                  blurRadius: 10,
-                  offset: Offset(0, 2), // changes position of shadow
+                  bottomRight: Radius.circular(5),
                 ),
-              ],
+                boxShadow: [BoxShadow(
+                    color: _openNavbarColor,
+                    blurRadius: _animation.value,
+                    spreadRadius: _animation.value
+                )]
             ),
             child: Padding(
               padding: const EdgeInsets.all(30),
@@ -615,7 +608,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 2),
                           Text(
                             "ID: " + _alarmId,
                             style: const TextStyle(
@@ -624,8 +617,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                             ),
                           ),
                         ]
-                    ),
-                    //#endregion
+                    ), //#endregion
                   ],
                 ),
               ),
