@@ -33,12 +33,11 @@ class NotificationService {
       body,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds)),
       const NotificationDetails(
-        android: AndroidNotificationDetails('main_channel', 'Main Channel',
-            channelDescription: 'Main channel notifications',
-            importance: Importance.max,
-            priority: Priority.max,
-            icon: '@drawable/ic_flutternotification'),
-      ),
+          android: AndroidNotificationDetails('main_channel', 'Main Channel',
+              channelDescription: 'Main channel notifications',
+              importance: Importance.max,
+              priority: Priority.max,
+              icon: '@drawable/ic_flutternotification')),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
