@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saferfire/camerafunction.dart';
+import 'package:saferfire/functions/camerafunction.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/views/grundinformationen_view.dart';
 import 'package:saferfire/models/Protocol.dart';

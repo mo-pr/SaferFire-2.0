@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1097267146537",
-    "project_id": "saferfire-9e83f",
-    "storage_bucket": "saferfire-9e83f.appspot.com"
+    "project_number": "248409441555",
+    "project_id": "pushnotification-b9abe",
+    "storage_bucket": "pushnotification-b9abe.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1097267146537:android:7ff1dcfefb5b61a9495138",
+        "mobilesdk_app_id": "1:248409441555:android:bbde042261ab17dc2706e6",
         "android_client_info": {
           "package_name": "com.example.saferfire"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1097267146537-rh7aop024qokl1col0cj8dkhas40jfst.apps.googleusercontent.com",
+          "client_id": "248409441555-pb1ruc6r2r9oogt0k84iifjngdn0u411.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDLufVF0uEySeJJBWJmVFRRMdfwDrXAfJo"
+          "current_key": "AIzaSyANFb_1YlZXKZC1xHwSNiv3IWkSxA8cMiY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1097267146537-rh7aop024qokl1col0cj8dkhas40jfst.apps.googleusercontent.com",
+              "client_id": "248409441555-pb1ruc6r2r9oogt0k84iifjngdn0u411.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
