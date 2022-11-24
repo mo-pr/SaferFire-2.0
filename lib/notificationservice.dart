@@ -16,17 +16,9 @@ class NotificationService {
     final AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_flutternotification');
 
-    final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
     final InitializationSettings initializationSettings =
     InitializationSettings(
         android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS
     );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -46,13 +38,7 @@ class NotificationService {
             importance: Importance.max,
             priority: Priority.max,
             icon: '@drawable/ic_flutternotification'
-        ),
-        iOS: IOSNotificationDetails(
-          sound: 'default.wav',
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
+        )
       ),
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
