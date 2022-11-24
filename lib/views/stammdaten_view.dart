@@ -194,7 +194,6 @@ class _StammdatenViewState extends State<StammdatenView> {
                   child: const Text("Next"),
                   onPressed: (){
                     widget.protocol!.uhrzeitAnkunft = _uhrzeitAnkunft;
-                    widget.protocol!.uhrzeitAusfahrt = _uhrzeitAusfahrt;
                     widget.protocol!.uhrzeitEnde = _uhrzeitEnde;
                     widget.protocol!.uhrzeitWiederbereit = _uhrzeitEinsatzbereit;
                     if(widget.protocol!.kategorie!.split(' ')[0] == "TECHNISCH"){

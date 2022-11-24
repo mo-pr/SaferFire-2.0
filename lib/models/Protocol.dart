@@ -49,10 +49,10 @@ class Protocol{
   String? brandVerlauf;
 
   //Technische Statistik
-  String? ursache;
-  String? hauptTaetigkeit;
-  String? gerfaehrlicheStoffe;
-  String? weiterTaetigkeiten;
+  String? ursache = "Ursache";
+  String? hauptTaetigkeit = "Haupt-Tätigkeit";
+  String? gerfaehrlicheStoffe = "Gefährliche Stoffe";
+  String? weiterTaetigkeiten = "Weitere Tätigkeiten";
 
   Protocol(
       this.einstznummer,

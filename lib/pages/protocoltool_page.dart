@@ -56,6 +56,52 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                     child: Container(
                       color: Colors.white,
                       margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
+                      child: const Text("Fotos hinzufügen", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: _mainColor)),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        child: const Icon(Icons.add_a_photo_outlined, size: 45.0),
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: _mainColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            textStyle: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        child: const Icon(Icons.add_photo_alternate_outlined, size: 50.0),
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: _mainColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+                            textStyle: const TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      color: Colors.white,
+                      margin: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
                       child: const Text("Grunddaten", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: _mainColor)),
                     ),
                   ),
@@ -138,6 +184,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                           MaterialButton(
                             onPressed: () {
                               protocol.uhrzeitAusfahrt = TimeOfDay.now();
+                              setState(() {});
                             },
                             minWidth: 100,
                             color: mainColor,
@@ -153,7 +200,12 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                                       fontWeight: FontWeight.w300),
                                 ),
                               ],
-                            ) : Text("${protocol.uhrzeitAusfahrt?.hour}:${protocol.uhrzeitAusfahrt?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                            ) : Column(
+                              children: [
+                                const Text("Ausfahrt", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15, color: Colors.white)),
+                                Text("${protocol.uhrzeitAusfahrt?.hour}:${protocol.uhrzeitAusfahrt?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -169,6 +221,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                             onPressed: () { //() => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index)
                               if(protocol.uhrzeitAusfahrt != null){
                                 protocol.uhrzeitAnkunft = TimeOfDay.now();
+                                setState(() {});
                               }
                             },
                             minWidth: 100,
@@ -185,7 +238,12 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                                       fontWeight: FontWeight.w300),
                                 ),
                               ],
-                            ) : Text("${protocol.uhrzeitAnkunft?.hour}:${protocol.uhrzeitAnkunft?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                            ) : Column(
+                              children: [
+                                const Text("Ankunft", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15, color: Colors.white)),
+                                Text("${protocol.uhrzeitAnkunft?.hour}:${protocol.uhrzeitAnkunft?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -201,6 +259,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                             onPressed: () {
                               if(protocol.uhrzeitAnkunft != null){
                                 protocol.uhrzeitEnde = TimeOfDay.now();
+                                setState(() {});
                               }
                             },
                             minWidth: 100,
@@ -217,7 +276,12 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                                       fontWeight: FontWeight.w300),
                                 ),
                               ],
-                            ) : Text("${protocol.uhrzeitEnde?.hour}:${protocol.uhrzeitEnde?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                            ) : Column(
+                              children: [
+                                const Text("Einsatzende", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15, color: Colors.white)),
+                                Text("${protocol.uhrzeitEnde?.hour}:${protocol.uhrzeitEnde?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -238,6 +302,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                             onPressed: () { //() => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index)
                               if(protocol.uhrzeitEnde != null){
                                 protocol.uhrzeitWiederbereit = TimeOfDay.now();
+                                setState(() {});
                               }
                             },
                             minWidth: 100,
@@ -254,7 +319,12 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                                       fontWeight: FontWeight.w300),
                                 ),
                               ],
-                            ) : Text("${protocol.uhrzeitWiederbereit?.hour}:${protocol.uhrzeitWiederbereit?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                            ) : Column(
+                              children: [
+                                const Text("Wiedereinsatzbereit", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15, color: Colors.white)),
+                                Text("${protocol.uhrzeitWiederbereit?.hour}:${protocol.uhrzeitWiederbereit?.minute}", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.all(20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -296,13 +366,13 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
+        const Text(
           'Tiere',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         Text('gerettet', style: Theme.of(context).textTheme.headline6),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         NumberPicker(
           value: protocol.tiereGerettet,
           minValue: 0,
@@ -318,9 +388,9 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
             border: Border.all(color: Colors.black26),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text('tot geborgen', style: Theme.of(context).textTheme.headline6),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         NumberPicker(
           value: protocol.tiereTot,
           minValue: 0,
@@ -350,7 +420,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          Text(
+          const Text(
             'Teschnische Statistik',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
@@ -363,7 +433,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                 TextField(
                     controller: _ursacheController,
                     decoration: InputDecoration(
-                      labelText: "Ursache",
+                      labelText: protocol.ursache,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -373,7 +443,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                 TextField(
                     controller: _hautTaetigkeitController,
                     decoration: InputDecoration(
-                      labelText: "Haupt-Tätigkeit",
+                      labelText: protocol.hauptTaetigkeit,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -383,7 +453,7 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                 TextField(
                     controller: _gefaehrlicheStoffeController,
                     decoration: InputDecoration(
-                      labelText: "Gefährliche Stoffe",
+                      labelText: protocol.gerfaehrlicheStoffe,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -393,11 +463,27 @@ class _ProtocolPage2State extends State<ProtocolPage2> {
                 TextField(
                     controller: _weiterTaetigkeitenController,
                     decoration: InputDecoration(
-                      labelText: "Weitere Tätigkeiten",
+                      labelText: protocol.weiterTaetigkeiten,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
                     )
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: (){
+                    protocol.ursache = _ursacheController.text;
+                    protocol.hauptTaetigkeit = _hautTaetigkeitController.text;
+                    protocol.gerfaehrlicheStoffe = _gefaehrlicheStoffeController.text;
+                    protocol.weiterTaetigkeiten = _weiterTaetigkeitenController.text;},
+                  child: const Text("Speichern"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: mainColor,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)
+                  ),
                 ),
               ],
             ),
