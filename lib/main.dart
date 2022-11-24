@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:saferfire/dangerousGoods.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) =>  Login(),
+            '/': (context) =>  DangerousGoods(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),

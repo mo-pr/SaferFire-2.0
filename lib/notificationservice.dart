@@ -16,8 +16,8 @@ class NotificationService {
     final AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_flutternotification');
 
-    final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
+    final DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
@@ -47,7 +47,7 @@ class NotificationService {
             priority: Priority.max,
             icon: '@drawable/ic_flutternotification'
         ),
-        iOS: IOSNotificationDetails(
+        iOS: DarwinNotificationDetails(
           sound: 'default.wav',
           presentAlert: true,
           presentBadge: true,

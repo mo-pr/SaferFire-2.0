@@ -47,6 +47,14 @@ class DangerousGoodsState extends State<DangerousGoods> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            content: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: Constants.padding,
+              child: ClipRRect(
+                  child:
+                  Image.asset(
+                      "assets/adr_class/2000px-ADR33_UN1203.svg.png")),
+            ),
               title: Text("UN-Nummer: " +
                   adrs.asMap()[index]!.unNr.toString().padLeft(4, '0') +
                   "\n\n" +
