@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) => HydrantMap(),
+            '/': (context) => Login(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),

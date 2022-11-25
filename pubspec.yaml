@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: 2.18.2
+  sdk: 2.18.5
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -50,6 +50,7 @@ dependencies:
   jwt_decoder:
   sizer:
   numberpicker:
+  syncfusion_flutter_charts:
   firebase_core:
   firebase_messaging:
   firebase_storage:
