@@ -55,26 +55,53 @@ class _OxygenPageState extends State<OxygenPage> {
     setState(() {});
   }
 
-  void _promptRemoveTodoItem(int index) {
+  void _promptClickSquad(int index) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
-              title: new Text("Trupp " + (index + 1).toString() + ": Wählen Sie eine Aktion"),
-              actions: <Widget>[
-                new TextButton(
-                    child: new Text('Start'),
-                    onPressed: () {
-                      handleStartStop(index);
-                      Navigator.of(context).pop();
-                    }),
-                new TextButton(
-                    child: new Text('Stop'),
-                    onPressed: () {
-                      handleStartStop(index);
-                      Navigator.of(context).pop();
-                    })
-              ]);
+              title: Center(child: Text("Trupp " + (index + 1).toString() + ": Wählen Sie eine Aktion")),
+              content: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new TextButton(
+                        child: new Text('Start - Stop'),
+                        onPressed: () {
+                          handleStartStop(index);
+                          Navigator.of(context).pop();
+                        }),
+                    new TextButton(
+                        child: new Text('isDone'),
+                        onPressed: () {
+                          entries[index]._timer.stop();
+                          entries[index].isDone = true;
+                          Navigator.of(context).pop();
+                        }) // button 2
+                  ]
+              ),
+          );
+        });
+  }
+
+  void _promptClickDoneSquad(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+              title: Center(child: Text("Trupp " + (index + 1).toString())),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children : <Widget>[
+                  Expanded(
+                    child: Text(
+                      "Einsatz wurde beendet",
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+          );
         });
   }
 
@@ -96,7 +123,7 @@ class _OxygenPageState extends State<OxygenPage> {
             itemCount: entries.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-               onTap: () => _promptRemoveTodoItem(index),
+               onTap: () => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index),
                 child: Container(
                     decoration: new BoxDecoration(
                       boxShadow: [
@@ -109,7 +136,7 @@ class _OxygenPageState extends State<OxygenPage> {
                       ],
                     ),
                     child: Card(
-                      color: Colors.white,//d7dfe4
+                      color: entries[index].isDone == false ? Colors.white : Colors.grey,
                       shape: RoundedRectangleBorder(
                         side: BorderSide(color: Color(0xFFd7dfe4), width: 2),
                         borderRadius: BorderRadius.circular(2),
@@ -362,14 +389,14 @@ class _OxygenPageState extends State<OxygenPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                "Sauerstoff (Bar)",
+                "Sauerstoff [bar]",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(
                 height: 8,
               ),
               TextField(
-                decoration: InputDecoration(hintText: "Druck Person 1 "),
+                decoration: InputDecoration(hintText: "Druck Person 1"),
                 controller: _pressure01,
               ),
               SizedBox(
@@ -477,6 +504,7 @@ class Entry {
   late String _person02;
   late String _person03;
   late String _time;
+  bool isDone = false;
 
   late String _pressure01;
   late String _pressure02;
@@ -490,12 +518,29 @@ class Entry {
   }
 
   String _getNames() {
-    String names = _person01 + " - " + _pressure01 + " bar\n";
+    String names = "";
+    if(_person01.length >= 10){
+      names += _person01[0] + _person01[1] + _person01[2] +_person01[3] +_person01[4] +_person01[5] + "..." + " - " + _pressure01 + " bar\n";
+    }
+    else {
+      names += _person01 + " - " + _pressure01 + " bar\n";
+    }
+
     if (!(_person02 == null || _person02 == "")) {
-      names += _person02 + " - " + _pressure02 + " bar\n";
+      if(_person02.length >= 10){
+        names += _person02[0] + _person02[1] + _person02[2] +_person02[3] +_person02[4] +_person02[5] + "..." + " - " + _pressure02 + " bar\n";
+      }
+      else {
+        names += _person02 + " - " + _pressure02 + " bar\n";
+      }
     }
     if (!(_person03 == null || _person03 == "")) {
-      names += _person03 + " - " + _pressure03 + " bar\n";
+      if(_person03.length >= 10){
+        names += _person03[0] + _person03[1] + _person03[2] +_person03[3] +_person03[4] +_person03[5] + "..." + " - " + _pressure03 + " bar\n";
+      }
+      else {
+        names += _person03 + " - " + _pressure03 + " bar\n";
+      }
     }
 
     return names;

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: 2.18.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,8 +29,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  syncfusion_flutter_charts: ^18.4.49
-
+  syncfusion_flutter_charts: ^18.4.49+
+  flutter_staggered_grid_view:
+  flutter_speed_dial: ^3.0.5
+  transparent_image: ^2.0.0
+  dependencies:
+  vertical_card_pager: ^1.4.0
+  avatar_glow: ^2.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -51,7 +56,18 @@ dependencies:
   flutter_local_notifications: ^9.9.1
   timezone: ^0.8.0
   fl_chart: ^0.12.0
-
+  numberpicker:
+  firebase_core:
+  firebase_messaging:
+  firebase_storage:
+  flutter_local_notifications:
+  timezone:
+  image_picker:
+  permission_handler:
+  webview_flutter:
+  flutter_osm_plugin:
+  geolocator:
+  geocoding:
 dev_dependencies:
   flutter_test:
     sdk: flutter

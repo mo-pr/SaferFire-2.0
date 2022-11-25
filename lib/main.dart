@@ -1,8 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:saferfire/linechart.dart';
+import 'package:saferfire/hydrantMap.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
-import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/loginPage.dart';
+import 'package:saferfire/pages/oxygentool_page.dart';
+import 'package:saferfire/pages/toolProtocol.dart';
+import 'package:saferfire/views/brand_view.dart';
+import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
 
 import 'authentication.dart';
@@ -11,8 +17,8 @@ const _cardBackgroundColor = Color(0xFFbb1e10);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   NotificationService().initNotification();
-
   runApp(const MyApp());
 }
 
@@ -33,9 +39,9 @@ class MyApp extends StatelessWidget {
             // When navigating to the "/" route, build the FirstScreen widget.
             '/': (context) =>  Linechart(),
             // When navigating to the "/second" route, build the SecondScreen widget.
-            '/info': (context) => Info(),
+            '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),
-            '/einsatzuebersicht': (context) => const OperationInfo(),
+            '/einsatzuebersicht': (context) => OperationInfo(),
           },
           theme: ThemeData(
             primaryColor: Color(0xFFbb1e10),
@@ -47,16 +53,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainPage extends StatefulWidget{
+class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage>{
+class _MainPageState extends State<MainPage> {
   PageController _pageController = new PageController();
-  List<Widget> _screens = [
-
-  ];
+  List<Widget> _screens = [];
 
   @override
   Widget build(BuildContext context) {

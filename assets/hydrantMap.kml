@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+    <Placemark>
+        <name> HYDRANDT (# 1)</name>
+        <description><![CDATA[HYDRANDT (# 1)<br />Überflurhydrant<br /><br /><a href="https://portal.wasserkarte.info/watermap/waterSource/870695">Details</a>]]></description>
+        <Point>
+            <coordinates>14.2303500, 48.2626030, 0</coordinates>
+        </Point>
+        <Style>
+            <IconStyle>
+                <Icon>
+                    <href>https://portal.wasserkarte.info/m/870695_1.png</href>
+                </Icon>
+            </IconStyle>
+        </Style>
+    </Placemark>
+</Document>
+</kml>

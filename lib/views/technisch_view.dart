@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/models/Protocol.dart';
-import 'package:saferfire/toolProtocol.dart';
+import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -25,6 +25,7 @@ class _TechnischViewState extends State<TechnischView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColor,
         title: Text('Protokoll erstellen'),
       ),
       body: Center(
@@ -48,6 +49,7 @@ class _TechnischViewState extends State<TechnischView> {
               onChanged: (value) =>
                   setState(() => tiereGerettet = value),
               decoration: BoxDecoration(
+
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.black26),
               ),
@@ -72,7 +74,7 @@ class _TechnischViewState extends State<TechnischView> {
             Divider(
                 height: 50,
                 thickness: 2,
-                color: buttonColor
+                color: mainColor
             ),
             ElevatedButton(
               child: Text("Next"),
@@ -98,7 +100,7 @@ class _TechnischViewState extends State<TechnischView> {
                 // Navigator.of(context).popUntil((route) => route.isFirst);
               },
               style: ElevatedButton.styleFrom(
-                  primary: buttonColor,
+                  primary: mainColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle: TextStyle(
                       fontSize: 30,
@@ -175,51 +177,70 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColor,
         title: Text('Protokoll erstellen'),
       ),
       body: Scrollbar(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                  controller: _ursacheController,
-                  decoration: InputDecoration(
-                    labelText: "Ursache",
-                    border: myinputborder(),
-                    enabledBorder: myinputborder(),
-                    focusedBorder: myfocusborder(),
-                  )
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                'Teschnische Statistik',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
               const SizedBox(height: 10),
-              TextField(
-                  controller: _hautTaetigkeitController,
-                  decoration: InputDecoration(
-                    labelText: "Haupt-Tätigkeit",
-                    border: myinputborder(),
-                    enabledBorder: myinputborder(),
-                    focusedBorder: myfocusborder(),
-                  )
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    TextField(
+                        controller: _ursacheController,
+                        decoration: InputDecoration(
+                          labelText: "Ursache",
+                          border: myinputborder(),
+                          enabledBorder: myinputborder(),
+                          focusedBorder: myfocusborder(),
+                        )
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                        controller: _hautTaetigkeitController,
+                        decoration: InputDecoration(
+                          labelText: "Haupt-Tätigkeit",
+                          border: myinputborder(),
+                          enabledBorder: myinputborder(),
+                          focusedBorder: myfocusborder(),
+                        )
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                        controller: _gefaehrlicheStoffeController,
+                        decoration: InputDecoration(
+                          labelText: "Gefährliche Stoffe",
+                          border: myinputborder(),
+                          enabledBorder: myinputborder(),
+                          focusedBorder: myfocusborder(),
+                        )
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                        controller: _weiterTaetigkeitenController,
+                        decoration: InputDecoration(
+                          labelText: "Weitere Tätigkeiten",
+                          border: myinputborder(),
+                          enabledBorder: myinputborder(),
+                          focusedBorder: myfocusborder(),
+                        )
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 10),
-              TextField(
-                  controller: _gefaehrlicheStoffeController,
-                  decoration: InputDecoration(
-                    labelText: "Gefährliche Stoffe",
-                    border: myinputborder(),
-                    enabledBorder: myinputborder(),
-                    focusedBorder: myfocusborder(),
-                  )
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                  controller: _weiterTaetigkeitenController,
-                  decoration: InputDecoration(
-                    labelText: "Weitere Tätigkeiten",
-                    border: myinputborder(),
-                    enabledBorder: myinputborder(),
-                    focusedBorder: myfocusborder(),
-                  )
+              Divider(
+                  height: 50,
+                  thickness: 2,
+                  color: mainColor
               ),
               ElevatedButton(
                 child: Text("Next"),
@@ -242,20 +263,20 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                   //  );
                   // //Navigator.popUntil(context, ModalRoute.withName('/protocol'));
                   //Navigator.of(context)
-                     // .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
+                  // .pushNamedAndRemoveUntil('/protocol', (Route<dynamic> route) => false);
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) {
-                        return Info();
+                        return Start();
                       }), (route) {
                     // if( route is (MaterialPageRoute('/')))
                     // {
-                                    //   // }
+                    //   // }
                     // print(route);
                     return false;
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: buttonColor,
+                    primary: mainColor,
                     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                     textStyle: TextStyle(
                         fontSize: 30,
@@ -282,7 +303,7 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
     return OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(2)),
         borderSide: BorderSide(
-          color:Colors.greenAccent,
+          color: mainColor,
           width: 3,
         )
     );
