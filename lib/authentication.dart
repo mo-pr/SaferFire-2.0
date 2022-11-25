@@ -43,6 +43,7 @@ abstract class UserAuthentication {
       }),
     );
   }
+
   static Future<http.Response> getAlarms(String fireStation) async{
     return http.post(
       Uri.parse('http://$ipAddress/allalarmsdb'),

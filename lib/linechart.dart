@@ -31,7 +31,8 @@ class Linechart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold (
       appBar: AppBar(
-        title: Text("LineChart"),
+        automaticallyImplyLeading: false,
+        title: Text("Statistik"),
         centerTitle: true,
         backgroundColor: Colors.red[700],
         brightness: Brightness.dark,

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:saferfire/hydrantMap.dart';
+import 'package:saferfire/linechart.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/pages/protocoltool_page.dart';
@@ -269,6 +271,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           Info(),
           const ProtocolPage2(),
           OxygenPage(),
+          HydrantMap(),
+          Linechart()
         ],
       ),
     );
@@ -728,6 +732,124 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                           boxShadow: [
                             BoxShadow(
                               color: _openNavbarColor,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.map_outlined,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Wasserkarte"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _openNavbarColor,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.stacked_line_chart,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Statistik"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _openNavbarColor,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white,
                               spreadRadius: 0,
                               blurRadius: 5,
                               offset: Offset(0, 1), // changes position of shadow
