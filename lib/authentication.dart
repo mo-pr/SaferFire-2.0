@@ -43,8 +43,19 @@ abstract class UserAuthentication {
       }),
     );
   }
-
-  static String _hashPassword(String password) {
+  static Future<http.Response> getAlarms(String fireStation) async{
+    return http.post(
+      Uri.parse('http://$ipAddress/allalarmsdb'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiQWRtaW4iLCJpYXQiOjE2NDY5MDY1NDQsImV4cCI6MTY3ODQ0MjU0NH0.6YuZjOA_t-SGFg3cVZH0IYrBIUOEMbTRXHcBupmih2Q',
+        'firestation': 'FF Schweinbach'
+      }),
+    );
+  }
+  static String _hashPassword(String password){
     var bytes1 = utf8.encode(password);
     return sha256.convert(bytes1).toString();
   }
