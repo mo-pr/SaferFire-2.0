@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saferfire/functions/camerafunction.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/views/grundinformationen_view.dart';
 import 'package:saferfire/models/Protocol.dart';
@@ -65,7 +66,7 @@ class ProtocolPage extends StatelessWidget {
               ElevatedButton(
                 child: const Icon(Icons.add_a_photo_outlined, size: 45.0),
                 onPressed: () {
-
+                  openCamera();
                 },
                 style: ElevatedButton.styleFrom(
                     primary: _mainColor.withOpacity(0.5),
@@ -78,7 +79,7 @@ class ProtocolPage extends StatelessWidget {
               ElevatedButton(
                 child: Icon(Icons.add_photo_alternate_outlined, size: 50.0),
                 onPressed: () {
-
+                  openGallery();
                 },
                 style: ElevatedButton.styleFrom(
                     primary: _mainColor.withOpacity(0.5),
