@@ -16,7 +16,14 @@ class NotificationService {
 
   Future<void> initNotification() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@drawable/ic_flutternotification');
+    AndroidInitializationSettings('@drawable/ic_flutternotification');
+
+    final IOSInitializationSettings initializationSettingsIOS = //for ios
+    IOSInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
 
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -43,8 +50,5 @@ class NotificationService {
       androidAllowWhileIdle: true,
     );
   }
-
-  Future<void> cancelAllNotifications() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
-  }
 }
+

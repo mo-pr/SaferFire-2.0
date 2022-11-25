@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:saferfire/linechart.dart';
 import 'package:saferfire/hydrantMap.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
@@ -9,6 +10,8 @@ import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:saferfire/views/brand_view.dart';
 import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
+
+import 'authentication.dart';
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
@@ -21,6 +24,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+
 
   // This widget is the root of your application.ß
   @override
