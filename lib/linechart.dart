@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -5,30 +7,28 @@ import 'dart:async';
 import 'authentication.dart';
 
 const chosenYear = '2022';
-List<double> spots = [0,0,0,0,0,0,0,0,0,0,0,0];
+List<double> spots = List<double>.filled(12, 0, growable: false);
 
 class Linechart extends StatelessWidget {
-  //List<double> spots = getSpots() as List<double>;
-
-
 
   List<AlarmData> data = [
-    AlarmData('JAN', 0),
-    AlarmData('FEB', 0),
-    AlarmData('MAR', 0),
-    AlarmData('APR', 0),
-    AlarmData('MAY', 0),
-    AlarmData('JUNE', 0),
-    AlarmData('JULY', 12),
-    AlarmData('AUG', 0),
-    AlarmData('SEP', 0),
-    AlarmData('OCT', 0),
-    AlarmData('NOV', 1),
-    AlarmData('DEC', 0)
+    AlarmData('JAN', spots[0]),
+    AlarmData('FEB', spots[1]),
+    AlarmData('MÄRZ', spots[2]),
+    AlarmData('APR', spots[3]),
+    AlarmData('MAI', spots[4]),
+    AlarmData('JUNI', spots[5]),
+    AlarmData('JULI', spots[6]),
+    AlarmData('AUG', spots[7]),
+    AlarmData('SEP', spots[8]),
+    AlarmData('OKT', spots[9]),
+    AlarmData('NOV', spots[10]),
+    AlarmData('DEZ', spots[11])
   ];
 
   @override
   Widget build(BuildContext context) {
+    getSpots().then((value) => spots = value);
     return Scaffold (
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -41,7 +41,7 @@ class Linechart extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         child: SfCartesianChart(
           primaryXAxis: CategoryAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
-          title: ChartTitle(text: 'Übersicht über die Anzahl der Einsätze pro Monat'),
+          title: ChartTitle(text: 'Einsätze pro Monat'),
           tooltipBehavior: TooltipBehavior(enable: true),
           series: <ChartSeries<AlarmData, String>>[
             LineSeries<AlarmData, String>(
@@ -123,7 +123,6 @@ class Linechart extends StatelessWidget {
     print(spotsArray);
     return spotsArray;
   }
-
 }
 
 class AlarmData {
