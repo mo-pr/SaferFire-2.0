@@ -15,7 +15,7 @@ export class LoginController {
     async login(@Body() loginUser: UserLoginDto) {
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
-        const res = await qRunner.query(`SELECT email,passwordhash,firestation FROM saferfireusers WHERE email LIKE '${loginUser.email}' LIMIT 1`);
+        const res = await qRunner.query(`SELECT email,passwordhash,role,firestation FROM saferfireusers WHERE email LIKE '${loginUser.email}' LIMIT 1`);
         if(res.length === 0){
             this.logger.log(`Unsuccessful login | ${loginUser.email}`)
             throw new HttpException('Email or password incorrect!', HttpStatus.BAD_REQUEST);
@@ -24,7 +24,7 @@ export class LoginController {
             this.logger.log(`Unsuccessful login | ${loginUser.email}`)
             throw new HttpException('Email or password incorrect!', HttpStatus.BAD_REQUEST);
         }
-        const payload = {email:loginUser.email,firestation:res[0]['firestation']}
+        const payload = {email:loginUser.email,role:res[0]['role'],firestation:res[0]['firestation']}
         const access_token = await this.jwtService.signAsync(payload)
         await qRunner.release();
         this.logger.log(`Successful login | ${loginUser.email}`)
