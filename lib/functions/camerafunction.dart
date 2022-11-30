@@ -3,37 +3,31 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-openCamera() async {
+import 'package:path/path.dart' as p;
+Future<String> openCamera() async {
+  await Permission.photos.request();
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  uploadImage(image!);
+  return await uploadImage(image!);
 }
-openGallery() async {
+Future<String> openGallery() async {
+  await Permission.location.request();
   final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  uploadImage(image!);
+  return await uploadImage(image!);
 }
 //https://www.educative.io/answers/how-to-upload-to-firebase-storage-with-flutter
-uploadImage(XFile image) async {
+Future<String> uploadImage(XFile image) async {
   final _firebaseStorage = FirebaseStorage.instance;
-  //Check Permissions
-  await Permission.photos.request();
-
-  var permissionStatus = await Permission.photos.status;
-
-  if (permissionStatus.isGranted){
-    //Select Image
     var file = File(image.path);
-
     if (image != null){
       //Upload to Firebase
       var snapshot = await _firebaseStorage.ref()
-          .child('images/imageName')
+          .child('images')
+          .child(p.basename(file.path))
           .putFile(file);
       var downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
     } else {
       print('No Image Path Received');
+      return "";
     }
-  } else {
-    print('Permission not granted. Try Again with permission access');
-  }
 }

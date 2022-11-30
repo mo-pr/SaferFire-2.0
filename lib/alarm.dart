@@ -30,6 +30,27 @@ class Alarm {
   }
 
 
+
+  factory Alarm.fromJson(Map<String, dynamic> parsedJson){
+    var alarm = new Alarm("");
+    alarm.Id = parsedJson['num1'];
+    alarm.Time=parsedJson['startzeit'];
+    alarm.Stage = parsedJson['alarmstufe'].toString();
+    alarm.AlarmType = parsedJson['einsatzart'];
+    alarm.Type = parsedJson['einsatztyp']['text'];
+    alarm.Subtype = parsedJson['einsatzsubtyp']['text'];
+    alarm.Address = parsedJson['adresse']['default']??'' + ", " + parsedJson['adresse']['earea']??'' + "\nZusatz: " + parsedJson['adresse']['ecompl']??'';
+    alarm.Lat = parsedJson['wgs84']['lat'];
+    alarm.Lng = parsedJson['wgs84']['lng'];
+    alarm.District = parsedJson['bezirk']['text'];
+    List<String> firedeps = [];
+    for(int i = 0; i < parsedJson['cntfeuerwehren'];i++){
+      firedeps.add(parsedJson['feuerwehrenarray'][i.toString()]['fwname']+"\n");
+    }
+    alarm.FireDeps = firedeps;
+    return alarm;
+  }
+
   @override
   String toString() {
     return 'Alarm{Id: $_Id, Time: $_Time, Stage: $_Stage, AlarmType: $_AlarmType, Type: $_Type, Subtype: $_Subtype, Address: $_Address, Lat: $_Lat, Lng: $_Lng, District: $_District, FireDeps: $_FireDeps}';

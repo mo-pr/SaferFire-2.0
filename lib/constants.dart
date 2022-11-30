@@ -10,3 +10,15 @@ bool isProtocol = false;
 bool isTest = true;
 Color buttonColor = Colors.red;
 List<Alarm> alarms = [];
+
+class PublicVariables {
+  Protocol protocol = Protocol(null, null, null, null, null, null);
+}
+
+Color mainColor = Colors.red;
+
+//Hydrant map
+String source = "aic";
+String token = "SBStE2gNllFTmvga";
+String range = "10";
+String numItems = "15";

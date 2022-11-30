@@ -91,25 +91,63 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
     */
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColor,
         title: Text('Protokoll erstellen'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Grundinformationen',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
             ),
             const SizedBox(height: 30),
-            Text("Einsatznummer: ${widget.protocol!.einstznummer}"),
-            Text("Leitstellenjahr: ${widget.protocol!.leitstellenJahr!.year}"),
-            const SizedBox(height: 15),
-            Text("Kategorie: ${widget.protocol!.kategorie!.split(' ')[0]}"),
+            Text(
+              'Einsatznummer',
+              style: TextStyle(
+                color: mainColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              "${widget.protocol!.einstznummer}",
+              style: const TextStyle(color: Colors.black, fontSize: 30),
+            ),
+            //Text("Einsatznummer: ${widget.protocol!.einstznummer}"),
+            const SizedBox(height: 10),
+            Text(
+              'Leitstellenjahr',
+              style: TextStyle(
+                color: mainColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              "${widget.protocol!.leitstellenJahr!.year}",
+              style: const TextStyle(color: Colors.black, fontSize: 30),
+            ),
+            //Text("Leitstellenjahr: ${widget.protocol!.leitstellenJahr!.year}"),
+            const SizedBox(height: 10),
+            Text(
+              'Kategorie',
+              style: TextStyle(
+                color: mainColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              "${widget.protocol!.kategorie!.split(' ')[0]}",
+              style: const TextStyle(color: Colors.black, fontSize: 30),
+            ),
+            //Text("Kategorie: ${widget.protocol!.kategorie!.split(' ')[0]}"),
             Divider(
                 height: 50,
                 thickness: 2,
-                color: buttonColor
+                color: mainColor,
             ),
             ElevatedButton(
               child: Text("Next"),
@@ -121,7 +159,7 @@ class _GrundinformationenViewState extends State<GrundinformationenView> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                  primary: buttonColor,
+                  primary: mainColor,
                   padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
                   textStyle: TextStyle(
                       fontSize: 30,
