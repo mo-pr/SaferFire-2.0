@@ -285,12 +285,28 @@ class Info extends StatefulWidget {
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
-  bool _expanded = false;
+  bool _expanded = false, _isKommando = false;
   double _currentHeight = _minHeight;
 
   changeAlarm2 (int newAlarmId){
     setState(() {
       _showingAlarmId = newAlarmId;
+    });
+  }
+
+  Future<bool> isKommando() async{
+    var prefs = await SharedPreferences.getInstance();
+    if(prefs.getString('role') == "kommando"){
+      return true;
+    }
+    return false;
+  }
+
+
+  @override
+  void initState() {
+    setState(() {
+      isKommando().then((value) => _isKommando=value);
     });
   }
 
@@ -674,7 +690,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    Visibility(
+                      visible: _isKommando,
+                      child: GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
@@ -706,7 +724,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    ),
+                    ),),
                     GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
