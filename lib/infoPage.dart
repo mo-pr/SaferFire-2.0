@@ -272,7 +272,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           const ProtocolPage2(),
           OxygenPage(),
           HydrantMap(),
-          Linechart()
+          LineChart()
         ],
       ),
     );

@@ -25,8 +25,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
-
   // This widget is the root of your application.ß
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) => Login(),
+            '/': (context) => LineChart(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
             '/protocol': (context) => ProtocolPage(),
