@@ -129,8 +129,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       {
         NotificationService().showNotification(
             0,
-            "A new alarm has appeared",
-            "Alarm type: ${alarm.AlarmType}   Address: ${alarm.Address}",
+            "Neuer Einsatz!",
+            "${alarm.Subtype}, ${alarm.Address}",
             2); //you get a push notification
       }
 
