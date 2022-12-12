@@ -77,6 +77,12 @@
     color: #125699;
   }
 
+  .card{
+    -webkit-box-shadow: 0px 10px 19px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 10px 19px -4px rgba(0,0,0,0.75);
+    box-shadow: 0px 10px 19px -4px rgba(0,0,0,0.75);
+  }
+
   /* Responsive Styles */
   @media screen and (max-width: 767px) {
     .card-container > *:not(.circle-link) ,
@@ -120,11 +126,11 @@
     /></a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto align-items-center">
-        <!--<li class="nav-item">
-          <a class="nav-link mx-2" href="#!"><i class="fas fa-bell pe-2"></i>Alerts</a>
-        </li>-->
-        <li class="nav-item mx-2" >
-          <a class="btn  btn-rounded" href="#!" style="background-color: #eb2614; color: #000; font-size: 12px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px"><polyline points="6 8 6 3 18 3 18 21 6 21 6 16" fill="none" stroke="#000" stroke-miterlimit="10"/><polyline points="10 15.5 13.5 12 10 8.5" fill="none" stroke="#000" stroke-miterlimit="10"/><line x1="13.5" y1="12" x2="2.5" y2="12" fill="none" stroke="#000" stroke-miterlimit="10"/></svg>Sign in</a>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" href="#!" style="color: #e6e6e6;"><i class="fas fa-home pe-2"></i>Home</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" href="#!" style="color: #e6e6e6;"><i class="fas fa-sign-in-alt pe-2"></i>Sign in</a>
         </li>
       </ul>
     </div>
@@ -132,21 +138,44 @@
 </nav>
 <!-- Navbar -->
 
-<div class="content" role="main" style="display: flex; justify-content: end;">
-  <table style="width: 165.5%; -webkit-box-shadow: 0px 9px 25px -8px #000000; 
-  box-shadow: 0px 9px 25px -8px #000000;">
+<div style="display: flex; justify-content: end; width: auto; margin: 0; padding: 0;">
+  <table style="width: 100%; background-color: #bb1e10;">
     <tr>
       <td style="width: 50%;">
-        <p style="font-size: 30px; text-align: center;"><span style="color: #bb1e10;">Safer Fire - 2.0</span><br>Entwickelt um Feuerwehren zu unterstützen</p>
+        <p style="font-size: 33px; text-align: center;"><span style="color: #e6e6e6;"><b>Safer Fire - 2.0<br>Entwickelt um Feuerwehren zu unterstützen</b></span></p>
       </td>
       <td style="width: 50%;">
-        <img src="../assets/19250294_6105445.jpeg" style="width: 100%;"/>
+        <img src="../assets/19826188_6112045.png" style="width: 75%;"/>
       </td>
     </tr>
   </table>
-  <div class="content">
-    <h1>App Features</h1>
-    
+</div> 
+<div class="content">
+  <h1 >Features</h1>
+</div>
+<div class="content" style="display: flex; flex-direction: row; ">
+  <div class="card">
+    <img src="../assets/dashboard.png" style="width: 40%; padding: 5%; margin: auto;"/>
+    <div class="card-body">
+      <h5 class="card-title">Dashboard</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+  </div>
+  <div class="content"></div>
+  <div class="card">
+    <img src="../assets/respirator.png" style="width: 40%; padding: 5%; margin: auto;"/>
+    <div class="card-body">
+      <h5 class="card-title">Atemschutzüberwachung</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+  </div>
+  <div class="content"></div>
+  <div class="card">
+    <img src="../assets/hazardous.png" style="width: 40%; padding: 5%; margin: auto;"/>
+    <div class="card-body">
+      <h5 class="card-title">Gefahrgut - Datenbank</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
   </div>
 </div>
 
