@@ -2,7 +2,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'authentication.dart';
+import '../authentication.dart';
 
 const chosenYear = '2022';
 List<double> spots = [0,0,0,0,0,0,0,0,0,0,0,0];

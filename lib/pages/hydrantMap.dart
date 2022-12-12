@@ -6,7 +6,7 @@ import 'package:saferfire/constants.dart';
 import 'dart:convert';
 
 
-import 'models/Hydrant.dart';
+import '../models/Hydrant.dart';
 
 
 class HydrantMap extends StatelessWidget {
@@ -16,13 +16,13 @@ class HydrantMap extends StatelessWidget {
   );
 
   Widget build(BuildContext context) {
-    var response = getCurrentPostion().then((value) =>  getHydrants(value.longitude, value.latitude)).then((value) => convertHydrantResponse(value.body));
+    var response = getCurrentPosition().then((value) =>  getHydrants(value.longitude, value.latitude)).then((value) => convertHydrantResponse(value.body));
     return OSMFlutter(
       controller:controller,
       trackMyPosition: true,
       initZoom: 15,
       markerOption: MarkerOption(
-          defaultMarker: MarkerIcon(
+          defaultMarker: const MarkerIcon(
             icon: Icon(
               Icons.person_pin_circle,
               color: Colors.blue,
@@ -33,7 +33,7 @@ class HydrantMap extends StatelessWidget {
     );
   }
 
-  Future<Position> getCurrentPostion() async{
+  Future<Position> getCurrentPosition() async{
     return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 
@@ -49,8 +49,8 @@ class HydrantMap extends StatelessWidget {
     for(var singleWaterSource in waterSources){
      var newHydrant = Hydrant(singleWaterSource['name'], singleWaterSource['id'].toString(), singleWaterSource['address'], singleWaterSource['longitude'], singleWaterSource['latitude']);
      allHydrants.add(newHydrant);
-     var markerIcon = new MarkerIcon(icon: Icon(Icons.fire_hydrant,color: Colors.blue,size:200));
-     await controller.addMarker(new GeoPoint(latitude: newHydrant.lat!, longitude: newHydrant.lng!), markerIcon:  markerIcon);
+     var markerIcon = const MarkerIcon(icon: Icon(Icons.fire_hydrant,color: Colors.blue,size:200));
+     await controller.addMarker(GeoPoint(latitude: newHydrant.lat!, longitude: newHydrant.lng!), markerIcon:  markerIcon);
     }
     return allHydrants;
   }

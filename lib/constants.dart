@@ -1,19 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saferfire/models/Protocol.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 import 'alarm.dart';
-
-Protocol protocol = new Protocol(null, null, null, null, null, null);
+List<Protocol> protocols = <Protocol>[];
 String ipAddress = "152.67.71.8";
 bool isProtocol = false;
 bool isTest = true;
+int showingAlarmId = 0;
 Color buttonColor = Colors.red;
 List<Alarm> alarms = [];
 
-class PublicVariables {
+MapController controller = MapController(
+    initMapWithUserPosition: true
+);
+
+/*class PublicVariables {
   Protocol protocol = Protocol(null, null, null, null, null, null);
-}
+}*/
 
 Color mainColor = Colors.red;
 
