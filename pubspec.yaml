@@ -46,7 +46,7 @@ dependencies:
   email_validator:
   http:
   crypto:
-  shared_preferences:
+  shared_preferences: ^2.0.15
   jwt_decoder:
   sizer:
   numberpicker: ^2.1.1
