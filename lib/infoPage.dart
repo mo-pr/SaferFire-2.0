@@ -110,7 +110,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
       var firestation = prefs.getString('firestation');
       if (alarm.fireDeps.toString()
-          .contains(firestation)) //if alarm is for your firestation
+          .contains(firestation!)) //if alarm is for your firestation
       {
         NotificationService().showNotification(
             0,
