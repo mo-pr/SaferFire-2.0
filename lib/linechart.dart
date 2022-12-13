@@ -1,8 +1,5 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'package:intl/date_symbol_data_http_request.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:saferfire/main.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -13,7 +10,7 @@ List<AlarmData> data = [];
 final DateTime now = DateTime.now();
 final DateFormat formatter = DateFormat('yyyy');
 String currentYear = formatter.format(now); //current year in String
-List<int> daysInOneMonth = [];
+List<double> daysInOneMonth = [];
 
 class LineChart extends StatefulWidget {
   const LineChart({super.key});
@@ -55,16 +52,16 @@ class LineChartState extends State<LineChart> {
     ];
 
     return FutureBuilder<List<double>>(
-        future: getSpots(dropdownvalueYear),
+        future: getSpots(),
         builder: (context, AsyncSnapshot<List<double>> snapshot) {
           if (snapshot.hasData) {
             return Scaffold (
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
-                  title: Text("Statistik"),
+                  title:  Text("Statistik"),
                   centerTitle: true,
                   backgroundColor: Colors.red[700],
-                  brightness: Brightness.dark,
+                  systemOverlayStyle: SystemUiOverlayStyle.light,
                 ),
                 bottomNavigationBar: BottomAppBar(
                   color: Colors.red,
@@ -75,7 +72,7 @@ class LineChartState extends State<LineChart> {
                       DropdownButton( //year button
                         value: dropdownvalueYear,
                         icon: const Icon(Icons.keyboard_arrow_down),
-                        items: itemsYear?.map((String items) {
+                        items: itemsYear.map((String items) {
                           return DropdownMenuItem(
                             value: items,
                             child: Text(items),
@@ -85,7 +82,7 @@ class LineChartState extends State<LineChart> {
                           setState(() {
                             dropdownvalueYear = newValue!;
                             spots = List<double>.filled(12, 0, growable: false);
-                            getSpots(dropdownvalueYear).then((value) => spots = value);
+                            getSpots().then((value) => spots = value);
 
                             data = [
                               AlarmData('JAN', spots[0]),
@@ -117,6 +114,17 @@ class LineChartState extends State<LineChart> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownvalueMonth = newValue!;
+                            int monthNumber = getMonthNumber(dropdownvalueMonth!);
+                            int days = getDaysInMonth(int.parse(dropdownvalueYear), monthNumber);
+
+                            //error here
+                            spots = List<double>.filled(days, 0, growable: false); //now spots is cleared
+                            getSpots().then((value) => spots = value);
+
+                            for (int i = 1; i <= spots.length; i++)
+                            {
+                                data.add(AlarmData("$i", spots[i-1]));
+                            }
                           });
                         },
                       ),
@@ -134,7 +142,7 @@ class LineChartState extends State<LineChart> {
                           setState(() {
                             dropdownvalueType = newValue!;
                             spots = List<double>.filled(12, 0, growable: false);
-                            getSpots(dropdownvalueYear).then((value) => spots = value);
+                            getSpots().then((value) => spots = value);
 
                             data = [
                               AlarmData('JAN', spots[0]),
@@ -157,10 +165,10 @@ class LineChartState extends State<LineChart> {
                   ),
                 ),
                 body: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     child: SfCartesianChart(
                         primaryXAxis: CategoryAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
-                        title: ChartTitle(text: 'Einsätze pro Monat'),
+                        title: ChartTitle(text: 'Firedepartment: Year: $dropdownvalueYear   Month: $dropdownvalueMonth    Type: $dropdownvalueType'),
                         tooltipBehavior: TooltipBehavior(enable: true),
                         series: <ChartSeries<AlarmData, String>>[
                           LineSeries<AlarmData, String>(
@@ -174,19 +182,18 @@ class LineChartState extends State<LineChart> {
                 )
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         }
     );
   }
 
-  Future<List<double>> getSpots(String chosenYear) async {
+  Future<List<double>> getSpots() async {
     List<double> spotsArray = [0,0,0,0,0,0,0,0,0,0,0,0]; //12 months -> ++ if alarm
     var res = await UserAuthentication.getAlarms("");
     var split =res.body.split("},{");
     List<String> dates = [];
     List<String> types = [];
-    List<int> days = [];
 
     for (int i = 0; i < split.length; i++)
     {
@@ -200,139 +207,139 @@ class LineChartState extends State<LineChart> {
     if (dropdownvalueMonth == null || dropdownvalueMonth == "Alle") {
       for (int i = 0; i < dates.length; i++) {
         if (dropdownvalueType == null || dropdownvalueType == "Alle") {
-          if (dates[i].contains('Jan') && dates[i].contains(chosenYear)) {
+          if (dates[i].contains('Jan') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[0]++;
           }
-          else if (dates[i].contains('Feb') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Feb') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[1]++;
           }
-          else if (dates[i].contains('Mar') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Mar') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[2]++;
           }
-          else if (dates[i].contains('Apr') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Apr') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[3]++;
           }
-          else if (dates[i].contains('May') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('May') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[4]++;
           }
-          else if (dates[i].contains('Jun') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Jun') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[5]++;
           }
-          else if (dates[i].contains('Jul') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Jul') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[6]++;
           }
-          else if (dates[i].contains('Aug') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Aug') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[7]++;
           }
-          else if (dates[i].contains('Sep') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Sep') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[8]++;
           }
-          else if (dates[i].contains('Oct') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Oct') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[9]++;
           }
-          else if (dates[i].contains('Nov') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Nov') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[10]++;
           }
-          else if (dates[i].contains('Dec') && dates[i].contains(chosenYear)) {
+          else if (dates[i].contains('Dec') && dates[i].contains(dropdownvalueYear)) {
             spotsArray[11]++;
           }
         }
         if (dropdownvalueType == "Brand") {
-          if (dates[i].contains('Jan') && dates[i].contains(chosenYear) &&
+          if (dates[i].contains('Jan') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[0]++;
           }
-          else if (dates[i].contains('Feb') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Feb') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[1]++;
           }
-          else if (dates[i].contains('Mar') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Mar') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[2]++;
           }
-          else if (dates[i].contains('Apr') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Apr') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[3]++;
           }
-          else if (dates[i].contains('May') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('May') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[4]++;
           }
-          else if (dates[i].contains('Jun') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Jun') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[5]++;
           }
-          else if (dates[i].contains('Jul') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Jul') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[6]++;
           }
-          else if (dates[i].contains('Aug') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Aug') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[7]++;
           }
-          else if (dates[i].contains('Sep') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Sep') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[8]++;
           }
-          else if (dates[i].contains('Oct') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Oct') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[9]++;
           }
-          else if (dates[i].contains('Nov') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Nov') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[10]++;
           }
-          else if (dates[i].contains('Dec') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Dec') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains(dropdownvalueType!)) {
             spotsArray[11]++;
           }
         }
         else if (dropdownvalueType == "Technischer Einsatz") {
-          if (dates[i].contains('Jan') && dates[i].contains(chosenYear) &&
+          if (dates[i].contains('Jan') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[0]++;
           }
-          else if (dates[i].contains('Feb') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Feb') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[1]++;
           }
-          else if (dates[i].contains('Mar') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Mar') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[2]++;
           }
-          else if (dates[i].contains('Apr') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Apr') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[3]++;
           }
-          else if (dates[i].contains('May') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('May') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[4]++;
           }
-          else if (dates[i].contains('Jun') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Jun') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[5]++;
           }
-          else if (dates[i].contains('Jul') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Jul') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[6]++;
           }
-          else if (dates[i].contains('Aug') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Aug') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[7]++;
           }
-          else if (dates[i].contains('Sep') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Sep') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[8]++;
           }
-          else if (dates[i].contains('Oct') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Oct') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[9]++;
           }
-          else if (dates[i].contains('Nov') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Nov') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[10]++;
           }
-          else if (dates[i].contains('Dec') && dates[i].contains(chosenYear) &&
+          else if (dates[i].contains('Dec') && dates[i].contains(dropdownvalueYear) &&
               types[i].contains("TE")) {
             spotsArray[11]++;
           }
@@ -348,15 +355,21 @@ class LineChartState extends State<LineChart> {
           int chosenMonth = getMonthNumber(chosenMonthString!);
 
           int daysInMonth = getDaysInMonth(chosenYear, chosenMonth);
-          daysInOneMonth = List<int>.filled(daysInMonth, 0, growable: false); //makes list for every day in month
+          daysInOneMonth = List<double>.filled(daysInMonth, 0, growable: false); //makes list for every day in month
 
-          for (int i = 0; i < dates.length; i++)
+          //get shortform for month
+          String monthShortform = getShortformMonth(chosenMonth);
+
+          for (int i = 1; i <= dates.length; i++)
+          {
+            if (dates[i-1].contains(dropdownvalueYear) && dates[i-1].contains(monthShortform))
             {
-              print(dates[0]);
+              var day = int.parse(dates[i-1].split(' ')[0]);
+              daysInOneMonth[day-1]++;
             }
+          }
 
-
-
+          spotsArray = daysInOneMonth;
       }
 
     setState((){
@@ -366,8 +379,7 @@ class LineChartState extends State<LineChart> {
     return spotsArray;
   }
 
-  static List<String> getYears()
-  {
+  static List<String> getYears() {
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy');
 
@@ -394,21 +406,20 @@ class LineChartState extends State<LineChart> {
     return daysInMonth[month - 1];
   }
 
-  static int getMonthNumber(String month)
-  {
-    if (month == 'Jan')
+  static int getMonthNumber(String month) {
+    if (month == 'Januar')
       {
         return 1;
       }
-    else if (month == 'Feb')
+    else if (month == 'Februar')
       {
         return 2;
       }
-    else if (month == 'Mar')
+    else if (month == 'März')
     {
       return 3;
     }
-    else if (month == 'Apr')
+    else if (month == 'April')
     {
       return 4;
     }
@@ -416,31 +427,31 @@ class LineChartState extends State<LineChart> {
     {
       return 5;
     }
-    else if (month == 'Jun')
+    else if (month == 'Juni')
     {
       return 6;
     }
-    else if (month == 'Jul')
+    else if (month == 'July')
     {
       return 7;
     }
-    else if (month == 'Aug')
+    else if (month == 'August')
     {
       return 8;
     }
-    else if (month == 'Sep')
+    else if (month == 'September')
     {
       return 9;
     }
-    else if (month == 'Okt')
+    else if (month == 'Oktober')
     {
       return 10;
     }
-    else if (month == 'Nov')
+    else if (month == 'November')
     {
       return 11;
     }
-    else if (month == 'Dec')
+    else if (month == 'Dezember')
     {
       return 12;
     }
@@ -448,14 +459,64 @@ class LineChartState extends State<LineChart> {
     return -1;
   }
 
+  static String getShortformMonth(int month) {
+    if (month == 1)
+    {
+        return 'Jan';
+    }
+    else if (month == 2)
+    {
+        return 'Feb';
+    }
+    else if (month == 3)
+    {
+      return 'Mar';
+    }
+    else if (month == 4)
+    {
+      return 'Apr';
+    }
+    else if (month == 5)
+    {
+      return 'May';
+    }
+    else if (month == 6)
+    {
+      return 'Jun';
+    }
+    else if (month == 7)
+    {
+      return 'Jul';
+    }
+    else if (month == 8)
+    {
+      return 'Aug';
+    }
+    else if (month == 9)
+    {
+      return 'Sep';
+    }
+    else if (month == 10)
+    {
+      return 'Oct';
+    }
+    else if (month == 11)
+    {
+      return 'Nov';
+    }
+    else if (month == 12)
+    {
+      return 'Dec';
+    }
+
+    return "null";
+  }
+
   @override
   void initState() {
     setState(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        spots = await getSpots(dropdownvalueYear);
-
-        print("spots init");
-        print(spots);
+        spots = await getSpots();
       });
     });
     super.initState();
