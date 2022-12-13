@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saferfire/constants.dart';
 import 'package:saferfire/models/Protocol.dart';
-import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:saferfire/views/stammdaten_view.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -249,7 +248,6 @@ class _Technisch_StatistikState extends State<Technisch_Statistik> {
                   widget.protocol!.hauptTaetigkeit = _hautTaetigkeitController.text;
                   widget.protocol!.gerfaehrlicheStoffe = _gefaehrlicheStoffeController.text;
                   widget.protocol!.weiterTaetigkeiten = _weiterTaetigkeitenController.text;
-                  protocol = widget.protocol!;
                   isProtocol = true;
                   // Navigator.push(
                   //     context,
