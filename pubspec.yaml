@@ -52,16 +52,16 @@ dependencies:
   numberpicker: ^2.1.1
   fl_chart: ^0.12.0
   syncfusion_flutter_charts:
-  firebase_core:
-  firebase_messaging:
-  firebase_storage:
-  flutter_local_notifications:
+  firebase_core: ^2.4.0
+  firebase_messaging: ^14.1.4
+  firebase_storage: ^11.0.7
+  flutter_local_notifications: ^12.0.4
   timezone:
-  image_picker:
+  image_picker: ^0.8.6
   permission_handler:
   webview_flutter:
-  flutter_osm_plugin:
-  geolocator:
+  flutter_osm_plugin: ^0.42.0
+  geolocator: ^9.0.2
   geocoding:
 dev_dependencies:
   flutter_test:

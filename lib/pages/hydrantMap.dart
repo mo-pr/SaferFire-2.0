@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:saferfire/constants.dart';
 import 'dart:convert';
-
 import '../models/Hydrant.dart';
 
 class HydrantMap extends StatelessWidget {
@@ -38,7 +37,7 @@ class _StatefulHydrantWidgetState extends State<StatefulHydrantWidget> {
                   trackMyPosition: true,
                   initZoom: 15,
                   markerOption: MarkerOption(
-                      defaultMarker: MarkerIcon(
+                      defaultMarker: const MarkerIcon(
                     icon: Icon(
                       Icons.person_pin_circle,
                       color: Colors.blue,
@@ -82,10 +81,10 @@ class _StatefulHydrantWidgetState extends State<StatefulHydrantWidget> {
           singleWaterSource['longitude'],
           singleWaterSource['latitude'],
           singleWaterSource['iconUrl']);
-      var myMarkerIcon = new MarkerIcon(
-          icon: new Icon(Icons.location_pin, color: Colors.blue, size: 150));
+      var myMarkerIcon =  const MarkerIcon(
+          icon:  Icon(Icons.location_pin, color: Colors.blue, size: 150));
       await controller.addMarker(
-          new GeoPoint(latitude: newHydrant.lat!, longitude: newHydrant.lng!),
+           GeoPoint(latitude: newHydrant.lat!, longitude: newHydrant.lng!),
           markerIcon: myMarkerIcon);
     }
     return allHydrants;
