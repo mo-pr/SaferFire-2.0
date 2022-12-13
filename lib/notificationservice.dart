@@ -18,13 +18,6 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_flutternotification');
 
-    const IOSInitializationSettings initializationSettingsIOS = //for ios
-    IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
