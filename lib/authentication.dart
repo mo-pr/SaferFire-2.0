@@ -52,7 +52,7 @@ abstract class UserAuthentication {
       },
       body: jsonEncode(<String, String>{
         'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiQWRtaW4iLCJpYXQiOjE2NDY5MDY1NDQsImV4cCI6MTY3ODQ0MjU0NH0.6YuZjOA_t-SGFg3cVZH0IYrBIUOEMbTRXHcBupmih2Q',
-        'firestation': 'FF Schweinbach'
+        'firestation': 'FF Test'
       }),
     );
   }
