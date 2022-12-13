@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:saferfire/linechart.dart';
-import 'package:saferfire/hydrantMap.dart';
+import 'package:saferfire/pages/linechart.dart';
+import 'package:saferfire/pages/hydrantMap.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
-import 'package:saferfire/pages/toolProtocol.dart';
+import 'package:saferfire/pages/protocoltool_page.dart';
 import 'package:saferfire/views/brand_view.dart';
 import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
             '/': (context) => LineChart(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
-            '/protocol': (context) => ProtocolPage(),
+            '/protocol': (context) => const ProtocolPage(),
             '/einsatzuebersicht': (context) => OperationInfo(),
           },
           theme: ThemeData(
