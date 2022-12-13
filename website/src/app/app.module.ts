@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
@@ -20,14 +20,12 @@ import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
-import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AboutComponent,
     HomeComponent,
     LoginComponent
   ],
@@ -50,9 +48,11 @@ import { LoginComponent } from './login/login.component';
     MdbTooltipModule,
     MdbValidationModule,
     BrowserAnimationsModule,
-    MatCardModule
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent, AboutComponent,HomeComponent,LoginComponent]
+  bootstrap: [AppComponent,HomeComponent,LoginComponent]
 })
 export class AppModule { }
