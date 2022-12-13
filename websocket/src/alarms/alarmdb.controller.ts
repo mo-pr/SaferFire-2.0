@@ -65,7 +65,7 @@ export class AllAlarmsDBController{
         this.logger.log("Reading Alarms from Database");
         const qRunner = this.conn.createQueryRunner();
         await qRunner.connect();
-        await qRunner.query(`SELECT * FROM missiondata WHERE firedepartments LIKE '%${firestation}%'`).then(x => alarms=x);
+        await qRunner.query(`SELECT alarm_time,alarmsubtype,firedepartments FROM missiondata WHERE firedepartments LIKE '%${firestation}%'`).then(x => alarms=x);
         await qRunner.release();
         return alarms;
     }

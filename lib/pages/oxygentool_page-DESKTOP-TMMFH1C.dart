@@ -14,12 +14,12 @@ class OxygenPage extends StatefulWidget {
 
 class _OxygenPageState extends State<OxygenPage> {
   late Timer _timer;
-  TextEditingController _controller01 = TextEditingController();
-  TextEditingController _controller02 = TextEditingController();
-  TextEditingController _controller03 = TextEditingController();
-  TextEditingController _pressure01 = TextEditingController();
-  TextEditingController _pressure02 = TextEditingController();
-  TextEditingController _pressure03 = TextEditingController();
+  TextEditingController _controller01 = new TextEditingController();
+  TextEditingController _controller02 = new TextEditingController();
+  TextEditingController _controller03 = new TextEditingController();
+  TextEditingController _pressure01 = new TextEditingController();
+  TextEditingController _pressure02 = new TextEditingController();
+  TextEditingController _pressure03 = new TextEditingController();
 
   String formatTime(int milliseconds) {
     var secs = milliseconds ~/ 1000;
@@ -32,7 +32,7 @@ class _OxygenPageState extends State<OxygenPage> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
+    _timer = new Timer.periodic(new Duration(milliseconds: 30), (timer) {
       setState(() {});
     });
   }
@@ -60,12 +60,12 @@ class _OxygenPageState extends State<OxygenPage> {
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
-              title: Center(child: Text("Trupp " + (entries[index]._entryNr).toString() + ": Wählen Sie eine Aktion")),
+              title: Center(child: Text("Trupp " + (index + 1).toString() + ": Wählen Sie eine Aktion")),
               content: Row (
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    TextButton(
-                        child: const Text('Start - Stop'),
+                    new TextButton(
+                        child: new Text('Start - Stop'),
                         onPressed: () {
                           handleStartStop(index);
                           Navigator.of(context).pop();
@@ -76,7 +76,7 @@ class _OxygenPageState extends State<OxygenPage> {
                           entries[index]._timer.stop();
                           entries[index].isDone = true;
                           Navigator.of(context).pop();
-                        })
+                        }) // button 2
                   ]
               ),
           );
@@ -88,35 +88,16 @@ class _OxygenPageState extends State<OxygenPage> {
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
-              title: Center(child: Text("Trupp " + (entries[index]._entryNr).toString())),
-              content: Column(mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children : <Widget>[
-                      Expanded(
-                        child: Text(
-                          "Einsatz wurde beendet",
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    ],
-                  ),
-                  new TextButton(
-                      child: new Text('Neuer Auftrag'),
-                      onPressed: () {
-                        entries[index]._timer.stop();
-                        entries[index].isDone = true;
-                        Entry temp = new Entry(entries[index]._person01,entries[index]._person02,entries[index]._person03,entries.length);
-                        temp._pressure01 = entries[index]._pressure01;
-                        temp._pressure02 = entries[index]._pressure02;
-                        temp._pressure03 = entries[index]._pressure03;
-                        temp.isDone = false;
-                        temp._timer = Stopwatch();
-                        entries.add(temp);
-                        Navigator.of(context).pop();
-                      }
+              title: Center(child: Text("Trupp " + (index + 1).toString())),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children : <Widget>[
+                  Expanded(
+                    child: Text(
+                      "Einsatz wurde beendet",
+                      textAlign: TextAlign.center,
+                    ),
                   )
                 ],
               ),
@@ -127,12 +108,12 @@ class _OxygenPageState extends State<OxygenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFf2f6f8),
+      backgroundColor: Color(0xFFf2f6f8),
       body: Center(
         child: entries.isEmpty == true
             ? Container(
           child: Text(
-            "Kein Trupp vorhanden",
+            "Keine Trupp vorhanden",
             style: TextStyle(color: Colors.black87, fontSize: 28),
           ),
         )
@@ -144,20 +125,20 @@ class _OxygenPageState extends State<OxygenPage> {
               return GestureDetector(
                onTap: () => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index),
                 child: Container(
-                    decoration: BoxDecoration(
+                    decoration: new BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: const Offset(0, 3), // changes position of shadow
+                          offset: Offset(0, 3), // changes position of shadow
                         ),
                       ],
                     ),
                     child: Card(
                       color: entries[index].isDone == false ? Colors.white : Colors.grey,
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide(color: Color(0xFFd7dfe4), width: 2),
+                        side: BorderSide(color: Color(0xFFd7dfe4), width: 2),
                         borderRadius: BorderRadius.circular(2),
                       ),
                       child: Padding(
@@ -168,14 +149,14 @@ class _OxygenPageState extends State<OxygenPage> {
                             children: [
                               Column(
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Trupp:",
                                     style: TextStyle(
                                         fontSize: 19.0, color: Colors.black87),
                                   ),
                                   Text(
                                     entries[index].entryNr.toString(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 19.0, color: Colors.black87),
                                   ),
                                 ],
@@ -184,7 +165,7 @@ class _OxygenPageState extends State<OxygenPage> {
                                 formatTime(entries[index]
                                     ._timer
                                     .elapsedMilliseconds),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25,
@@ -192,7 +173,7 @@ class _OxygenPageState extends State<OxygenPage> {
                               ),
                               Text(
                                 entries[index]._getNames(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 19.0,
                                     color: Colors.green),
                               ),
@@ -234,7 +215,7 @@ class _OxygenPageState extends State<OxygenPage> {
             width: MediaQuery.of(context).size.width * .92,
             //MediaQuery.of(context).size.width * .3,
             decoration: BoxDecoration(
-              color: const Color(0xFF97170b),
+              color: Color(0xFF97170b),
               borderRadius: BorderRadius.circular(2.0),
             ),
             child: Row(
@@ -244,7 +225,7 @@ class _OxygenPageState extends State<OxygenPage> {
                     height: constraints.maxHeight,
                     width: constraints.maxHeight,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFA81A0D),
+                      color: Color(0xFFA81A0D),
                       borderRadius: BorderRadius.circular(2.0),
                     ),
                     child: const Icon(
@@ -255,7 +236,7 @@ class _OxygenPageState extends State<OxygenPage> {
                 }),
                 const Expanded(
                   child: Text(
-                    'Neuer Trupp',
+                    'Einsatztrupp',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25,
@@ -299,46 +280,46 @@ class _OxygenPageState extends State<OxygenPage> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
               left: Constants.padding,
               top: Constants.padding,
               right: Constants.padding,
               bottom: Constants.padding),
-          margin: const EdgeInsets.only(top: Constants.avatarRadius),
+          margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.white,
               borderRadius: BorderRadius.circular(2),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
                     color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
               ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Text(
+              Text(
                 "Neuer Trupp",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 8,
               ),
               TextField(
-                decoration: const InputDecoration(hintText: "Person 1"),
+                decoration: InputDecoration(hintText: "Person 1"),
                 controller: _controller01,
               ),
-              const SizedBox(
+              SizedBox(
                 height: 4,
               ),
               TextField(
-                decoration: const InputDecoration(hintText: "Person 2"),
+                decoration: InputDecoration(hintText: "Person 2"),
                 controller: _controller02,
               ),
-              const SizedBox(
+              SizedBox(
                 height: 4,
               ),
               TextField(
-                decoration: const InputDecoration(hintText: "Person 3"),
+                decoration: InputDecoration(hintText: "Person 3"),
                 controller: _controller03,
               ),
               Align(
@@ -361,7 +342,7 @@ class _OxygenPageState extends State<OxygenPage> {
                         },
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       "Speichern",
                       style: TextStyle(fontSize: 18),
                     )),
@@ -369,7 +350,7 @@ class _OxygenPageState extends State<OxygenPage> {
             ],
           ),
         ),
-        const Positioned(
+        Positioned(
           left: Constants.padding,
           right: Constants.padding,
           child: CircleAvatar(
@@ -390,53 +371,53 @@ class _OxygenPageState extends State<OxygenPage> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
               left: Constants.padding,
               top: Constants.padding,
               right: Constants.padding,
               bottom: Constants.padding),
-          margin: const EdgeInsets.only(top: Constants.avatarRadius),
+          margin: EdgeInsets.only(top: Constants.avatarRadius),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.white,
               borderRadius: BorderRadius.circular(2),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
                     color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
               ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Text(
+              Text(
                 "Sauerstoff [bar]",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 8,
               ),
               TextField(
-                decoration: const InputDecoration(hintText: "Druck Person 1"),
+                decoration: InputDecoration(hintText: "Druck Person 1"),
                 controller: _pressure01,
               ),
-              const SizedBox(
+              SizedBox(
                 height: 4,
               ),
               (_controller02.text != "")
                   ? TextField(
-                decoration: const InputDecoration(hintText: "Druck Person 2"),
+                decoration: InputDecoration(hintText: "Druck Person 2"),
                 controller: _pressure02,
               )
                   : Container(),
-              const SizedBox(
+              SizedBox(
                 height: 4,
               ),
               (_controller03.text != "")
                   ? TextField(
-                decoration: const InputDecoration(hintText: "Druck Person 3"),
+                decoration: InputDecoration(hintText: "Druck Person 3"),
                 controller: _pressure03,
               )
                   : Container(),
-              const SizedBox(
+              SizedBox(
                 height: 4,
               ),
               Align(
@@ -445,13 +426,13 @@ class _OxygenPageState extends State<OxygenPage> {
                     onPressed: () {
                       if (_controller01.text != "") {
                         setState(() {
-                          DateTime now = DateTime.now();
-                          entries.add(Entry(
+                          DateTime now = new DateTime.now();
+                          entries.add(new Entry(
                               _controller01.text,
                               _controller02.text,
                               _controller03.text,
                               entries.length + 1));
-                          persEntries.add(PDFEntry(
+                          persEntries.add(new PDFEntry(
                               _controller01.text,
                               _controller02.text,
                               _controller03.text,
@@ -490,7 +471,7 @@ class _OxygenPageState extends State<OxygenPage> {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       "Speichern",
                       style: TextStyle(fontSize: 18),
                     )),
@@ -498,7 +479,7 @@ class _OxygenPageState extends State<OxygenPage> {
             ],
           ),
         ),
-        const Positioned(
+        Positioned(
           left: Constants.padding,
           right: Constants.padding,
           child: CircleAvatar(
@@ -517,7 +498,6 @@ class _OxygenPageState extends State<OxygenPage> {
 }
 
 class Entry {
-
   late Stopwatch _timer;
   late int _entryNr;
   late String _person01;

@@ -12,6 +12,7 @@ import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
 
 import 'authentication.dart';
+import 'dangerousGoods.dart';
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
