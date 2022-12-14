@@ -15,17 +15,10 @@ class NotificationService {
   NotificationService._internal();
 
   Future<void> initNotification() async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_flutternotification');
 
-    final IOSInitializationSettings initializationSettingsIOS = //for ios
-    IOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
     );

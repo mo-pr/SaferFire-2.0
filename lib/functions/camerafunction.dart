@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
+
 Future<String> openCamera() async {
   await Permission.photos.request();
   final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -27,7 +27,6 @@ Future<String> uploadImage(XFile image) async {
       var downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } else {
-      print('No Image Path Received');
       return "";
     }
 }

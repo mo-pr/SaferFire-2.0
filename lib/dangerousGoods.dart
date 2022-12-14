@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:saferfire/dangerousGood.dart';
+import 'package:saferfire/dangerous_good.dart';
 import 'constants.dart';
 
 class DangerousGoods extends StatefulWidget {
@@ -47,18 +46,10 @@ class DangerousGoodsState extends State<DangerousGoods> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: Constants.padding,
-              child: ClipRRect(
-                  child:
-                  Image.asset(
-                      "assets/adr_class/2000px-ADR33_UN1203.svg.png")),
-            ),
               title: Text("UN-Nummer: " +
-                  adrs.asMap()[index]!.unNr.toString().padLeft(4, '0') +
+                  items.asMap()[index]!.unNr.toString().padLeft(4, '0') +
                   "\n\n" +
-                  adrs.asMap()[index]!.name),
+                  items.asMap()[index]!.name),
               actions: <Widget>[
                 TextButton(
                     child: const Text('Schließen'),
@@ -87,6 +78,12 @@ class DangerousGoodsState extends State<DangerousGoods> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text("Gefahrstoffe"),
+        centerTitle: true,
+        backgroundColor: Colors.red[700],
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
@@ -143,7 +140,7 @@ class DangerousGoodsState extends State<DangerousGoods> {
                                 radius: Constants.padding,
                                 child: ClipRRect(
                                     child: Image.asset(
-                                        "assets/2000px-ADR33_UN1203.svg.png")),
+                                        "assets/adr.svg")),
                               ),
                               title: Text(
                                 items[index].unNr.toString().padLeft(4, '0'),

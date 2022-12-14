@@ -17,6 +17,7 @@ class Protocol{
   DateTime? leitstellenJahr;
   bool? nachbarschaftshilfe;
   String? kategorie;
+  String? einsatzart;
 
   //Stammdaten
   TimeOfDay? uhrzeitAusfahrt;
@@ -49,10 +50,10 @@ class Protocol{
   String? brandVerlauf;
 
   //Technische Statistik
-  String? ursache = "Ursache";
-  String? hauptTaetigkeit = "Haupt-Tätigkeit";
-  String? gerfaehrlicheStoffe = "Gefährliche Stoffe";
-  String? weiterTaetigkeiten = "Weitere Tätigkeiten";
+  String? ursache;
+  String? hauptTaetigkeit;
+  String? gerfaehrlicheStoffe;
+  String? weiterTaetigkeiten;
 
   Protocol(
       this.einstznummer,

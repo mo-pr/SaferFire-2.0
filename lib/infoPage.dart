@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:saferfire/hydrantMap.dart';
-import 'package:saferfire/linechart.dart';
+import 'package:saferfire/dangerousGoods.dart';
+import 'package:saferfire/pages/hydrantMap.dart';
+import 'package:saferfire/pages/linechart.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/pages/oxygentool_page.dart';
 import 'package:saferfire/pages/protocoltool_page.dart';
-import 'package:saferfire/pages/toolProtocol.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:saferfire/alarm.dart';
 import 'package:saferfire/constants.dart' as cons;
 import 'package:saferfire/loginPage.dart';
@@ -20,19 +17,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:saferfire/models/Protocol.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
-import 'package:avatar_glow/avatar_glow.dart';
-import 'models/Protocol.dart';
 
-var _cardColor = Colors.white;
 const _openNavbarColor = Color(0xFFbb1e10);
 const _backgroundColor = Colors.white;
-const _maxHeight = 350.0;
 const _minHeight = 70.0;
-List _allDeployments = [];
 bool _isGuest = false;
 bool _isDeployment = false;
-
-int _showingAlarmId = 0;
 
 String _alarmId = " ";
 String _alarmSubtype = " ";
@@ -45,15 +35,15 @@ late Socket socket;
 late AnimationController _animationController;
 late Animation _animation;
 
-//String _timeString = "";
 PageController _pageController = PageController(initialPage: 0);
 
 changeAlarm (int newAlarmId){
-  _showingAlarmId = newAlarmId;
+  cons.showingAlarmId = newAlarmId;
 }
 
-
 class Start extends StatefulWidget {
+  const Start({super.key});
+
   @override
   StartPage createState() => StartPage();
 }
@@ -109,41 +99,32 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     socket.connect();
     _websocketReq();
     socket.on('alarmsRes', (data) async {
-      print(data);
-      Alarm alarm = new Alarm(data);
+      Alarm alarm = Alarm(data);
       for (int i = 0; i < cons.alarms.length; i++) {
-        if (cons.alarms[i].Id == alarm.Id) {
+        if (cons.alarms[i].id == alarm.id) {
           return cons.alarms;
         }
       }
       cons.alarms.add(alarm);
-      if(cons.protocol.einstznummer == null){
-        cons.protocol = Protocol(cons.alarms.elementAt(0).Id, cons.alarms.elementAt(0).Type, cons.alarms.elementAt(0).Address, "${cons.alarms.elementAt(0).Lat} + ${cons.alarms.elementAt(0).Lng}", cons.alarms.elementAt(0).AlarmType, DateTime.now());
-      }
-      //If you get alarm for your firestation, get push notification
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var firestation = prefs.getString('firestation');
-      if (alarm.FireDeps.toString()
+      if (alarm.fireDeps.toString()
           .contains(firestation!)) //if alarm is for your firestation
       {
         NotificationService().showNotification(
             0,
-            "A new alarm has appeared",
-            "Alarm type: ${alarm.AlarmType}   Address: ${alarm.Address}",
+            "Neuer Einsatz!",
+            "${alarm.subtype}, ${alarm.address}",
             2); //you get a push notification
       }
 
       return cons.alarms;
     });
-    socket.on(
+    /*socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
-    socket.on('error', (data) => print("Err: " + data));
-    Timer.periodic(
-        const Duration(seconds: 5), (Timer t) => _getAlarms()); //debug output
-    //_timeString = _formatDateTime(DateTime.now());
-    //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    //Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
+    socket.on('error', (data) => print("Err: " + data));*/
+    Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms());
     super.initState();
   }
 
@@ -165,33 +146,33 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       });
     } else {
       setState(() {
-        _alarmId = cons.alarms.elementAt(_showingAlarmId).Id.toString();
-        _alarmSubtype = cons.alarms.elementAt(_showingAlarmId).Subtype.toString();
-        _alarmAdress = cons.alarms.elementAt(_showingAlarmId).Address.toString();
-        _alarmTime = cons.alarms.elementAt(_showingAlarmId).Time.toString();
+        _alarmId = cons.alarms.elementAt(cons.showingAlarmId).id.toString();
+        _alarmSubtype = cons.alarms.elementAt(cons.showingAlarmId).subtype.toString();
+        _alarmAdress = cons.alarms.elementAt(cons.showingAlarmId).address.toString();
+        _alarmTime = cons.alarms.elementAt(cons.showingAlarmId).time.toString();
         _alarmLat =
-            cons.alarms.elementAt(_showingAlarmId).Lat.toString() + " " + cons.alarms.elementAt(_showingAlarmId).Lng.toString();
-        _alarmFireDepts = cons.alarms.elementAt(_showingAlarmId).FireDeps
+            cons.alarms.elementAt(cons.showingAlarmId).lat.toString() + " " + cons.alarms.elementAt(cons.showingAlarmId).lng.toString();
+        _alarmFireDepts = cons.alarms.elementAt(cons.showingAlarmId).fireDeps
             .toString()
             .replaceAll('[', '')
             .replaceAll(']', '')
             .replaceAll(', ', '');
         _isDeployment = true;
       });
+      if(cons.protocols.isEmpty)
+      {
+        for(var i = 0; i < cons.alarms.length; i++){
+          cons.protocols.add(Protocol(cons.alarms.elementAt(i).id, cons.alarms.elementAt(i).type, cons.alarms.elementAt(i).address, "${cons.alarms.elementAt(i).lat} + ${cons.alarms.elementAt(i).lng}", cons.alarms.elementAt(i).alarmType, DateTime.now()));
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final menuWidth = size.width;
     return Scaffold(
       backgroundColor: _backgroundColor,
-      //floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: SpeedDial(
-        /*shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
-        ),*/
         marginBottom: 10, //margin bottom
         icon: Icons.menu, //icon on Floating action button
         activeIcon: Icons.close, //icon when menu is expanded on button
@@ -205,8 +186,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         curve: Curves.bounceIn,
         overlayColor: Colors.black,
         overlayOpacity: 0.5,
-        onOpen: () => print('OPENING DIAL'), // action when menu opens
-        onClose: () => print('DIAL CLOSED'), //action when menu closes
+        //onOpen: () => print('OPENING DIAL'), // action when menu opens
+        //onClose: () => print('DIAL CLOSED'), //action when menu closes
         elevation: 8.0, //shadow elevation of button
         orientation: SpeedDialOrientation.Up,
         children: [
@@ -219,7 +200,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Navigation'),
+            //onLongPress: () => print('Navigation'),
           ),
           SpeedDialChild( //speed dial child
             child: const Icon(Icons.navigation_outlined),
@@ -229,10 +210,10 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
               setState(() {
-                MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
+                MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
               });
             },
-            onLongPress: () => print('Navigation'),
+            //onLongPress: () => print('Navigation'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.article_outlined),
@@ -243,7 +224,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Protokoll'),
+            //onLongPress: () => print('Protokoll'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.masks_outlined),
@@ -254,13 +235,47 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Atemschutz'),
+            //onLongPress: () => print('Atemschutz'),
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.map_outlined),
+            foregroundColor: Colors.white,
+            backgroundColor: _openNavbarColor,
+            label: 'Wasserkarte',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+            },
+            //onLongPress: () => print('Wasserkarte'),
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.warning_amber_rounded),
+            foregroundColor: Colors.white,
+            backgroundColor: _openNavbarColor,
+            label: 'Gefahrgut',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+            },
+            //onLongPress: () => print('Gefahrgut'),
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.stacked_line_chart),
+            foregroundColor: Colors.white,
+            backgroundColor: _openNavbarColor,
+            label: 'Statistik',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+            },
+            //onLongPress: () => print('Statistik'),
           ),
 
           //add more menu item children here
         ],
       ),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: (newIndex) {
           setState(() {
@@ -268,11 +283,12 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           });
         },
         children: [
-          Info(),
-          const ProtocolPage2(),
+          const Info(),
+          const ProtocolPage(),
           OxygenPage(),
           HydrantMap(),
-          LineChart()
+          const LineChart(),
+          const DangerousGoods()
         ],
       ),
     );
@@ -280,239 +296,472 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 }
 
 class Info extends StatefulWidget {
+  const Info({super.key});
+
   @override
   InfoPage createState() => InfoPage();
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
-  bool _expanded = false;
-  double _currentHeight = _minHeight;
+  bool _isKommando = false;
 
   changeAlarm2 (int newAlarmId){
     setState(() {
-      _showingAlarmId = newAlarmId;
+      cons.showingAlarmId = newAlarmId;
+    });
+  }
+
+  Future<bool> isKommando() async{
+    var prefs = await SharedPreferences.getInstance();
+    if(prefs.getString('role') == "kommando"){
+      return true;
+    }
+    return false;
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      isKommando().then((value) => _isKommando=value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final menuWidth = size.width;
     return Scaffold(
       backgroundColor: _backgroundColor,
       body: SingleChildScrollView(
         child: Container(
-          child: _isDeployment ? _receiveDeployment2() : _noDeployment(),
+          child: _isDeployment ? _receiveDeployment() : _noDeployment(),
         ),
-        /*child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Einsatzinformationen'),
-                        ),
-                        body: OperationInfo(),
-                      );
-                    });
-              },
-              child: Container(
-                child: _isDeployment ? _receiveDeployment2() : _noDeployment(),
-              ),
-            ),
-          ],
-        ),*/
       ),
-      /*floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: FloatingActionButton(
-        key: globalKey,
-        onPressed: _showOverLay,
-        child: const Icon(Icons.add),
-      ),*/
     );
   }
 
   Widget _noDeployment() {
-    return _isGuest
-        ? Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
-            child: const Center(
-              child: Text(
-                "Zur Zeit liegt kein Alarm vor",
-                style: TextStyle(color: Colors.black87, fontSize: 28),
-                textAlign: TextAlign.center,
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+              color: Color(0xffe3e1e1),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              ),
+              boxShadow: [BoxShadow(
+                  color: Color(0xffbfbdbd),
+                  blurRadius: 6,
+                  spreadRadius: 8
+              )]
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: SingleChildScrollView(
+              child: Column(
+                children: const <Widget>[
+                  SizedBox(height: 20),
+                  Text(
+                    'Kein laufender Einsatz',
+                    style: TextStyle(
+                      color: _openNavbarColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
               ),
             ),
-          )
-        : Column(
-            children: [
-              Container(
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 10), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Center(
-                    child: Text(
-                      'Kein laufender Einsatz',
-                      style: TextStyle(
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 600,
+          child: CustomScrollView(
+            primary: false,
+            slivers: <Widget>[
+              SliverPadding(
+                padding: const EdgeInsets.all(20),
+                sliver: SliverGrid.count(
+                  crossAxisSpacing: 25,
+                  mainAxisSpacing: 25,
+                  crossAxisCount: 2,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.masks_outlined,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Atemschutz"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffbfbdbd),
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                  const Text(
-                    'Statistik',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
-              Container(
-                child: Image.asset('assets/heatmap.jpg'),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: Color(0xffB2B1B1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xff959090),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: Offset(0, 5), // changes position of shadow
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.map_outlined,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Wasserkarte"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffbfbdbd),
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Gefahrgut"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffbfbdbd),
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.stacked_line_chart,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Statistik"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffbfbdbd),
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Mehr',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                  const Text(
-                    'Einsätze',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Container(
-                    color: Colors.black,
-                    height: 4,
-                    width: 80,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 65,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Vergangener Einsatz 001',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 65,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4D4F4E),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff333333).withOpacity(1),
-                      spreadRadius: 0,
-                      blurRadius: 0,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Text(
-                    'Vergangener Einsatz 002',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
                 ),
               ),
             ],
-          );
+          ),
+        ),
+      ],
+    );
   }
 
+
+  Widget _noDeploymen2() {
+    return _isGuest
+        ? Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
+      child: const Center(
+        child: Text(
+          "Zur Zeit liegt kein Alarm vor",
+          style: TextStyle(color: Colors.black87, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    )
+        : Column(
+      children: [
+        Container(
+          height: 40,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: const Color(0xff4D4F4E),
+            borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: const Offset(0, 10), // changes position of shadow
+              ),
+            ],
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(10),
+            child: Center(
+              child: Text(
+                'Kein laufender Einsatz',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
+            const Text(
+              'Statistik',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
+          ],
+        ),
+        const SizedBox(height: 5),
+        Container(
+          child: Image.asset('assets/heatmap.jpg'),
+        ),
+        Container(
+          height: 30,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: Color(0xffB2B1B1),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff959090),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text(
+              'Mehr',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
+            const Text(
+              'Einsätze',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            Container(
+              color: Colors.black,
+              height: 4,
+              width: 80,
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: const Color(0xff4D4F4E),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: const Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text(
+              'Vergangener Einsatz 001',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          height: 65,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: const Color(0xff4D4F4E),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xff333333).withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 0,
+                offset: const Offset(0, 5), // changes position of shadow
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text(
+              'Vergangener Einsatz 002',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
   /// Deployment received
-  Widget _receiveDeployment2() {
+  Widget _receiveDeployment() {
     return Column(
       children: [
         GestureDetector(
@@ -564,6 +813,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     ),
                     Text(
                       _alarmSubtype,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.black, fontSize: 25),
                     ),
                     const SizedBox(height: 10),
@@ -577,10 +827,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     ),
                     Text(
                       _alarmAdress,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.black, fontSize: 25),
                     ),
                     Text(
                       _alarmLat,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.black, fontSize: 15),
                     ),
                     const SizedBox(height: 10),
@@ -593,7 +845,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Text(
-                      _alarmTime,
+                      getTime(_alarmTime),
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                     const SizedBox(height: 10),
@@ -607,6 +860,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                     ),
                     Text(
                       _alarmFireDepts,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.black, fontSize: 25),
                     ),
                     Row(
@@ -643,7 +897,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   children: <Widget>[
                     GestureDetector(
                       onTap: (){
-                        MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
+                        MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
                       },
                       child: Container(
                         child: Column(
@@ -674,7 +928,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    Visibility(
+                      visible: _isKommando,
+                      child: GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
@@ -706,7 +962,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    ),
+                    ),),
                     GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
@@ -867,6 +1123,11 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
       ],
     );
   }
+
+  getTime(time){
+    final splitted = time.split(' ');
+    return splitted[4].split(':')[0] + ':' + splitted[4].split(':')[1];
+  }
 }
 
 class OperationInfo extends StatelessWidget {
@@ -895,7 +1156,7 @@ class OperationInfo extends StatelessWidget {
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
               Text(
-                alarm.Id ?? ' ',
+                alarm.id ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -904,7 +1165,7 @@ class OperationInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               Text(
-                alarm.Subtype ?? ' ',
+                alarm.subtype ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -913,7 +1174,7 @@ class OperationInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               Text(
-                alarm.Address ?? ' ',
+                alarm.address ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -987,7 +1248,7 @@ class AlarmOverview extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
-                    cons.alarms[index].Subtype ?? ' ',
+                    cons.alarms[index].subtype ?? ' ',
                     style: const TextStyle(color: Colors.black, fontSize: 20),
                   ),
                   const SizedBox(height: 15),
@@ -997,7 +1258,7 @@ class AlarmOverview extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
-                    cons.alarms[index].Address ?? ' ',
+                    cons.alarms[index].address ?? ' ',
                     style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
                   const SizedBox(height: 15),
@@ -1006,7 +1267,7 @@ class AlarmOverview extends StatelessWidget {
                       children: [
                         const SizedBox(height: 5),
                         Text(
-                          cons.alarms[index].Id ?? ' ',
+                          cons.alarms[index].id ?? ' ',
                           style: const TextStyle(
                             color: _openNavbarColor,
                             fontSize: 12,
@@ -1024,130 +1285,3 @@ class AlarmOverview extends StatelessWidget {
     );
   }
 }
-
-/*class OperationInfoAlt extends StatelessWidget {
-  const OperationInfoAlt({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 15),
-          Material(
-            elevation: 10,
-            borderRadius: BorderRadius.circular(2.0),
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Einsatz Protocol'),
-                        ),
-                        body: ProtocolPage(),
-                      );
-                    });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                height: 60.0,
-                //MediaQuery.of(context).size.width * .08,
-                width: MediaQuery.of(context).size.width * .9,
-                //MediaQuery.of(context).size.width * .3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    LayoutBuilder(builder: (context, constraints) {
-                      return Container(
-                        height: constraints.maxHeight,
-                        width: constraints.maxHeight,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFA81A0D),
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        child: const Icon(
-                          Icons.wysiwyg_sharp,
-                          color: Colors.white,
-                        ),
-                      );
-                    }),
-                    const Expanded(
-                      child: Text(
-                        'Einsatzprotokoll',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Material(
-            elevation: 10,
-            borderRadius: BorderRadius.circular(2.0),
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          backgroundColor: cons.mainColor,
-                          title: const Text('Alle Einsätze'),
-                        ),
-                        body: const ListViewBuilder(),
-                      );
-                    });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                height: 60.0,
-                //MediaQuery.of(context).size.width * .08,
-                width: MediaQuery.of(context).size.width * .9,
-                //MediaQuery.of(context).size.width * .3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    LayoutBuilder(builder: (context, constraints) {
-                      return Container(
-                        height: constraints.maxHeight,
-                        width: constraints.maxHeight,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFA81A0D),
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        child: const Icon(
-                          Icons.wysiwyg_sharp,
-                          color: Colors.white,
-                        ),
-                      );
-                    }),
-                    const Expanded(
-                      child: Text(
-                        'Alle Einsätze',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}*/
