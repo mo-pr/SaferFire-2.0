@@ -1,9 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'authentication.dart';
+
+import '../authentication.dart';
 
 List<double> spots = List<double>.filled(12, 0, growable: false);
 List<AlarmData> data = [];
@@ -11,6 +13,9 @@ final DateTime now = DateTime.now();
 final DateFormat formatter = DateFormat('yyyy');
 String currentYear = formatter.format(now); //current year in String
 List<double> daysInOneMonth = [];
+var firestation;
+var monthForHeader = "Alle";
+var typeForHeader = "Alle";
 
 class LineChart extends StatefulWidget {
   const LineChart({super.key});
@@ -36,20 +41,31 @@ class LineChartState extends State<LineChart> {
   Widget build(BuildContext context) {
     itemsYear = getYears();
 
-     data = [
-      AlarmData('JAN', spots[0]),
-      AlarmData('FEB', spots[1]),
-      AlarmData('MÄRZ', spots[2]),
-      AlarmData('APR', spots[3]),
-      AlarmData('MAI', spots[4]),
-      AlarmData('JUNI', spots[5]),
-      AlarmData('JULI', spots[6]),
-      AlarmData('AUG', spots[7]),
-      AlarmData('SEP', spots[8]),
-      AlarmData('OKT', spots[9]),
-      AlarmData('NOV', spots[10]),
-      AlarmData('DEZ', spots[11])
-    ];
+    if (dropdownvalueMonth == "Alle" || dropdownvalueMonth == null) {
+      data = [
+        AlarmData('JAN', spots[0]),
+        AlarmData('FEB', spots[1]),
+        AlarmData('MÄRZ', spots[2]),
+        AlarmData('APR', spots[3]),
+        AlarmData('MAI', spots[4]),
+        AlarmData('JUNI', spots[5]),
+        AlarmData('JULI', spots[6]),
+        AlarmData('AUG', spots[7]),
+        AlarmData('SEP', spots[8]),
+        AlarmData('OKT', spots[9]),
+        AlarmData('NOV', spots[10]),
+        AlarmData('DEZ', spots[11])
+      ];
+    }
+    else
+    {
+      data = [];
+
+      for (int i = 1; i <= spots.length; i++)
+      {
+        data.add(AlarmData("$i", spots[i-1]));
+      }
+    }
 
     return FutureBuilder<List<double>>(
         future: getSpots(),
@@ -81,23 +97,6 @@ class LineChartState extends State<LineChart> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownvalueYear = newValue!;
-                            spots = List<double>.filled(12, 0, growable: false);
-                            getSpots().then((value) => spots = value);
-
-                            data = [
-                              AlarmData('JAN', spots[0]),
-                              AlarmData('FEB', spots[1]),
-                              AlarmData('MÄRZ', spots[2]),
-                              AlarmData('APR', spots[3]),
-                              AlarmData('MAI', spots[4]),
-                              AlarmData('JUNI', spots[5]),
-                              AlarmData('JULI', spots[6]),
-                              AlarmData('AUG', spots[7]),
-                              AlarmData('SEP', spots[8]),
-                              AlarmData('OKT', spots[9]),
-                              AlarmData('NOV', spots[10]),
-                              AlarmData('DEZ', spots[11])
-                            ];
                           });
                         },
                       ),
@@ -114,17 +113,7 @@ class LineChartState extends State<LineChart> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownvalueMonth = newValue!;
-                            int monthNumber = getMonthNumber(dropdownvalueMonth!);
-                            int days = getDaysInMonth(int.parse(dropdownvalueYear), monthNumber);
-
-                            //error here
-                            spots = List<double>.filled(days, 0, growable: false); //now spots is cleared
-                            getSpots().then((value) => spots = value);
-
-                            for (int i = 1; i <= spots.length; i++)
-                            {
-                                data.add(AlarmData("$i", spots[i-1]));
-                            }
+                            monthForHeader = dropdownvalueMonth!;
                           });
                         },
                       ),
@@ -141,23 +130,7 @@ class LineChartState extends State<LineChart> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownvalueType = newValue!;
-                            spots = List<double>.filled(12, 0, growable: false);
-                            getSpots().then((value) => spots = value);
-
-                            data = [
-                              AlarmData('JAN', spots[0]),
-                              AlarmData('FEB', spots[1]),
-                              AlarmData('MÄRZ', spots[2]),
-                              AlarmData('APR', spots[3]),
-                              AlarmData('MAI', spots[4]),
-                              AlarmData('JUNI', spots[5]),
-                              AlarmData('JULI', spots[6]),
-                              AlarmData('AUG', spots[7]),
-                              AlarmData('SEP', spots[8]),
-                              AlarmData('OKT', spots[9]),
-                              AlarmData('NOV', spots[10]),
-                              AlarmData('DEZ', spots[11])
-                            ];
+                            typeForHeader = dropdownvalueType!;
                           });
                         },
                       ),
@@ -168,7 +141,7 @@ class LineChartState extends State<LineChart> {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     child: SfCartesianChart(
                         primaryXAxis: CategoryAxis(edgeLabelPlacement: EdgeLabelPlacement.shift),
-                        title: ChartTitle(text: 'Firedepartment: Year: $dropdownvalueYear   Month: $dropdownvalueMonth    Type: $dropdownvalueType'),
+                        title: ChartTitle(text: 'Feuerwehr: $firestation | Jahr: $dropdownvalueYear | Monat: $monthForHeader | Typ: $typeForHeader'),
                         tooltipBehavior: TooltipBehavior(enable: true),
                         series: <ChartSeries<AlarmData, String>>[
                           LineSeries<AlarmData, String>(
@@ -348,29 +321,40 @@ class LineChartState extends State<LineChart> {
     }
 
     if (dropdownvalueMonth != null && dropdownvalueMonth != "Alle")
-      {
-          String? chosenMonthString = dropdownvalueMonth;
+    {
+      String? chosenMonthString = dropdownvalueMonth;
 
-          int chosenYear = int.parse(dropdownvalueYear);
-          int chosenMonth = getMonthNumber(chosenMonthString!);
+      int chosenYear = int.parse(dropdownvalueYear);
+      int chosenMonth = getMonthNumber(chosenMonthString!);
 
-          int daysInMonth = getDaysInMonth(chosenYear, chosenMonth);
-          daysInOneMonth = List<double>.filled(daysInMonth, 0, growable: false); //makes list for every day in month
+      int daysInMonth = getDaysInMonth(chosenYear, chosenMonth);
+      daysInOneMonth = List<double>.filled(daysInMonth, 0, growable: false); //makes list for every day in month
 
-          //get shortform for month
-          String monthShortform = getShortformMonth(chosenMonth);
+      //get shortform for month
+      String monthShortform = getShortformMonth(chosenMonth);
 
-          for (int i = 1; i <= dates.length; i++)
-          {
-            if (dates[i-1].contains(dropdownvalueYear) && dates[i-1].contains(monthShortform))
-            {
-              var day = int.parse(dates[i-1].split(' ')[0]);
-              daysInOneMonth[day-1]++;
-            }
+      if (dropdownvalueType == "Alle" || dropdownvalueType == null) {
+        for (int i = 1; i <= dates.length; i++) {
+          if (dates[i - 1].contains(dropdownvalueYear) &&
+              dates[i - 1].contains(monthShortform)) {
+            var day = int.parse(dates[i - 1].split(' ')[0]);
+            daysInOneMonth[day - 1]++;
           }
-
-          spotsArray = daysInOneMonth;
+        }
       }
+      else
+      {
+        for (int i = 1; i <= dates.length; i++) {
+          if (dates[i - 1].contains(dropdownvalueYear) &&
+              dates[i - 1].contains(monthShortform) && types[i-1].contains(dropdownvalueYear)) {
+            var day = int.parse(dates[i - 1].split(' ')[0]);
+            daysInOneMonth[day - 1]++;
+          }
+        }
+      }
+
+      spotsArray = daysInOneMonth;
+    }
 
     setState((){
       spots = spotsArray;
@@ -408,13 +392,13 @@ class LineChartState extends State<LineChart> {
 
   static int getMonthNumber(String month) {
     if (month == 'Januar')
-      {
-        return 1;
-      }
+    {
+      return 1;
+    }
     else if (month == 'Februar')
-      {
-        return 2;
-      }
+    {
+      return 2;
+    }
     else if (month == 'März')
     {
       return 3;
@@ -462,11 +446,11 @@ class LineChartState extends State<LineChart> {
   static String getShortformMonth(int month) {
     if (month == 1)
     {
-        return 'Jan';
+      return 'Jan';
     }
     else if (month == 2)
     {
-        return 'Feb';
+      return 'Feb';
     }
     else if (month == 3)
     {
@@ -517,6 +501,8 @@ class LineChartState extends State<LineChart> {
     setState(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         spots = await getSpots();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        firestation = prefs.getString('firestation');
       });
     });
     super.initState();
