@@ -8,12 +8,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
 ];
 const routerOptions: ExtraOptions = {
+  useHash: false,
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
   scrollOffset: [0, 55],
   onSameUrlNavigation: 'reload',
 };
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,routerOptions)],
