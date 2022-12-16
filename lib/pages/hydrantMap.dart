@@ -64,9 +64,19 @@ class _StatefulHydrantWidgetState extends State<StatefulHydrantWidget> {
   }
 
   Future<http.Response> getHydrants(double lng, double lat) async {
+    var gotHydrants = false;
+    var response;
     var uri = Uri.parse(
-        'https://api.wasserkarte.info/1.0/getSurroundingWaterSources/?source=$source&token=$token&lat=${lat.toStringAsFixed(2)}&lng=${lng.toStringAsFixed(2)}&range=$range&numItems=$numItems');
-    return await http.get(uri);
+        'https://api.wasserkarte.info/1.0/getSurroundingWaterSources/?source=$sourceAPI&token=$token&lat=${lat.toStringAsFixed(2)}&lng=${lng.toStringAsFixed(2)}&range=$range&numItems=$numItems');
+    while(gotHydrants == false){
+      try{
+        response = await http.get(uri);
+        gotHydrants = true;
+      }catch(e){
+        print(e);
+      }
+    }
+    return response;
   }
 
   Future<List<Hydrant>> convertHydrantResponse(String response) async {
