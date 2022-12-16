@@ -109,6 +109,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var firestation = prefs.getString('firestation');
+
       if (alarm.fireDeps
           .toString()
           .contains(firestation!)) //if alarm is for your firestation
