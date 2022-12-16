@@ -357,7 +357,7 @@ class LineChartState extends State<LineChart> {
       {
         for (int i = 0; i < dates.length; i++) {
           if (dates[i].contains(dropdownvalueYear) &&
-              dates[i].contains(monthShortform) && types[i].contains('TE')) {
+              dates[i].contains(monthShortform) && !types[i].contains('Brand')) {
             var day = int.parse(dates[i].split(' ')[0]);
 
             daysInOneMonth[day]++;
