@@ -37,7 +37,7 @@ late Animation _animation;
 
 PageController _pageController = PageController(initialPage: 0);
 
-changeAlarm (int newAlarmId){
+changeAlarm(int newAlarmId) {
   cons.showingAlarmId = newAlarmId;
 }
 
@@ -53,7 +53,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    if  (cons.isTest)  {
+    if (cons.isTest) {
       socket.emit('alarmsReq',
           json.encode({'token': prefs.getString('token'), "count": 4}));
     }
@@ -74,13 +74,13 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync:this,duration: const Duration(seconds: 1));
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController.repeat(reverse: true);
-    _animation =  Tween(begin: 8.0,end: 12.0).animate(_animationController)..addListener((){
-      setState(() {
-
+    _animation = Tween(begin: 8.0, end: 12.0).animate(_animationController)
+      ..addListener(() {
+        setState(() {});
       });
-    });
     setState(() {
       _getSharedPreference().then((value) => _isGuest = value);
     });
@@ -109,8 +109,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var firestation = prefs.getString('firestation');
-      if (alarm.fireDeps.toString()
-          .contains(firestation)) //if alarm is for your firestation
+      if (alarm.fireDeps
+          .toString()
+          .contains(firestation!)) //if alarm is for your firestation
       {
         NotificationService().showNotification(
             0,
@@ -146,23 +147,33 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       });
     } else {
       setState(() {
+        _isDeployment = true;
         _alarmId = cons.alarms.elementAt(cons.showingAlarmId).id.toString();
-        _alarmSubtype = cons.alarms.elementAt(cons.showingAlarmId).subtype.toString();
-        _alarmAdress = cons.alarms.elementAt(cons.showingAlarmId).address.toString();
+        _alarmSubtype =
+            cons.alarms.elementAt(cons.showingAlarmId).subtype.toString();
+        _alarmAdress =
+            cons.alarms.elementAt(cons.showingAlarmId).address.toString();
         _alarmTime = cons.alarms.elementAt(cons.showingAlarmId).time.toString();
-        _alarmLat =
-            cons.alarms.elementAt(cons.showingAlarmId).lat.toString() + " " + cons.alarms.elementAt(cons.showingAlarmId).lng.toString();
-        _alarmFireDepts = cons.alarms.elementAt(cons.showingAlarmId).fireDeps
+        _alarmLat = cons.alarms.elementAt(cons.showingAlarmId).lat.toString() +
+            " " +
+            cons.alarms.elementAt(cons.showingAlarmId).lng.toString();
+        _alarmFireDepts = cons.alarms
+            .elementAt(cons.showingAlarmId)
+            .fireDeps
             .toString()
             .replaceAll('[', '')
             .replaceAll(']', '')
             .replaceAll(', ', '');
-        _isDeployment = true;
       });
-      if(cons.protocols.isEmpty)
-      {
-        for(var i = 0; i < cons.alarms.length; i++){
-          cons.protocols.add(Protocol(cons.alarms.elementAt(i).id, cons.alarms.elementAt(i).type, cons.alarms.elementAt(i).address, "${cons.alarms.elementAt(i).lat} + ${cons.alarms.elementAt(i).lng}", cons.alarms.elementAt(i).alarmType, DateTime.now()));
+      if (cons.protocols.isEmpty) {
+        for (var i = 0; i < cons.alarms.length; i++) {
+          cons.protocols.add(Protocol(
+              cons.alarms.elementAt(i).id,
+              cons.alarms.elementAt(i).type,
+              cons.alarms.elementAt(i).address,
+              "${cons.alarms.elementAt(i).lat} + ${cons.alarms.elementAt(i).lng}",
+              cons.alarms.elementAt(i).alarmType,
+              DateTime.now()));
         }
       }
     }
@@ -178,7 +189,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         activeIcon: Icons.close, //icon when menu is expanded on button
         backgroundColor: _openNavbarColor, //background color of button
         foregroundColor: Colors.white, //font color, icon color in button
-        activeBackgroundColor: Colors.grey, //background color when menu is expanded
+        activeBackgroundColor:
+            Colors.grey, //background color when menu is expanded
         activeForegroundColor: Colors.white,
         buttonSize: 60, //button size
         visible: true,
@@ -191,18 +203,22 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         elevation: 8.0, //shadow elevation of button
         orientation: SpeedDialOrientation.Up,
         children: [
-          SpeedDialChild( //speed dial child
+          SpeedDialChild(
+            //speed dial child
             child: const Icon(Icons.info_outline),
             backgroundColor: _openNavbarColor,
             foregroundColor: Colors.white,
             label: 'Info',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Navigation'),
           ),
-          SpeedDialChild( //speed dial child
+          SpeedDialChild(
+            //speed dial child
             child: const Icon(Icons.navigation_outlined),
             backgroundColor: _openNavbarColor,
             foregroundColor: Colors.white,
@@ -222,7 +238,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             label: 'Protokoll',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(1,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Protokoll'),
           ),
@@ -233,7 +251,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             label: 'Atemschutz',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(2,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Atemschutz'),
           ),
@@ -244,7 +264,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             label: 'Wasserkarte',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(3,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Wasserkarte'),
           ),
@@ -255,7 +277,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             label: 'Gefahrgut',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(5,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Gefahrgut'),
           ),
@@ -266,7 +290,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             label: 'Statistik',
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
-              _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _pageController.animateToPage(4,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             },
             //onLongPress: () => print('Statistik'),
           ),
@@ -283,7 +309,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           });
         },
         children: [
-          const Info(),
+          Info(),
           const ProtocolPage(),
           OxygenPage(),
           HydrantMap(),
@@ -305,26 +331,25 @@ class Info extends StatefulWidget {
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   bool _isKommando = false;
 
-  changeAlarm2 (int newAlarmId){
+  changeAlarm2(int newAlarmId) {
     setState(() {
       cons.showingAlarmId = newAlarmId;
     });
   }
 
-  Future<bool> isKommando() async{
+  Future<bool> isKommando() async {
     var prefs = await SharedPreferences.getInstance();
-    if(prefs.getString('role') == "kommando"){
+    if (prefs.getString('role') == "kommando") {
       return true;
     }
     return false;
   }
 
-
   @override
   void initState() {
     super.initState();
     setState(() {
-      isKommando().then((value) => _isKommando=value);
+      isKommando().then((value) => _isKommando = value);
     });
   }
 
@@ -351,12 +376,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(5),
               ),
-              boxShadow: [BoxShadow(
-                  color: Color(0xffbfbdbd),
-                  blurRadius: 6,
-                  spreadRadius: 8
-              )]
-          ),
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xffbfbdbd), blurRadius: 6, spreadRadius: 8)
+              ]),
           child: Padding(
             padding: const EdgeInsets.all(30),
             child: SingleChildScrollView(
@@ -391,8 +414,10 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   crossAxisCount: 2,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(2,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -417,15 +442,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Color(0xffbfbdbd),
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(3,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -450,15 +478,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Color(0xffbfbdbd),
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(5,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -483,15 +514,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Color(0xffbfbdbd),
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(4,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -516,20 +550,19 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Color(0xffbfbdbd),
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                          ],
+                          children: const <Widget>[],
                         ),
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
@@ -542,20 +575,19 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Colors.white,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                          ],
+                          children: const <Widget>[],
                         ),
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
@@ -568,7 +600,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Colors.white,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
@@ -584,189 +617,190 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     );
   }
 
-
   Widget _noDeploymen2() {
     return _isGuest
         ? Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
-      child: const Center(
-        child: Text(
-          "Zur Zeit liegt kein Alarm vor",
-          style: TextStyle(color: Colors.black87, fontSize: 28),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    )
-        : Column(
-      children: [
-        Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 10), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Padding(
-            padding: EdgeInsets.all(10),
-            child: Center(
+            alignment: Alignment.center,
+            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
+            child: const Center(
               child: Text(
-                'Kein laufender Einsatz',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
+                "Zur Zeit liegt kein Alarm vor",
+                style: TextStyle(color: Colors.black87, fontSize: 28),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-            const Text(
-              'Statistik',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        Container(
-          child: Image.asset('assets/heatmap.jpg'),
-        ),
-        Container(
-          height: 30,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            color: Color(0xffB2B1B1),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff959090),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: Offset(0, 5), // changes position of shadow
+          )
+        : Column(
+            children: [
+              Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 10), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text(
+                      'Kein laufender Einsatz',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                  const Text(
+                    'Statistik',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Container(
+                child: Image.asset('assets/heatmap.jpg'),
+              ),
+              Container(
+                height: 30,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  color: Color(0xffB2B1B1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xff959090),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Mehr',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                  const Text(
+                    'Einsätze',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    color: Colors.black,
+                    height: 4,
+                    width: 80,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 65,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Vergangener Einsatz 001',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 65,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: const Color(0xff4D4F4E),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff333333).withOpacity(1),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: const Offset(0, 5), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    'Vergangener Einsatz 002',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ],
-          ),
-          child: const Center(
-            child: Text(
-              'Mehr',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-            const Text(
-              'Einsätze',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              color: Colors.black,
-              height: 4,
-              width: 80,
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'Vergangener Einsatz 001',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          height: 65,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: const Color(0xff4D4F4E),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff333333).withOpacity(1),
-                spreadRadius: 0,
-                blurRadius: 0,
-                offset: const Offset(0, 5), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'Vergangener Einsatz 002',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    );
+          );
   }
+
   /// Deployment received
   Widget _receiveDeployment() {
     return Column(
       children: [
         GestureDetector(
           onTap: () async {
-            int newAlarm = await Navigator.push(context, MaterialPageRoute(builder: (context) => const AlarmOverview()));
+            int newAlarm = await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AlarmOverview()));
 
             changeAlarm2(newAlarm);
             /*showDialog(
@@ -790,12 +824,12 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   bottomLeft: Radius.circular(5),
                   bottomRight: Radius.circular(5),
                 ),
-                boxShadow: [BoxShadow(
-                    color: _openNavbarColor,
-                    blurRadius: _animation.value,
-                    spreadRadius: _animation.value
-                )]
-            ),
+                boxShadow: [
+                  BoxShadow(
+                      color: _openNavbarColor,
+                      blurRadius: _animation.value,
+                      spreadRadius: _animation.value)
+                ]),
             child: Padding(
               padding: const EdgeInsets.all(30),
               child: SingleChildScrollView(
@@ -874,8 +908,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               fontSize: 12,
                             ),
                           ),
-                        ]
-                    ), //#endregion
+                        ]), //#endregion
                   ],
                 ),
               ),
@@ -896,8 +929,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   crossAxisCount: 2,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: (){
-                        MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
+                      onTap: () {
+                        MapUtils.openMap(
+                            cons.alarms.first.lat, cons.alarms.first.lng);
                       },
                       child: Container(
                         child: Column(
@@ -922,17 +956,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Visibility(
-                      visible: _isKommando,
-                      child: GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.animateToPage(1,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -957,15 +992,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                              Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
-                    ),),
+                    ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(2,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -990,15 +1028,54 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(5,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Gefahrgut"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _openNavbarColor,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset:
+                              Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.animateToPage(3,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -1023,15 +1100,18 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      onTap: () {
+                        _pageController.animateToPage(4,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease);
                       },
                       child: Container(
                         child: Column(
@@ -1056,20 +1136,19 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                          ],
+                          children: const <Widget>[],
                         ),
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
@@ -1082,20 +1161,19 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Colors.white,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                          ],
+                          children: const <Widget>[],
                         ),
                         padding: const EdgeInsets.all(8),
                         decoration: const BoxDecoration(
@@ -1108,7 +1186,8 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: Colors.white,
                               spreadRadius: 0,
                               blurRadius: 5,
-                              offset: Offset(0, 1), // changes position of shadow
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
@@ -1124,7 +1203,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     );
   }
 
-  getTime(time){
+  getTime(time) {
     final splitted = time.split(' ');
     return splitted[4].split(':')[0] + ':' + splitted[4].split(':')[1];
   }
@@ -1134,62 +1213,62 @@ class OperationInfo extends StatelessWidget {
   OperationInfo({Key? key}) : super(key: key);
 
   final List<String> titles = [
-    for ( var alarm in cons.alarms ) " ",
+    for (var alarm in cons.alarms) " ",
   ];
 
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> images = [
-      for ( var alarm in cons.alarms ) SingleChildScrollView (
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.grey,
-            //borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              const Text(
-                "ID",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                alarm.id ?? ' ',
-                style: const TextStyle(color: Colors.black, fontSize: 25),
-              ),
-              const SizedBox(height: 50),
-              const Text(
-                "Subtype",
-                style: TextStyle(color: Colors.black, fontSize: 25),
-              ),
-              Text(
-                alarm.subtype ?? ' ',
-                style: const TextStyle(color: Colors.black, fontSize: 25),
-              ),
-              const SizedBox(height: 50),
-              const Text(
-                "Addrese",
-                style: TextStyle(color: Colors.black, fontSize: 25),
-              ),
-              Text(
-                alarm.address ?? ' ',
-                style: const TextStyle(color: Colors.black, fontSize: 25),
-              ),
-              const SizedBox(height: 50),
-            ],
+      for (var alarm in cons.alarms)
+        SingleChildScrollView(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.grey,
+              //borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                const Text(
+                  "ID",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  alarm.id ?? ' ',
+                  style: const TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                const SizedBox(height: 50),
+                const Text(
+                  "Subtype",
+                  style: TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                Text(
+                  alarm.subtype ?? ' ',
+                  style: const TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                const SizedBox(height: 50),
+                const Text(
+                  "Addrese",
+                  style: TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                Text(
+                  alarm.address ?? ' ',
+                  style: const TextStyle(color: Colors.black, fontSize: 25),
+                ),
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
-      ),
     ];
     return Scaffold(
       body: SafeArea(
         child: Expanded(
           child: Container(
             child: VerticalCardPager(
-              textStyle:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              textStyle: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
               titles: titles,
               images: images,
               onPageChanged: (page) {},
@@ -1219,7 +1298,7 @@ class AlarmOverview extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: (){
+            onTap: () {
               //changeAlarm(index);
               Navigator.pop(context, index);
             },
@@ -1245,7 +1324,9 @@ class AlarmOverview extends StatelessWidget {
                   const Text(
                     "Subtype",
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
                   ),
                   Text(
                     cons.alarms[index].subtype ?? ' ',
@@ -1255,7 +1336,9 @@ class AlarmOverview extends StatelessWidget {
                   const Text(
                     "Addrese",
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
                   ),
                   Text(
                     cons.alarms[index].address ?? ' ',
@@ -1273,8 +1356,7 @@ class AlarmOverview extends StatelessWidget {
                             fontSize: 12,
                           ),
                         ),
-                      ]
-                  ),
+                      ]),
                 ],
               ),
             ),
