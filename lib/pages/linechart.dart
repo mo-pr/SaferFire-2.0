@@ -334,27 +334,41 @@ class LineChartState extends State<LineChart> {
       String monthShortform = getShortformMonth(chosenMonth);
 
       if (dropdownvalueType == "Alle" || dropdownvalueType == null) {
-        for (int i = 1; i <= dates.length; i++) {
-          if (dates[i - 1].contains(dropdownvalueYear) &&
-              dates[i - 1].contains(monthShortform)) {
-            var day = int.parse(dates[i - 1].split(' ')[0]);
-            daysInOneMonth[day - 1]++;
+        for (int i = 0; i < dates.length; i++) {
+          if (dates[i].contains(dropdownvalueYear) &&
+              dates[i].contains(monthShortform)) {
+            var day = int.parse(dates[i].split(' ')[0]);
+            daysInOneMonth[day]++;
           }
         }
       }
-      else
+      else if (dropdownvalueType == 'Brand')
       {
-        for (int i = 1; i <= dates.length; i++) {
-          if (dates[i - 1].contains(dropdownvalueYear) &&
-              dates[i - 1].contains(monthShortform) && types[i-1].contains(dropdownvalueType!)) {
-            var day = int.parse(dates[i - 1].split(' ')[0]);
-            daysInOneMonth[day - 1]++;
+        for (int i = 0; i < dates.length; i++) {
+          if (dates[i].contains(dropdownvalueYear) &&
+              dates[i].contains(monthShortform) && types[i].contains('Brand')) {
+            var day = int.parse(dates[i].split(' ')[0]);
+
+            daysInOneMonth[day]++;
+          }
+        }
+      }
+      else if (dropdownvalueType == 'Technischer Einsatz')
+      {
+        for (int i = 0; i < dates.length; i++) {
+          if (dates[i].contains(dropdownvalueYear) &&
+              dates[i].contains(monthShortform) && types[i].contains('TE')) {
+            var day = int.parse(dates[i].split(' ')[0]);
+
+            daysInOneMonth[day]++;
           }
         }
       }
 
       spotsArray = daysInOneMonth;
     }
+
+
 
     setState((){
       spots = spotsArray;

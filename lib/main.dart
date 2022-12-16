@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saferfire/loginPage.dart';
 import 'package:saferfire/notificationservice.dart';
 import 'package:saferfire/infoPage.dart';
+import 'package:saferfire/pages/linechart.dart';
 import 'package:saferfire/pages/protocoltool_page.dart';
 import "package:sizer/sizer.dart";
 
