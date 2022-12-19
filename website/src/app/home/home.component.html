@@ -14,11 +14,33 @@
     box-shadow: 0px 10px 19px -4px rgba(0,0,0,0.75);
   }
 
+  .featurecard{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    /*border: 1px solid #bb1e10;*/
+    border-radius: 15px;
+    box-shadow: 10px 10px 30px -9px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 30px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 30px -9px rgba(0,0,0,0.75);
+  }
+
   .teamimage{
     width: 50%; 
     padding: 5%; 
     margin: auto;
   }
+  .techimage{
+    margin: auto;
+    padding: auto;
+    width: 40%;
+  }
+  .techimagetwo{
+    margin: auto;
+    padding: auto;
+    width: 23%;
+  }
+
 
   /* Responsive Styles */
   @media screen and (max-width: 767px) {
@@ -66,24 +88,26 @@
     <div class="content">
       <h1 >Features</h1>
     </div>
-    <div class="content" style="display: flex; flex-direction: row; max-width: 80%;">
-      <div class="card">
+    <div class="content featurecard">
+      <div class="card" style="display: contents;">
         <img src="../assets/dashboard.png" style="width: 40%; padding: 5%; margin: auto;"/>
         <div class="card-body">
           <h5 class="card-title" style="text-align: center;">Dashboard</h5>
           <p class="card-text" style="text-align: center;">In unserem Dashboard werden alle wichtigen Informationen zu den aktuellen Einsätzen angezeigt, um mit einem Blick informiert zu sein.</p>
         </div>
       </div>
-      <div class="content"></div>
-      <div class="card">
-        <img src="../assets/respirator.png" style="width: 40%; padding: 5%; margin: auto;"/>
+    </div>
+    <div class="content featurecard">
+      <div class="card" style="display: contents;">
         <div class="card-body">
           <h5 class="card-title" style="text-align: center;">Atemschutzüberwachung</h5>
           <p class="card-text" style="text-align: center;">Mit der integrierten Atemschutzüberwachung lassen sich schnell und einfach mehrere Atemschutztrupps verwalten und überwachen.</p>
         </div>
       </div>
-      <div class="content"></div>
-      <div class="card">
+      <img src="../assets/respirator.png" style="width: 40%; padding: 5%; margin: auto;"/>
+    </div>
+    <div class="content featurecard">
+      <div class="card" style="display: contents;">
         <img src="../assets/hazardous.png" style="width: 40%; padding: 5%; margin: auto;"/>
         <div class="card-body">
           <h5 class="card-title" style="text-align: center;">Gefahrgut - Datenbank</h5>
@@ -144,8 +168,8 @@
   <div class="content">
     <h1 >Team-Mitglieder</h1>
   </div>
-  <div class="content" style="display: flex; flex-direction: row; ">
-    <div class="card"  style="text-align: center;">
+  <div style="display: flex; flex-direction: row; ">
+    <div class="content"  style="text-align: center;">
       <img src="../../assets/AD_circle.png" class="teamimage"/>
       <div class="card-body">
         <h5 class="card-title">Alessandro Detta</h5>
@@ -153,7 +177,7 @@
       </div>
     </div>
     <div class="content"></div>
-    <div class="card"  style="text-align: center;">
+    <div class="content"  style="text-align: center;">
       <img src="../../assets/NH-circle.png" class="teamimage"/>
       <div class="card-body">
         <h5 class="card-title">Nikos Hagenberger</h5>
@@ -161,7 +185,7 @@
       </div>
     </div>
     <div class="content"></div>
-    <div class="card" style="text-align: center;">
+    <div class="content" style="text-align: center;">
       <img src="../../assets/MP_circle.png" class="teamimage"/>
       <div class="card-body">
         <h5 class="card-title">Moritz Preining</h5>
@@ -169,7 +193,7 @@
       </div>
     </div>
     <div class="content"></div>
-    <div class="card"  style="text-align: center;">
+    <div class="content"  style="text-align: center;">
       <img src="../../assets/CW_circle.png" class="teamimage"/>
       <div class="card-body">
         <h5 class="card-title">Clemens Wolfmayr</h5>
@@ -259,37 +283,56 @@
     <h1 >Technologien</h1>
   </div>
   <div class="content" style="display: flex; flex-direction: row; ">
-    <div class="card">
-      <img src="../../assets/icons8-flutter.svg" class="teamimage"/>
+    <div>
+      <img src="../../assets/icons8-flutter.svg" style="width: 34%;" class="techimage"/>
       <div class="card-body">
         <h5 class="card-title">Flutter</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text">Mit Hilfe des Flutter Frameworks und der Programmiersprache Dart wurde unsere Mobile-App entwickelt.</p>
       </div>
     </div>
     <div class="content"></div>
-    <div class="card">
-      <img src="../../assets/nestjs-svgrepo-com.svg" class="teamimage"/>
+    <div>
+      <img src="../../assets/nestjs-svgrepo-com.svg" class="techimage"/>
       <div class="card-body">
         <h5 class="card-title">NestJS</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text">Das NestJS Framework ist zurzeit als Websocket und REST Schnittstelle in Verwendung.</p>
       </div>
     </div>
     <div class="content"></div>
-    <div class="card">
-      <img src="../../assets/icons8-postgresql.svg" class="teamimage"/>
+    <div>
+      <img src="../../assets/icons8-postgresql.svg" class="techimage"/>
       <div class="card-body">
         <h5 class="card-title">PostgreSQL</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text">Um alle relevanten Daten abzuspeichern, kommt bei uns PostgreSQL zum Einsatz.</p>
       </div>
     </div>
     <div class="content"></div>
-    <div class="card">
-      <img src="../../assets/angular.svg" class="teamimage"/>
+    <div>
+      <img src="../../assets/angular.svg" class="techimage"/>
       <div class="card-body">
         <h5 class="card-title">Angular</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text">Für unsere Homepage ist das Web-App-Framwork Angular verantwortlich.</p>
       </div>
     </div>
+  </div>
+  <div class="content" style="display: flex; flex-direction: row; ">
+    <div class="content"></div>
+    <div>
+      <img src="../../assets/docker-logo-svgrepo-com.svg" style="width: 21%;" class="techimagetwo"/>
+      <div class="card-body">
+        <h5 class="card-title">Docker</h5>
+        <p class="card-text">Mittels Docker werden alle Backend-Services auf einer virtuellen Maschine beretigestellt.</p>
+      </div>
+    </div>
+    <div class="content"></div>
+    <div>
+      <img src="../../assets/github-svgrepo-com.svg" class="techimagetwo"/>
+      <div class="card-body">
+        <h5 class="card-title">Github</h5>
+        <p class="card-text">Nicht nur zur Versionsverwaltung, sondern auch für CI/CD ist Github im Einsatz.</p>
+      </div>
+    </div>
+    <div class="content"></div>
   </div>
 </section>
 <section id="contact">
@@ -297,7 +340,6 @@
     <form [formGroup]="validationForm" id="form" class="text-center" style="width: 100%; max-width: 300px">
       <h2>Kontaktieren Sie uns</h2>
   
-      <!-- Name input -->
       <mdb-form-control class="mb-4">
         <input mdbInput mdbValidate formControlName="name" required type="text" id="name" class="form-control" />
         <label mdbLabel class="form-label" for="name">Name</label>
@@ -305,7 +347,6 @@
           Bitte geben Sie Ihren Namen ein.
         </mdb-error>
       </mdb-form-control>
-      <!-- Subject input -->
       <mdb-form-control class="mb-4">
         <input mdbInput mdbValidate formControlName="subject" required type="text" id="subject" class="form-control" />
         <label mdbLabel class="form-label" for="subject">Betreff</label>
@@ -313,7 +354,6 @@
           Bitte geben Sie einen Betreff ein.
         </mdb-error>
       </mdb-form-control>
-      <!-- Message input -->
       <mdb-form-control class="mb-4">
         <textarea mdbInput mdbValidate formControlName="message" required class="form-control" id="message" rows="4"></textarea>
         <label mdbLabel class="form-label" for="message">Nachricht</label>
@@ -321,7 +361,6 @@
           Bitte geben Sie eine Nachricht ein.
         </mdb-error>
       </mdb-form-control>
-      <!-- Submit button -->
       <button style="background-color: #bb1e10;" type="button" class="btn btn-primary my-4" (click)="sendMail()">Senden</button>
     </form>
   </section>
