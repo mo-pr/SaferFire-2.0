@@ -18,7 +18,7 @@ MapController controller = MapController(
 Color mainColor = Colors.red;
 
 //Hydrant map
-String source = "aic";
+String sourceAPI = "aic";
 String token = "SBStE2gNllFTmvga";
 String range = "10";
 String numItems = "15";

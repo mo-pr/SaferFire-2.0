@@ -314,8 +314,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           const ProtocolPage(),
           OxygenPage(),
           HydrantMap(),
-          const LineChart(),
-          const DangerousGoods()
+          LineChart(),
+          DangerousGoods()
         ],
       ),
     );
