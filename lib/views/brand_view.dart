@@ -187,8 +187,8 @@ class _Brand_TiereGerettet extends StatefulWidget {
 }
 
 class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
-  int tiereGerettet = 0;
-  int tiereTot = 0;
+  int tiereGerettetBrand = 0;
+  int tiereTotBrand = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -208,13 +208,13 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
             Text('gerettet', style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 6),
             NumberPicker(
-              value: tiereGerettet,
+              value: tiereGerettetBrand,
               minValue: 0,
               maxValue: 100,
               step: 1,
               itemHeight: 50,
               axis: Axis.horizontal,
-              onChanged: (value) => setState(() => tiereGerettet = value),
+              onChanged: (value) => setState(() => tiereGerettetBrand = value),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.black26),
@@ -224,13 +224,13 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
             Text('tot geborgen', style: Theme.of(context).textTheme.headline6),
             SizedBox(height: 6),
             NumberPicker(
-              value: tiereTot,
+              value: tiereTotBrand,
               minValue: 0,
               maxValue: 100,
               step: 1,
               itemHeight: 50,
               axis: Axis.horizontal,
-              onChanged: (value) => setState(() => tiereTot = value),
+              onChanged: (value) => setState(() => tiereTotBrand = value),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.black26),
@@ -240,8 +240,8 @@ class _Brand_TiereGerettetState extends State<_Brand_TiereGerettet> {
             ElevatedButton(
               child: Text("Next"),
               onPressed: () {
-                widget.protocol!.tiereGerettet = tiereGerettet;
-                widget.protocol!.tiereTot = tiereTot;
+                widget.protocol!.tiereGerettet = tiereGerettetBrand;
+                widget.protocol!.tiereTot = tiereTotBrand;
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -432,8 +432,6 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
                   widget.protocol!.brandBauart = _bauartController.text;
                   widget.protocol!.brandLage = _lageController.text;
                   widget.protocol!.brandVerlauf = _verlaufController.text;
-
-                  protocol = widget.protocol!;
                   isProtocol = true;
                   // Navigator.push(
                   //     context,

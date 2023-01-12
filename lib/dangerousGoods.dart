@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:saferfire/dangerousGood.dart';
+import 'package:saferfire/dangerous_good.dart';
 import 'constants.dart';
 
 class DangerousGoods extends StatefulWidget {
@@ -81,10 +80,9 @@ class DangerousGoodsState extends State<DangerousGoods> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Gefahrstoffe"),
+        title: const Text("Gefahrstoffe"),
         centerTitle: true,
         backgroundColor: Colors.red[700],
-        brightness: Brightness.dark,
       ),
       backgroundColor: Colors.white,
       body: Column(

@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 
-const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
 class NavBar extends StatefulWidget {
+  const NavBar({super.key});
+
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -16,21 +16,17 @@ class _NavBarState extends State<NavBar> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text('Side Bar'),
+        title: const Text('Side Bar'),
       ),
-      body: Text("NavBar"),
-      drawer: MyDrawer(),
+      body: const Text("NavBar"),
+      drawer: const MyDrawer(),
       extendBody: true,
     );
   }
 }
 
 class MyDrawer extends StatelessWidget {
-//   final Function onTap;
-//
-//   MyDrawer({
-//     this.onTap
-// });
+  const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +44,15 @@ class MyDrawer extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],),
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-
+                  children: const <Widget>[
                   ],
                 ),
               ),

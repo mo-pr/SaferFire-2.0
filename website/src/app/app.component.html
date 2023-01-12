@@ -1,0 +1,136 @@
+<style>
+  :host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background-color: #bb1e10;
+    color: white;
+    font-weight: 600;
+  }
+
+  .toolbar img {
+    margin: 0 16px;
+  }
+
+  .toolbar #twitter-logo {
+    height: 40px;
+    margin: 0 8px;
+  }
+
+  .toolbar #youtube-logo {
+    height: 40px;
+    margin: 0 16px;
+  }
+
+  .toolbar #twitter-logo:hover,
+  .toolbar #youtube-logo:hover {
+    opacity: 0.8;
+  }
+
+
+  a,
+  a:visited,
+  a:hover {
+    color: #1976d2;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #125699;
+  }
+
+  /* Responsive Styles */
+  @media screen and (max-width: 767px) {
+    .card-container > *:not(.circle-link) ,
+    .terminal {
+      width: 100%;
+    }
+
+    .card:not(.highlight-card) {
+      height: 16px;
+      margin: 8px 0;
+    }
+
+    .card.highlight-card span {
+      margin-left: 72px;
+    }
+
+    svg#rocket-smoke {
+      right: 120px;
+      transform: rotate(-5deg);
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    svg#rocket-smoke {
+      display: none;
+      visibility: hidden;
+    }
+  }
+</style>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #bb1e10;">
+  <div class="container">
+    <a class="navbar-brand" href="#"
+      ><img
+        id="MDB-logo"
+        src="../assets/Safer-Fire.png"
+        alt="Safer-Fire Logo"
+        draggable="false"
+        height="26"
+    /></a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item" >
+          <a class="nav-link mx-2" routerLink="/" routerLinkActive="active" style="color: #e6e6e6;"><i class="fas fa-home pe-2"></i>Home</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" routerLink="/" fragment="about" style="color: #e6e6e6;"><i class="fas fa-users pe-2"></i>About</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" routerLink="/" fragment="technology" style="color: #e6e6e6;"><i class="fas fa-tools pe-2"></i>Technologien</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" routerLink="/" fragment="contact" style="color: #e6e6e6;"><i class="fas fa-envelope pe-2"></i>Kontakt</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link mx-2" routerLink="/login" routerLinkActive="false" style="color: #e6e6e6;"><i class="fas fa-sign-in-alt pe-2"></i>Sign in</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- Navbar -->
+
+<router-outlet></router-outlet>
