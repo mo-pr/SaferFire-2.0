@@ -79,7 +79,7 @@ class DangerousGoodsState extends State<DangerousGoods> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         title: const Text("Gefahrstoffe"),
         centerTitle: true,
         backgroundColor: Colors.red[700],

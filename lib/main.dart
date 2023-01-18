@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           title: 'Safer - Fire',
           initialRoute: '/',
           routes: {
-            '/': (context) => const Login(),
+            '/': (context) => Login(),
             '/info': (context) => Start(),
             '/protocol': (context) => const ProtocolPage(),
             '/einsatzuebersicht': (context) => OperationInfo(),

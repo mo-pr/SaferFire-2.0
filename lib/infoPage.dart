@@ -182,142 +182,147 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: _backgroundColor,
-      floatingActionButton: SpeedDial(
-        marginBottom: 10, //margin bottom
-        icon: Icons.menu, //icon on Floating action button
-        activeIcon: Icons.close, //icon when menu is expanded on button
-        backgroundColor: _openNavbarColor, //background color of button
-        foregroundColor: Colors.white, //font color, icon color in button
-        activeBackgroundColor:
-            Colors.grey, //background color when menu is expanded
-        activeForegroundColor: Colors.white,
-        buttonSize: 60, //button size
-        visible: true,
-        closeManually: false,
-        curve: Curves.bounceIn,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        //onOpen: () => print('OPENING DIAL'), // action when menu opens
-        //onClose: () => print('DIAL CLOSED'), //action when menu closes
-        elevation: 8.0, //shadow elevation of button
-        orientation: SpeedDialOrientation.Up,
-        children: [
-          SpeedDialChild(
-            //speed dial child
-            child: const Icon(Icons.info_outline),
-            backgroundColor: _openNavbarColor,
-            foregroundColor: Colors.white,
-            label: 'Info',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Navigation'),
-          ),
-          SpeedDialChild(
-            //speed dial child
-            child: const Icon(Icons.navigation_outlined),
-            backgroundColor: _openNavbarColor,
-            foregroundColor: Colors.white,
-            label: 'Navigation',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              setState(() {
-                MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
-              });
-            },
-            //onLongPress: () => print('Navigation'),
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.article_outlined),
-            backgroundColor: _openNavbarColor,
-            foregroundColor: Colors.white,
-            label: 'Protokoll',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(1,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Protokoll'),
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.masks_outlined),
-            foregroundColor: Colors.white,
-            backgroundColor: _openNavbarColor,
-            label: 'Atemschutz',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(2,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Atemschutz'),
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.map_outlined),
-            foregroundColor: Colors.white,
-            backgroundColor: _openNavbarColor,
-            label: 'Wasserkarte',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(3,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Wasserkarte'),
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.warning_amber_rounded),
-            foregroundColor: Colors.white,
-            backgroundColor: _openNavbarColor,
-            label: 'Gefahrgut',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(5,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Gefahrgut'),
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.stacked_line_chart),
-            foregroundColor: Colors.white,
-            backgroundColor: _openNavbarColor,
-            label: 'Statistik',
-            labelStyle: const TextStyle(fontSize: 18.0),
-            onTap: () {
-              _pageController.animateToPage(4,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.ease);
-            },
-            //onLongPress: () => print('Statistik'),
-          ),
+    return WillPopScope(
+      child: Scaffold(
+        backgroundColor: _backgroundColor,
+        floatingActionButton: SpeedDial(
+          marginBottom: 10, //margin bottom
+          icon: Icons.menu, //icon on Floating action button
+          activeIcon: Icons.close, //icon when menu is expanded on button
+          backgroundColor: _openNavbarColor, //background color of button
+          foregroundColor: Colors.white, //font color, icon color in button
+          activeBackgroundColor:
+          Colors.grey, //background color when menu is expanded
+          activeForegroundColor: Colors.white,
+          buttonSize: 60, //button size
+          visible: true,
+          closeManually: false,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+          //onOpen: () => print('OPENING DIAL'), // action when menu opens
+          //onClose: () => print('DIAL CLOSED'), //action when menu closes
+          elevation: 8.0, //shadow elevation of button
+          orientation: SpeedDialOrientation.Up,
+          children: [
+            SpeedDialChild(
+              //speed dial child
+              child: const Icon(Icons.info_outline),
+              backgroundColor: _openNavbarColor,
+              foregroundColor: Colors.white,
+              label: 'Info',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Navigation'),
+            ),
+            SpeedDialChild(
+              //speed dial child
+              child: const Icon(Icons.navigation_outlined),
+              backgroundColor: _openNavbarColor,
+              foregroundColor: Colors.white,
+              label: 'Navigation',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                setState(() {
+                  MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
+                });
+              },
+              //onLongPress: () => print('Navigation'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.article_outlined),
+              backgroundColor: _openNavbarColor,
+              foregroundColor: Colors.white,
+              label: 'Protokoll',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Protokoll'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.masks_outlined),
+              foregroundColor: Colors.white,
+              backgroundColor: _openNavbarColor,
+              label: 'Atemschutz',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(2,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Atemschutz'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.map_outlined),
+              foregroundColor: Colors.white,
+              backgroundColor: _openNavbarColor,
+              label: 'Wasserkarte',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(3,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Wasserkarte'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.warning_amber_rounded),
+              foregroundColor: Colors.white,
+              backgroundColor: _openNavbarColor,
+              label: 'Gefahrgut',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(5,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Gefahrgut'),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.stacked_line_chart),
+              foregroundColor: Colors.white,
+              backgroundColor: _openNavbarColor,
+              label: 'Statistik',
+              labelStyle: const TextStyle(fontSize: 18.0),
+              onTap: () {
+                _pageController.animateToPage(4,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease);
+              },
+              //onLongPress: () => print('Statistik'),
+            ),
 
-          //add more menu item children here
-        ],
+            //add more menu item children here
+          ],
+        ),
+        body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          onPageChanged: (newIndex) {
+            setState(() {
+              _currentIndex = newIndex;
+            });
+          },
+          children: [
+            Info(),
+            const ProtocolPage(),
+            OxygenPage(),
+            HydrantMap(),
+            const LineChart(),
+            DangerousGoods()
+          ],
+        ),
       ),
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        onPageChanged: (newIndex) {
-          setState(() {
-            _currentIndex = newIndex;
-          });
-        },
-        children: [
-          Info(),
-          const ProtocolPage(),
-          OxygenPage(),
-          HydrantMap(),
-          const LineChart(),
-          const DangerousGoods()
-        ],
-      ),
+      onWillPop: () async {
+        return false;
+      },
     );
   }
 }

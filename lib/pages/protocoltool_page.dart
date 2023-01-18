@@ -17,6 +17,7 @@ class ProtocolPage extends StatefulWidget {
 }
 
 class _ProtocolPageState extends State<ProtocolPage> {
+  late Timer _dialogTimer;
   // Technisch
   int tiereGerettetTechnisch = 0;
   int tiereTotTechnisch = 0;
@@ -24,9 +25,9 @@ class _ProtocolPageState extends State<ProtocolPage> {
   TextEditingController _ursacheController = new TextEditingController();
   TextEditingController _hautTaetigkeitController = new TextEditingController();
   TextEditingController _gefaehrlicheStoffeController =
-      new TextEditingController();
+  new TextEditingController();
   TextEditingController _weiterTaetigkeitenController =
-      new TextEditingController();
+  new TextEditingController();
 
   // Brand
   int tiereGerettetBrand = 0;
@@ -89,7 +90,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     children: [
                       ElevatedButton(
                         child:
-                            const Icon(Icons.add_a_photo_outlined, size: 45.0),
+                        const Icon(Icons.add_a_photo_outlined, size: 45.0),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                             backgroundColor: _mainColor,
@@ -365,33 +366,33 @@ class _ProtocolPageState extends State<ProtocolPage> {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                        content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Text("Zeiten ändern",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 25,
-                                                      color: _mainColor)),
-                                              const SizedBox(height: 20),
-                                              Center(
-                                                child: Builder(
-                                                  builder: (context) =>
-                                                      MaterialButton(
+                                    content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text("Zeiten ändern",
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  fontSize: 25,
+                                                  color: _mainColor)),
+                                          const SizedBox(height: 20),
+                                          Center(
+                                            child: Builder(
+                                              builder: (context) =>
+                                                  MaterialButton(
                                                     onPressed: () async {
                                                       TimeOfDay? newTime =
-                                                          await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  TimeOfDay
-                                                                      .now());
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                          TimeOfDay
+                                                              .now());
                                                       if (newTime == null)
                                                         return;
                                                       setState(() => protocols
-                                                              .elementAt(
-                                                                  showingAlarmId)
-                                                              .uhrzeitAusfahrt =
+                                                          .elementAt(
+                                                          showingAlarmId)
+                                                          .uhrzeitAusfahrt =
                                                           newTime);
                                                     },
                                                     minWidth: 100,
@@ -401,45 +402,45 @@ class _ProtocolPageState extends State<ProtocolPage> {
                                                         "Ausfahrt",
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .normal,
+                                                            FontWeight
+                                                                .normal,
                                                             fontSize: 20,
                                                             color:
-                                                                Colors.white)),
+                                                            Colors.white)),
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10,
-                                                            top: 20,
-                                                            right: 10,
-                                                            bottom: 20),
+                                                    const EdgeInsets.only(
+                                                        left: 10,
+                                                        top: 20,
+                                                        right: 10,
+                                                        bottom: 20),
                                                     shape:
-                                                        RoundedRectangleBorder(
+                                                    RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      BorderRadius.circular(
+                                                          8),
                                                       //side: BorderSide(color: Colors.red)
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Center(
-                                                child: Builder(
-                                                  builder: (context) =>
-                                                      MaterialButton(
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Center(
+                                            child: Builder(
+                                              builder: (context) =>
+                                                  MaterialButton(
                                                     onPressed: () async {
                                                       TimeOfDay? newTime =
-                                                          await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  TimeOfDay
-                                                                      .now());
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                          TimeOfDay
+                                                              .now());
                                                       if (newTime == null)
                                                         return;
                                                       setState(() => protocols
-                                                              .elementAt(
-                                                                  showingAlarmId)
-                                                              .uhrzeitAusfahrt =
+                                                          .elementAt(
+                                                          showingAlarmId)
+                                                          .uhrzeitAusfahrt =
                                                           newTime);
                                                     },
                                                     minWidth: 100,
@@ -448,45 +449,45 @@ class _ProtocolPageState extends State<ProtocolPage> {
                                                     child: const Text("Ankunft",
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .normal,
+                                                            FontWeight
+                                                                .normal,
                                                             fontSize: 20,
                                                             color:
-                                                                Colors.white)),
+                                                            Colors.white)),
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10,
-                                                            top: 20,
-                                                            right: 10,
-                                                            bottom: 20),
+                                                    const EdgeInsets.only(
+                                                        left: 10,
+                                                        top: 20,
+                                                        right: 10,
+                                                        bottom: 20),
                                                     shape:
-                                                        RoundedRectangleBorder(
+                                                    RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      BorderRadius.circular(
+                                                          8),
                                                       //side: BorderSide(color: Colors.red)
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Center(
-                                                child: Builder(
-                                                  builder: (context) =>
-                                                      MaterialButton(
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Center(
+                                            child: Builder(
+                                              builder: (context) =>
+                                                  MaterialButton(
                                                     onPressed: () async {
                                                       TimeOfDay? newTime =
-                                                          await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  TimeOfDay
-                                                                      .now());
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                          TimeOfDay
+                                                              .now());
                                                       if (newTime == null)
                                                         return;
                                                       setState(() => protocols
-                                                              .elementAt(
-                                                                  showingAlarmId)
-                                                              .uhrzeitEnde =
+                                                          .elementAt(
+                                                          showingAlarmId)
+                                                          .uhrzeitEnde =
                                                           newTime);
                                                     },
                                                     minWidth: 100,
@@ -496,45 +497,45 @@ class _ProtocolPageState extends State<ProtocolPage> {
                                                         "Einsatzende",
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .normal,
+                                                            FontWeight
+                                                                .normal,
                                                             fontSize: 20,
                                                             color:
-                                                                Colors.white)),
+                                                            Colors.white)),
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10,
-                                                            top: 20,
-                                                            right: 10,
-                                                            bottom: 20),
+                                                    const EdgeInsets.only(
+                                                        left: 10,
+                                                        top: 20,
+                                                        right: 10,
+                                                        bottom: 20),
                                                     shape:
-                                                        RoundedRectangleBorder(
+                                                    RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      BorderRadius.circular(
+                                                          8),
                                                       //side: BorderSide(color: Colors.red)
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                              Center(
-                                                child: Builder(
-                                                  builder: (context) =>
-                                                      MaterialButton(
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Center(
+                                            child: Builder(
+                                              builder: (context) =>
+                                                  MaterialButton(
                                                     onPressed: () async {
                                                       TimeOfDay? newTime =
-                                                          await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  TimeOfDay
-                                                                      .now());
+                                                      await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                          TimeOfDay
+                                                              .now());
                                                       if (newTime == null)
                                                         return;
                                                       setState(() => protocols
-                                                              .elementAt(
-                                                                  showingAlarmId)
-                                                              .uhrzeitWiederbereit =
+                                                          .elementAt(
+                                                          showingAlarmId)
+                                                          .uhrzeitWiederbereit =
                                                           newTime);
                                                     },
                                                     minWidth: 100,
@@ -544,35 +545,35 @@ class _ProtocolPageState extends State<ProtocolPage> {
                                                         "Wiedereinsatzbereit",
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .normal,
+                                                            FontWeight
+                                                                .normal,
                                                             fontSize: 20,
                                                             color:
-                                                                Colors.white)),
+                                                            Colors.white)),
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10,
-                                                            top: 20,
-                                                            right: 10,
-                                                            bottom: 20),
+                                                    const EdgeInsets.only(
+                                                        left: 10,
+                                                        top: 20,
+                                                        right: 10,
+                                                        bottom: 20),
                                                     shape:
-                                                        RoundedRectangleBorder(
+                                                    RoundedRectangleBorder(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
+                                                      BorderRadius.circular(
+                                                          8),
                                                       //side: BorderSide(color: Colors.red)
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            ]),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text("ZURÜCK", style: TextStyle(fontWeight:FontWeight.normal,fontSize: 20,color:_mainColor))),
-                                        ],
-                                      ));
+                                            ),
+                                          ),
+                                        ]),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text("ZURÜCK", style: TextStyle(fontWeight:FontWeight.normal,fontSize: 20,color:_mainColor))),
+                                    ],
+                                  ));
                             },
                           ),
                         ),
@@ -593,39 +594,39 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             color: mainColor,
                             textColor: Colors.black,
                             child: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitAusfahrt ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitAusfahrt ==
+                                null
                                 ? Column(
-                                    children: const [
-                                      Text("Ausfahrt",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20,
-                                              color: Colors.white)),
-                                      Text(
-                                        "JETZT",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
-                                  )
+                              children: const [
+                                Text("Ausfahrt",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20,
+                                        color: Colors.white)),
+                                Text(
+                                  "JETZT",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            )
                                 : Column(
-                                    children: [
-                                      const Text("Ausfahrt",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 15,
-                                              color: Colors.white)),
-                                      Text(
-                                          "${protocols.elementAt(showingAlarmId).uhrzeitAusfahrt?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitAusfahrt?.minute}",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ],
-                                  ),
+                              children: [
+                                const Text("Ausfahrt",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        color: Colors.white)),
+                                Text(
+                                    "${protocols.elementAt(showingAlarmId).uhrzeitAusfahrt?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitAusfahrt?.minute}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(
                                 left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
@@ -642,8 +643,8 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             onPressed: () {
                               //() => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index)
                               if (protocols
-                                      .elementAt(showingAlarmId)
-                                      .uhrzeitAusfahrt !=
+                                  .elementAt(showingAlarmId)
+                                  .uhrzeitAusfahrt !=
                                   null) {
                                 protocols
                                     .elementAt(showingAlarmId)
@@ -653,46 +654,46 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             },
                             minWidth: 100,
                             color: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitAusfahrt ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitAusfahrt ==
+                                null
                                 ? Colors.grey
                                 : mainColor,
                             textColor: Colors.black,
                             child: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitAnkunft ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitAnkunft ==
+                                null
                                 ? Column(
-                                    children: const [
-                                      Text("Ankunft",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20,
-                                              color: Colors.white)),
-                                      Text(
-                                        "JETZT",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
-                                  )
+                              children: const [
+                                Text("Ankunft",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20,
+                                        color: Colors.white)),
+                                Text(
+                                  "JETZT",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            )
                                 : Column(
-                                    children: [
-                                      const Text("Ankunft",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 15,
-                                              color: Colors.white)),
-                                      Text(
-                                          "${protocols.elementAt(showingAlarmId).uhrzeitAnkunft?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitAnkunft?.minute}",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ],
-                                  ),
+                              children: [
+                                const Text("Ankunft",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        color: Colors.white)),
+                                Text(
+                                    "${protocols.elementAt(showingAlarmId).uhrzeitAnkunft?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitAnkunft?.minute}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(
                                 left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
@@ -708,8 +709,8 @@ class _ProtocolPageState extends State<ProtocolPage> {
                           MaterialButton(
                             onPressed: () {
                               if (protocols
-                                      .elementAt(showingAlarmId)
-                                      .uhrzeitAnkunft !=
+                                  .elementAt(showingAlarmId)
+                                  .uhrzeitAnkunft !=
                                   null) {
                                 protocols
                                     .elementAt(showingAlarmId)
@@ -719,46 +720,46 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             },
                             minWidth: 100,
                             color: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitAnkunft ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitAnkunft ==
+                                null
                                 ? Colors.grey
                                 : mainColor,
                             textColor: Colors.black,
                             child: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitEnde ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitEnde ==
+                                null
                                 ? Column(
-                                    children: const [
-                                      Text("Einsatzende",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20,
-                                              color: Colors.white)),
-                                      Text(
-                                        "JETZT",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
-                                  )
+                              children: const [
+                                Text("Einsatzende",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20,
+                                        color: Colors.white)),
+                                Text(
+                                  "JETZT",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            )
                                 : Column(
-                                    children: [
-                                      const Text("Einsatzende",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 15,
-                                              color: Colors.white)),
-                                      Text(
-                                          "${protocols.elementAt(showingAlarmId).uhrzeitEnde?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitEnde?.minute}",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ],
-                                  ),
+                              children: [
+                                const Text("Einsatzende",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        color: Colors.white)),
+                                Text(
+                                    "${protocols.elementAt(showingAlarmId).uhrzeitEnde?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitEnde?.minute}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.only(
                                 left: 10, top: 20, right: 10, bottom: 20),
                             shape: RoundedRectangleBorder(
@@ -780,8 +781,8 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             onPressed: () {
                               //() => entries[index].isDone == false ? _promptClickSquad(index): _promptClickDoneSquad(index)
                               if (protocols
-                                      .elementAt(showingAlarmId)
-                                      .uhrzeitEnde !=
+                                  .elementAt(showingAlarmId)
+                                  .uhrzeitEnde !=
                                   null) {
                                 protocols
                                     .elementAt(showingAlarmId)
@@ -791,46 +792,46 @@ class _ProtocolPageState extends State<ProtocolPage> {
                             },
                             minWidth: 100,
                             color: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitEnde ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitEnde ==
+                                null
                                 ? Colors.grey
                                 : mainColor,
                             textColor: Colors.black,
                             child: protocols
-                                        .elementAt(showingAlarmId)
-                                        .uhrzeitWiederbereit ==
-                                    null
+                                .elementAt(showingAlarmId)
+                                .uhrzeitWiederbereit ==
+                                null
                                 ? Column(
-                                    children: const [
-                                      Text("Wiedereinsatzbereit",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 20,
-                                              color: Colors.white)),
-                                      Text(
-                                        "JETZT",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
-                                  )
+                              children: const [
+                                Text("Wiedereinsatzbereit",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 20,
+                                        color: Colors.white)),
+                                Text(
+                                  "JETZT",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            )
                                 : Column(
-                                    children: [
-                                      const Text("Wiedereinsatzbereit",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 15,
-                                              color: Colors.white)),
-                                      Text(
-                                          "${protocols.elementAt(showingAlarmId).uhrzeitWiederbereit?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitWiederbereit?.minute}",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20)),
-                                    ],
-                                  ),
+                              children: [
+                                const Text("Wiedereinsatzbereit",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        color: Colors.white)),
+                                Text(
+                                    "${protocols.elementAt(showingAlarmId).uhrzeitWiederbereit?.hour}:${protocols.elementAt(showingAlarmId).uhrzeitWiederbereit?.minute}",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20)),
+                              ],
+                            ),
                             padding: const EdgeInsets.all(20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -930,7 +931,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
           itemHeight: 50,
           axis: Axis.horizontal,
           onChanged: (value) => setState(
-              () => protocols.elementAt(showingAlarmId).tiereGerettet = value),
+                  () => protocols.elementAt(showingAlarmId).tiereGerettet = value),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.black26),
@@ -947,7 +948,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
           itemHeight: 50,
           axis: Axis.horizontal,
           onChanged: (value) => setState(
-              () => protocols.elementAt(showingAlarmId).tiereTot = value),
+                  () => protocols.elementAt(showingAlarmId).tiereTot = value),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.black26),
@@ -983,7 +984,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     controller: _hautTaetigkeitController,
                     decoration: InputDecoration(
                       labelText:
-                          protocols.elementAt(showingAlarmId).hauptTaetigkeit,
+                      protocols.elementAt(showingAlarmId).hauptTaetigkeit,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -1023,6 +1024,24 @@ class _ProtocolPageState extends State<ProtocolPage> {
                         _gefaehrlicheStoffeController.text;
                     protocols.elementAt(showingAlarmId).weiterTaetigkeiten =
                         _weiterTaetigkeitenController.text;
+                    FocusScope.of(context).unfocus();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext builderContext) {
+                          _dialogTimer = Timer(const Duration(seconds: 1), () {
+                            Navigator.of(context).pop();
+                          });
+
+                          return const AlertDialog(
+                            backgroundColor: Colors.red,
+                            title: Text('Protokoll wird gespeichert',style: TextStyle(color: Colors.white),),
+                          );
+                        }
+                    ).then((val){
+                      if (_dialogTimer.isActive) {
+                        _dialogTimer.cancel();
+                      }
+                    });
                   },
                   child: const Text("Speichern"),
                   style: ElevatedButton.styleFrom(
@@ -1055,10 +1074,10 @@ class _ProtocolPageState extends State<ProtocolPage> {
                   value: selectedEntdeckung,
                   items: entdeckungItems
                       .map((item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item,
-                                style: const TextStyle(fontSize: 24)),
-                          ))
+                    value: item,
+                    child: Text(item,
+                        style: const TextStyle(fontSize: 24)),
+                  ))
                       .toList(),
                   onChanged: (item) =>
                       setState(() => selectedEntdeckung = item),
@@ -1077,7 +1096,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     controller: _ausmassController,
                     decoration: InputDecoration(
                       labelText:
-                          protocols.elementAt(showingAlarmId).brandAusmass,
+                      protocols.elementAt(showingAlarmId).brandAusmass,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -1088,7 +1107,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     controller: _klasseController,
                     decoration: InputDecoration(
                       labelText:
-                          protocols.elementAt(showingAlarmId).brandKlasse,
+                      protocols.elementAt(showingAlarmId).brandKlasse,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -1119,7 +1138,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     controller: _bauartController,
                     decoration: InputDecoration(
                       labelText:
-                          protocols.elementAt(showingAlarmId).brandBauart,
+                      protocols.elementAt(showingAlarmId).brandBauart,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -1140,7 +1159,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                     controller: _verlaufController,
                     decoration: InputDecoration(
                       labelText:
-                          protocols.elementAt(showingAlarmId).brandVerlauf,
+                      protocols.elementAt(showingAlarmId).brandVerlauf,
                       border: myinputborder(),
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
@@ -1184,7 +1203,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
   OutlineInputBorder myinputborder() {
     //return type is OutlineInputBorder
     return const OutlineInputBorder(
-        //Outline border type for TextFeild
+      //Outline border type for TextFeild
         borderRadius: BorderRadius.all(Radius.circular(2)),
         borderSide: BorderSide(
           color: Color(0xffbfbfbf),

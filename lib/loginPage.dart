@@ -43,10 +43,7 @@ class LoginPage extends State<Login> {
       prefs.setString('role', claims["role"].toString());
       prefs.setBool('guest', false);
       password = email = "";
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Start()),
-      );
+      Navigator.pushReplacementNamed(context, "/info");
     }
   }
   ///Gets called when the "Sign Up" Button is Pressed
