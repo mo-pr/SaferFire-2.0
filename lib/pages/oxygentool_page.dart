@@ -259,6 +259,7 @@ class _OxygenPageState extends State<OxygenPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25,
+                      color: Colors.white,
                     ),
                   ),
                 ),
