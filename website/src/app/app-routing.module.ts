@@ -11,7 +11,7 @@ const routerOptions: ExtraOptions = {
   useHash: false,
   scrollPositionRestoration: 'enabled',
   anchorScrolling: 'enabled',
-  scrollOffset: [0, 55],
+  scrollOffset: [0, 53],
   onSameUrlNavigation: 'reload',
 };
 

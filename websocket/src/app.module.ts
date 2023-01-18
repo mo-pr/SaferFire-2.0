@@ -11,6 +11,7 @@ import { GuestController } from './user-management/guest.controller';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AlarmDBController,AllAlarmsDBController } from './alarms/alarmdb.controller';
 import { AllAlarmsGateway } from './alarms/allAlarms.gateway';
+import { DangerousGoodsController } from './dangerous-goods/dangerousGood.controller';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { AllAlarmsGateway } from './alarms/allAlarms.gateway';
       signOptions: {expiresIn: '365d'}
     }),
   ],
-  controllers: [LoginController, RegistrationController, GuestController, AlarmDBController,AllAlarmsDBController],
+  controllers: [LoginController, RegistrationController, GuestController, AlarmDBController,AllAlarmsDBController,DangerousGoodsController],
   providers: [AlarmsGateway, TestGateway,AllAlarmsGateway],
 })
 export class AppModule {}
