@@ -28,6 +28,6 @@ export class LoginController {
         const access_token = await this.jwtService.signAsync(payload)
         await qRunner.release();
         this.logger.log(`Successful login | ${loginUser.email}`)
-        return access_token;
+        return JSON.stringify(access_token);
     }
 }

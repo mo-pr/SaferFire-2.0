@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SHA256 } from 'crypto-js';
+import { tap } from 'rxjs';
 
 
 @Component({
@@ -15,16 +17,27 @@ export class LoginComponent {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin':'*',
     }),
+    observe: 'response',
   };
   email!: string;
   password!: string;
-
+  status!: string;
+  
+  
   login() {
-    var response =
-     this.httpClient.post(
-      this.endpoint, 
-      JSON.stringify("email:"+this.email+"passwordhash:"+this.password),
-      this.httpHeader).subscribe(data => console.log(data))
-    console.log(response);
+    let passwordhash = SHA256(this.password).toString()
+    let data = JSON.stringify({"email": this.email, "passwordhash": passwordhash})
+    return this.httpClient.post<string>(this.endpoint, data,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'*',
+        }),
+        observe: 'response',
+      })
+      .subscribe((response) => {
+        this.status = response.statusText;
+        console.log(response.status);
+      })
   }
 }
