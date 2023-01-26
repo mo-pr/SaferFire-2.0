@@ -54,6 +54,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
     if (cons.isTest) {
+      print(prefs.getString('token'));
       socket.emit('alarmsReq',
           json.encode({'token': prefs.getString('token'), "count": 4}));
     }

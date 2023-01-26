@@ -29,7 +29,7 @@ import { DangerousGoodsController } from './dangerous-goods/dangerousGood.contro
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: '365d'}
+      signOptions: {expiresIn: '730d'}
     }),
   ],
   controllers: [LoginController, RegistrationController, GuestController, AlarmDBController,AllAlarmsDBController,DangerousGoodsController],

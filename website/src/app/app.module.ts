@@ -23,12 +23,16 @@ import { MatCardModule } from '@angular/material/card';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminComponent } from './admin/admin.component';
+import { CookieService } from 'ngx-cookie-service';
+import { WebsocketService } from './admin/websocker.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -52,9 +56,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [CookieService,WebsocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
