@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SHA256 } from 'crypto-js';
-import { tap } from 'rxjs';
-
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { tap } from 'rxjs';
 })
 export class LoginComponent {
   endpoint = 'http://152.67.71.8/login';
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router,private cookieService:CookieService) {}
   httpHeader = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -21,7 +21,6 @@ export class LoginComponent {
   };
   email!: string;
   password!: string;
-  status!: string;
   
   
   login() {
@@ -36,8 +35,11 @@ export class LoginComponent {
         observe: 'response',
       })
       .subscribe((response) => {
-        this.status = response.statusText;
-        console.log(response.status);
+        console.log(response.body);
+        if(response.status==200&&response.body!=null){
+          this.cookieService.set('token', response.body!);
+          this.router.navigate(['/admin']);
+        }
       })
   }
 }
