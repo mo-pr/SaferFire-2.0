@@ -45,7 +45,6 @@ export class AlarmsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   async handleMessage(client: Socket, payload:string){
     let alarms:String;
     const access_token = JSON.parse(payload)['token'];
-    console.log(access_token);
     if(access_token != undefined || access_token != null){
       const isValid = await this.jwtService.verifyAsync(access_token)
       if(isValid){

@@ -38,6 +38,7 @@ export class TestGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   async handleMessage(client: Socket, payload: string) {
     let alarms = testdata;
     const access_token = JSON.parse(payload)['token'];
+    console.log(`Access token: ${access_token}`);
     const amount = JSON.parse(payload)['count'] > 20 ? 20:JSON.parse(payload)['count'];
     if (access_token != undefined || access_token != null) {
       const isValid = await this.jwtService.verifyAsync(access_token)
