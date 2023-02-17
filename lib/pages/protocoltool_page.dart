@@ -17,6 +17,7 @@ class ProtocolPage extends StatefulWidget {
 }
 
 class _ProtocolPageState extends State<ProtocolPage> {
+  late Timer _dialogTimer;
   // Technisch
   int tiereGerettetTechnisch = 0;
   int tiereTotTechnisch = 0;
@@ -1023,6 +1024,24 @@ class _ProtocolPageState extends State<ProtocolPage> {
                         _gefaehrlicheStoffeController.text;
                     protocols.elementAt(showingAlarmId).weiterTaetigkeiten =
                         _weiterTaetigkeitenController.text;
+                    FocusScope.of(context).unfocus();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext builderContext) {
+                          _dialogTimer = Timer(const Duration(seconds: 1), () {
+                            Navigator.of(context).pop();
+                          });
+
+                          return const AlertDialog(
+                            backgroundColor: Colors.red,
+                            title: Text('Protokoll wird gespeichert'),
+                          );
+                        }
+                    ).then((val){
+                      if (_dialogTimer.isActive) {
+                        _dialogTimer.cancel();
+                      }
+                    });
                   },
                   child: const Text("Speichern"),
                   style: ElevatedButton.styleFrom(

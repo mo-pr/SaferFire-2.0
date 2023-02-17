@@ -12,6 +12,7 @@ import 'package:saferfire/views/grundinformationen_view.dart';
 import "package:sizer/sizer.dart";
 
 import 'authentication.dart';
+import 'loginPageTwo.dart';
 
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // When navigating to the "/" route, build the FirstScreen widget.
-            '/': (context) => Login(),
+            '/': (context) => LoginTwo(),
             // When navigating to the "/second" route, build the SecondScreen widget.
             '/info': (context) => Start(),
             '/protocol': (context) => const ProtocolPage(),

@@ -129,14 +129,12 @@ class LoginPage extends State<Login> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 90.0),
+            margin: const EdgeInsets.only(top: 1.0),
             alignment: Alignment.topCenter,
-            child: const Text(
-              'SaferFire',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold),
+            child: Image.asset('assets/Safer-Fire.png',
+              width: 200,
+              height: 180.0,
+              fit: BoxFit.cover,
             ),
           ),
           Align(
