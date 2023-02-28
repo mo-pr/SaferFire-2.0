@@ -68,7 +68,7 @@ pubspec.lock
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter
-**/websocket/dist
-**/websocket/node_modules
-**/websocket/.vscode
+**/web-serivce/dist
+**/web-service/node_modules
+**/webs-service/.vscode
 .vscode

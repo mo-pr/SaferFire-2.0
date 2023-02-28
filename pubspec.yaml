@@ -63,6 +63,7 @@ dependencies:
   flutter_osm_plugin: ^0.42.0
   geolocator: ^9.0.2
   geocoding:
+  keycloak_flutter:
 dev_dependencies:
   flutter_test:
     sdk: flutter
