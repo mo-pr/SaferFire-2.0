@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saferfire/models/Protocol.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-
 import 'alarm.dart';
+
 List<Protocol> protocols = <Protocol>[];
 String ipAddress = "152.67.71.8";
 bool isProtocol = false;
@@ -15,10 +14,6 @@ List<Alarm> alarms = [];
 MapController controller = MapController(
     initMapWithUserPosition: true
 );
-
-/*class PublicVariables {
-  Protocol protocol = Protocol(null, null, null, null, null, null);
-}*/
 
 Color mainColor = Colors.red;
 

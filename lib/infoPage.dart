@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:saferfire/dangerousGoods.dart';
 import 'package:saferfire/pages/hydrantMap.dart';
 import 'package:saferfire/pages/linechart.dart';
 import 'package:saferfire/notificationservice.dart';
@@ -17,12 +18,9 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:saferfire/models/Protocol.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
-var _cardColor = Colors.white;
 const _openNavbarColor = Color(0xFFbb1e10);
 const _backgroundColor = Colors.white;
-const _maxHeight = 350.0;
 const _minHeight = 70.0;
-List _allDeployments = [];
 bool _isGuest = false;
 bool _isDeployment = false;
 
@@ -37,15 +35,15 @@ late Socket socket;
 late AnimationController _animationController;
 late Animation _animation;
 
-//String _timeString = "";
 PageController _pageController = PageController(initialPage: 0);
 
 changeAlarm (int newAlarmId){
   cons.showingAlarmId = newAlarmId;
 }
 
-
 class Start extends StatefulWidget {
+  const Start({super.key});
+
   @override
   StartPage createState() => StartPage();
 }
@@ -74,31 +72,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     );
   }
 
-
-  // Map
-  /*
-  Future<Position> getCurrentPosition() async{
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  }
-
-  Future<http.Response> getHydrants(double lng, double lat) async{
-    return http.get(
-      Uri.parse('https://api.wasserkarte.info/1.0/getSurroundingWaterSources/?source=${cons.source}&token=${cons.token}&lat=$lat&lng=$lng&range=${cons.range}&numItems=${cons.numItems}'),
-    );
-  }
-  Future<List<Hydrant>> convertHydrantResponse(String response) async{
-    Map<String, dynamic> hydrants = jsonDecode(response);
-    var waterSources = hydrants['waterSources'];
-    List<Hydrant> allHydrants = [];
-    for(var singleWaterSource in waterSources){
-      var newHydrant = Hydrant(singleWaterSource['name'], singleWaterSource['id'].toString(), singleWaterSource['address'], singleWaterSource['longitude'], singleWaterSource['latitude']);
-      allHydrants.add(newHydrant);
-      var markerIcon = const MarkerIcon(icon: Icon(Icons.fire_hydrant,color: Colors.blue,size:200));
-      await cons.controller.addMarker(GeoPoint(latitude: newHydrant.lat!, longitude: newHydrant.lng!), markerIcon:  markerIcon);
-    }
-    return allHydrants;
-  }*/
-
   @override
   void initState() {
     _animationController = AnimationController(vsync:this,duration: const Duration(seconds: 1));
@@ -126,38 +99,32 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     socket.connect();
     _websocketReq();
     socket.on('alarmsRes', (data) async {
-      print(data);
-      Alarm alarm = new Alarm(data);
+      Alarm alarm = Alarm(data);
       for (int i = 0; i < cons.alarms.length; i++) {
-        if (cons.alarms[i].Id == alarm.Id) {
+        if (cons.alarms[i].id == alarm.id) {
           return cons.alarms;
         }
       }
       cons.alarms.add(alarm);
-      //If you get alarm for your firestation, get push notification
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       var firestation = prefs.getString('firestation');
-      if (alarm.FireDeps.toString()
+      if (alarm.fireDeps.toString()
           .contains(firestation!)) //if alarm is for your firestation
       {
         NotificationService().showNotification(
             0,
-            "A new alarm has appeared",
-            "Alarm type: ${alarm.AlarmType}   Address: ${alarm.Address}",
+            "Neuer Einsatz!",
+            "${alarm.subtype}, ${alarm.address}",
             2); //you get a push notification
       }
 
       return cons.alarms;
     });
-    socket.on(
+    /*socket.on(
         'connect_error', (data) => print("ConnErr: " + data)); //debug output
-    socket.on('error', (data) => print("Err: " + data));
-    Timer.periodic(
-        const Duration(seconds: 5), (Timer t) => _getAlarms()); //debug output
-    //_timeString = _formatDateTime(DateTime.now());
-    //Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    //Timer.periodic(const Duration(seconds: 10), (Timer t) => _getAlarms());
+    socket.on('error', (data) => print("Err: " + data));*/
+    Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms());
     super.initState();
   }
 
@@ -179,13 +146,13 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       });
     } else {
       setState(() {
-        _alarmId = cons.alarms.elementAt(cons.showingAlarmId).Id.toString();
-        _alarmSubtype = cons.alarms.elementAt(cons.showingAlarmId).Subtype.toString();
-        _alarmAdress = cons.alarms.elementAt(cons.showingAlarmId).Address.toString();
-        _alarmTime = cons.alarms.elementAt(cons.showingAlarmId).Time.toString();
+        _alarmId = cons.alarms.elementAt(cons.showingAlarmId).id.toString();
+        _alarmSubtype = cons.alarms.elementAt(cons.showingAlarmId).subtype.toString();
+        _alarmAdress = cons.alarms.elementAt(cons.showingAlarmId).address.toString();
+        _alarmTime = cons.alarms.elementAt(cons.showingAlarmId).time.toString();
         _alarmLat =
-            cons.alarms.elementAt(cons.showingAlarmId).Lat.toString() + " " + cons.alarms.elementAt(cons.showingAlarmId).Lng.toString();
-        _alarmFireDepts = cons.alarms.elementAt(cons.showingAlarmId).FireDeps
+            cons.alarms.elementAt(cons.showingAlarmId).lat.toString() + " " + cons.alarms.elementAt(cons.showingAlarmId).lng.toString();
+        _alarmFireDepts = cons.alarms.elementAt(cons.showingAlarmId).fireDeps
             .toString()
             .replaceAll('[', '')
             .replaceAll(']', '')
@@ -195,7 +162,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       if(cons.protocols.isEmpty)
       {
         for(var i = 0; i < cons.alarms.length; i++){
-          cons.protocols.add(Protocol(cons.alarms.elementAt(i).Id, cons.alarms.elementAt(i).Type, cons.alarms.elementAt(i).Address, "${cons.alarms.elementAt(i).Lat} + ${cons.alarms.elementAt(i).Lng}", cons.alarms.elementAt(i).AlarmType, DateTime.now()));
+          cons.protocols.add(Protocol(cons.alarms.elementAt(i).id, cons.alarms.elementAt(i).type, cons.alarms.elementAt(i).address, "${cons.alarms.elementAt(i).lat} + ${cons.alarms.elementAt(i).lng}", cons.alarms.elementAt(i).alarmType, DateTime.now()));
         }
       }
     }
@@ -203,16 +170,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //var response = getCurrentPosition().then((value) =>  getHydrants(value.longitude, value.latitude)).then((value) => convertHydrantResponse(value.body));
-    final size = MediaQuery.of(context).size;
-    final menuWidth = size.width;
     return Scaffold(
       backgroundColor: _backgroundColor,
-      //floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: SpeedDial(
-        /*shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
-        ),*/
         marginBottom: 10, //margin bottom
         icon: Icons.menu, //icon on Floating action button
         activeIcon: Icons.close, //icon when menu is expanded on button
@@ -226,8 +186,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
         curve: Curves.bounceIn,
         overlayColor: Colors.black,
         overlayOpacity: 0.5,
-        onOpen: () => print('OPENING DIAL'), // action when menu opens
-        onClose: () => print('DIAL CLOSED'), //action when menu closes
+        //onOpen: () => print('OPENING DIAL'), // action when menu opens
+        //onClose: () => print('DIAL CLOSED'), //action when menu closes
         elevation: 8.0, //shadow elevation of button
         orientation: SpeedDialOrientation.Up,
         children: [
@@ -240,7 +200,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Navigation'),
+            //onLongPress: () => print('Navigation'),
           ),
           SpeedDialChild( //speed dial child
             child: const Icon(Icons.navigation_outlined),
@@ -250,10 +210,10 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
               setState(() {
-                MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
+                MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
               });
             },
-            onLongPress: () => print('Navigation'),
+            //onLongPress: () => print('Navigation'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.article_outlined),
@@ -264,7 +224,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Protokoll'),
+            //onLongPress: () => print('Protokoll'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.masks_outlined),
@@ -275,7 +235,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Atemschutz'),
+            //onLongPress: () => print('Atemschutz'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.map_outlined),
@@ -286,7 +246,18 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(3, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Wasserkarte'),
+            //onLongPress: () => print('Wasserkarte'),
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.warning_amber_rounded),
+            foregroundColor: Colors.white,
+            backgroundColor: _openNavbarColor,
+            label: 'Gefahrgut',
+            labelStyle: const TextStyle(fontSize: 18.0),
+            onTap: () {
+              _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+            },
+            //onLongPress: () => print('Gefahrgut'),
           ),
           SpeedDialChild(
             child: const Icon(Icons.stacked_line_chart),
@@ -297,7 +268,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
             onTap: () {
               _pageController.animateToPage(4, duration: const Duration(milliseconds: 500), curve: Curves.ease);
             },
-            onLongPress: () => print('Statistik'),
+            //onLongPress: () => print('Statistik'),
           ),
 
           //add more menu item children here
@@ -312,11 +283,12 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           });
         },
         children: [
-          Info(),
+          const Info(),
           const ProtocolPage(),
           OxygenPage(),
           HydrantMap(),
-          Linechart()
+          const LineChart(),
+          const DangerousGoods()
         ],
       ),
     );
@@ -324,13 +296,14 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 }
 
 class Info extends StatefulWidget {
+  const Info({super.key});
+
   @override
   InfoPage createState() => InfoPage();
 }
 
 class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
-  bool _expanded = false;
-  double _currentHeight = _minHeight;
+  bool _isKommando = false;
 
   changeAlarm2 (int newAlarmId){
     setState(() {
@@ -338,44 +311,32 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
     });
   }
 
+  Future<bool> isKommando() async{
+    var prefs = await SharedPreferences.getInstance();
+    if(prefs.getString('role') == "kommando"){
+      return true;
+    }
+    return false;
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      isKommando().then((value) => _isKommando=value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final menuWidth = size.width;
     return Scaffold(
       backgroundColor: _backgroundColor,
       body: SingleChildScrollView(
         child: Container(
           child: _isDeployment ? _receiveDeployment() : _noDeployment(),
         ),
-        /*child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Einsatzinformationen'),
-                        ),
-                        body: OperationInfo(),
-                      );
-                    });
-              },
-              child: Container(
-                child: _isDeployment ? _receiveDeployment2() : _noDeployment(),
-              ),
-            ),
-          ],
-        ),*/
       ),
-      /*floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: FloatingActionButton(
-        key: globalKey,
-        onPressed: _showOverLay,
-        child: const Icon(Icons.add),
-      ),*/
     );
   }
 
@@ -476,6 +437,39 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                               color: _openNavbarColor,
                             ), // <-- Icon
                             Text("Wasserkarte"), // <-- Text
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(5)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffbfbdbd),
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        _pageController.animateToPage(5, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+                      },
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 100.0,
+                              color: _openNavbarColor,
+                            ), // <-- Icon
+                            Text("Gefahrgut"), // <-- Text
                           ],
                         ),
                         padding: const EdgeInsets.all(8),
@@ -903,7 +897,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                   children: <Widget>[
                     GestureDetector(
                       onTap: (){
-                        MapUtils.openMap(cons.alarms.first.Lat, cons.alarms.first.Lng);
+                        MapUtils.openMap(cons.alarms.first.lat, cons.alarms.first.lng);
                       },
                       child: Container(
                         child: Column(
@@ -934,7 +928,9 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    Visibility(
+                      visible: _isKommando,
+                      child: GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.ease);
                       },
@@ -966,7 +962,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    ),
+                    ),),
                     GestureDetector(
                       onTap: (){
                         _pageController.animateToPage(2, duration: const Duration(milliseconds: 500), curve: Curves.ease);
@@ -1160,7 +1156,7 @@ class OperationInfo extends StatelessWidget {
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
               Text(
-                alarm.Id ?? ' ',
+                alarm.id ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -1169,7 +1165,7 @@ class OperationInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               Text(
-                alarm.Subtype ?? ' ',
+                alarm.subtype ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -1178,7 +1174,7 @@ class OperationInfo extends StatelessWidget {
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               Text(
-                alarm.Address ?? ' ',
+                alarm.address ?? ' ',
                 style: const TextStyle(color: Colors.black, fontSize: 25),
               ),
               const SizedBox(height: 50),
@@ -1252,7 +1248,7 @@ class AlarmOverview extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
-                    cons.alarms[index].Subtype ?? ' ',
+                    cons.alarms[index].subtype ?? ' ',
                     style: const TextStyle(color: Colors.black, fontSize: 20),
                   ),
                   const SizedBox(height: 15),
@@ -1262,7 +1258,7 @@ class AlarmOverview extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Text(
-                    cons.alarms[index].Address ?? ' ',
+                    cons.alarms[index].address ?? ' ',
                     style: const TextStyle(color: Colors.black, fontSize: 15),
                   ),
                   const SizedBox(height: 15),
@@ -1271,7 +1267,7 @@ class AlarmOverview extends StatelessWidget {
                       children: [
                         const SizedBox(height: 5),
                         Text(
-                          cons.alarms[index].Id ?? ' ',
+                          cons.alarms[index].id ?? ' ',
                           style: const TextStyle(
                             color: _openNavbarColor,
                             fontSize: 12,
@@ -1289,130 +1285,3 @@ class AlarmOverview extends StatelessWidget {
     );
   }
 }
-
-/*class OperationInfoAlt extends StatelessWidget {
-  const OperationInfoAlt({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 15),
-          Material(
-            elevation: 10,
-            borderRadius: BorderRadius.circular(2.0),
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Einsatz Protocol'),
-                        ),
-                        body: ProtocolPage(),
-                      );
-                    });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                height: 60.0,
-                //MediaQuery.of(context).size.width * .08,
-                width: MediaQuery.of(context).size.width * .9,
-                //MediaQuery.of(context).size.width * .3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    LayoutBuilder(builder: (context, constraints) {
-                      return Container(
-                        height: constraints.maxHeight,
-                        width: constraints.maxHeight,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFA81A0D),
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        child: const Icon(
-                          Icons.wysiwyg_sharp,
-                          color: Colors.white,
-                        ),
-                      );
-                    }),
-                    const Expanded(
-                      child: Text(
-                        'Einsatzprotokoll',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Material(
-            elevation: 10,
-            borderRadius: BorderRadius.circular(2.0),
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          backgroundColor: cons.mainColor,
-                          title: const Text('Alle Einsätze'),
-                        ),
-                        body: const ListViewBuilder(),
-                      );
-                    });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(0.0),
-                height: 60.0,
-                //MediaQuery.of(context).size.width * .08,
-                width: MediaQuery.of(context).size.width * .9,
-                //MediaQuery.of(context).size.width * .3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    LayoutBuilder(builder: (context, constraints) {
-                      return Container(
-                        height: constraints.maxHeight,
-                        width: constraints.maxHeight,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFA81A0D),
-                          borderRadius: BorderRadius.circular(2.0),
-                        ),
-                        child: const Icon(
-                          Icons.wysiwyg_sharp,
-                          color: Colors.white,
-                        ),
-                      );
-                    }),
-                    const Expanded(
-                      child: Text(
-                        'Alle Einsätze',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}*/

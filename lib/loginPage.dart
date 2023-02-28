@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-
 const _backgroundColor = Color(0xFFE5E5E5);
 const _cardBackgroundColor = Color(0xFFbb1e10);
 
@@ -24,7 +23,7 @@ class LoginPage extends State<Login> {
       _keyR = GlobalKey<FormState>(),
       _keyG = GlobalKey<FormState>();
   bool isLoginScreen = true, isGuestScreen = false;
-  String email = "", password = "", firedep = "";
+  String email = "", password = "", firedep = "", role ="";
 
   ///Gets called when the "Sign In" Button is Pressed
   login() async {
@@ -41,6 +40,7 @@ class LoginPage extends State<Login> {
       var prefs = await SharedPreferences.getInstance();
       prefs.setString('token', res.body);
       prefs.setString('firestation', claims["firestation"].toString());
+      prefs.setString('role', claims["role"].toString());
       prefs.setBool('guest', false);
       password = email = "";
       Navigator.push(
@@ -71,6 +71,7 @@ class LoginPage extends State<Login> {
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', res.body);
         prefs.setString('firestation', claims["firestation"].toString());
+        prefs.setString('role', claims["role"].toString());
         prefs.setBool('guest', true);
         firedep = "";
         Navigator.push(

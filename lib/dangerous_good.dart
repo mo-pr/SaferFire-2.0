@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class DangerousGood{
   late int unNr;
   late int hazardsNr;

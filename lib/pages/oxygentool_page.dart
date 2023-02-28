@@ -59,8 +59,8 @@ class _OxygenPageState extends State<OxygenPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-              title: Center(child: Text("Trupp " + (index + 1).toString() + ": Wählen Sie eine Aktion")),
+          return new AlertDialog(
+              title: Center(child: Text("Trupp " + (entries[index]._entryNr).toString() + ": Wählen Sie eine Aktion")),
               content: Row (
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -70,13 +70,13 @@ class _OxygenPageState extends State<OxygenPage> {
                           handleStartStop(index);
                           Navigator.of(context).pop();
                         }),
-                    TextButton(
-                        child: const Text('isDone'),
+                    new TextButton(
+                        child: new Text('Erledigt'),
                         onPressed: () {
                           entries[index]._timer.stop();
                           entries[index].isDone = true;
                           Navigator.of(context).pop();
-                        }) // button 2
+                        })
                   ]
               ),
           );
@@ -87,17 +87,36 @@ class _OxygenPageState extends State<OxygenPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-              title: Center(child: Text("Trupp " + (index + 1).toString())),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children : const <Widget>[
-                  Expanded(
-                    child: Text(
-                      "Einsatz wurde beendet",
-                      textAlign: TextAlign.center,
-                    ),
+          return new AlertDialog(
+              title: Center(child: Text("Trupp " + (entries[index]._entryNr).toString())),
+              content: Column(mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children : <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Einsatz wurde beendet",
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  ),
+                  new TextButton(
+                      child: new Text('Neuer Auftrag'),
+                      onPressed: () {
+                        entries[index]._timer.stop();
+                        entries[index].isDone = true;
+                        Entry temp = new Entry(entries[index]._person01,entries[index]._person02,entries[index]._person03,entries.length);
+                        temp._pressure01 = entries[index]._pressure01;
+                        temp._pressure02 = entries[index]._pressure02;
+                        temp._pressure03 = entries[index]._pressure03;
+                        temp.isDone = false;
+                        temp._timer = Stopwatch();
+                        entries.add(temp);
+                        Navigator.of(context).pop();
+                      }
                   )
                 ],
               ),
@@ -112,8 +131,8 @@ class _OxygenPageState extends State<OxygenPage> {
       body: Center(
         child: entries.isEmpty == true
             ? Container(
-          child: const Text(
-            "Keine Trupp vorhanden",
+          child: Text(
+            "Kein Trupp vorhanden",
             style: TextStyle(color: Colors.black87, fontSize: 28),
           ),
         )
@@ -236,7 +255,7 @@ class _OxygenPageState extends State<OxygenPage> {
                 }),
                 const Expanded(
                   child: Text(
-                    'Einsatztrupp',
+                    'Neuer Trupp',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25,
