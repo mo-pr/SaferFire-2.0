@@ -53,15 +53,8 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
-    if (cons.isTest) {
-      print(prefs.getString('token'));
-      socket.emit('alarmsReq',
-          json.encode({'token': prefs.getString('token'), "count": 4}));
-    }
-    if (!cons.isTest) {
-      socket.emit(
-          'alarmsReq', json.encode({'token': prefs.getString('token')}));
-    }
+    socket.emit('ownMissionRequest',
+        json.encode({'token': prefs.getString('token')}));
   }
 
   void logout() async {
@@ -86,20 +79,20 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       _getSharedPreference().then((value) => _isGuest = value);
     });
     if (cons.isTest) {
-      socket = io('http://${cons.ipAddress}/testalarms', <String, dynamic>{
+      socket = io('http://${cons.ipAddress}/testmissions', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
     }
     if (!cons.isTest) {
-      socket = io('http://${cons.ipAddress}/alarms', <String, dynamic>{
+      socket = io('http://${cons.ipAddress}/missions', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
     }
     socket.connect();
     _websocketReq();
-    socket.on('alarmsRes', (data) async {
+    socket.on('ownMissionResponse', (data) async {
       Alarm alarm = Alarm(data);
       for (int i = 0; i < cons.alarms.length; i++) {
         if (cons.alarms[i].id == alarm.id) {
@@ -183,8 +176,10 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
         backgroundColor: _backgroundColor,
         floatingActionButton: SpeedDial(
           marginBottom: 10, //margin bottom
@@ -299,7 +294,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
               },
               //onLongPress: () => print('Statistik'),
             ),
-
             //add more menu item children here
           ],
         ),
@@ -321,9 +315,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           ],
         ),
       ),
-      onWillPop: () async {
-        return false;
-      },
     );
   }
 }

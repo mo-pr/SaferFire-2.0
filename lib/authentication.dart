@@ -2,8 +2,13 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:saferfire/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UserAuthentication {
+  static Future logout() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
   static Future<http.Response> register(
       String email, String password, String fireStation) async {
     return http.post(
