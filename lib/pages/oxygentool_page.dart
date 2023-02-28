@@ -108,6 +108,7 @@ class _OxygenPageState extends State<OxygenPage> {
                       onPressed: () {
                         entries[index]._timer.stop();
                         entries[index].isDone = true;
+                        index--;
                         Entry temp = new Entry(entries[index]._person01,entries[index]._person02,entries[index]._person03,entries.length);
                         temp._pressure01 = entries[index]._pressure01;
                         temp._pressure02 = entries[index]._pressure02;
@@ -116,6 +117,7 @@ class _OxygenPageState extends State<OxygenPage> {
                         temp._timer = Stopwatch();
                         entries.add(temp);
                         Navigator.of(context).pop();
+
                       }
                   )
                 ],
@@ -267,31 +269,6 @@ class _OxygenPageState extends State<OxygenPage> {
           ),
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        child: Icon(Icons.add),
-        onPressed: () {
-          _controller01.clear();
-          _controller02.clear();
-          _controller03.clear();
-          _pressure01.clear();
-          _pressure02.clear();
-          _pressure03.clear();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Constants.padding),
-                ),
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                child: contentBox(context),
-              );
-            },
-          );
-        },
-      ),*/
     );
   }
 
@@ -485,7 +462,13 @@ class _OxygenPageState extends State<OxygenPage> {
                           _pressure01.clear();
                           _pressure02.clear();
                           _pressure03.clear();
-                          entries[entries.length - 1]._timer = Stopwatch();
+
+                          _timer.cancel();
+                          _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
+                            setState(() {});
+                          });
+
+                          //entries[entries.length - 1]._timer = Stopwatch(); //maybe bug here
                         });
                         Navigator.of(context).pop();
                       }
