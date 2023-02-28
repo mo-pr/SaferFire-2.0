@@ -121,6 +121,17 @@ class LoginPageTwo extends State<LoginTwo> {
                   fit: BoxFit.cover,
                 ),
               ),
+              Text(
+                'SaferFire',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Column(
+            children: [
               Container(
                 margin: const EdgeInsets.only(top: 40),
                 alignment: Alignment.topCenter,
@@ -130,12 +141,15 @@ class LoginPageTwo extends State<LoginTwo> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Text(
-                'SaferFire',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+              Container(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  'Willkommen zu SaferFire',
+                  style: TextStyle(
+                      color: Colors.red[500],
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
