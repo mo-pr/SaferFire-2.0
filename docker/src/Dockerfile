@@ -5,7 +5,7 @@ WORKDIR "/SaferFire-2.0"
 RUN git checkout release
 WORKDIR "/SaferFire-2.0/web-service"
 RUN npm install @nestjs/cli -g
-RUN npm install --production
+RUN npm install
 RUN npm run build
 ENV PM2_PUBLIC_KEY a7cmhleidxmzbe6
 ENV PM2_SECRET_KEY 7l9ala1vopm5184
