@@ -176,8 +176,10 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
         backgroundColor: _backgroundColor,
         floatingActionButton: SpeedDial(
           marginBottom: 10, //margin bottom
@@ -292,7 +294,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
               },
               //onLongPress: () => print('Statistik'),
             ),
-
             //add more menu item children here
           ],
         ),
@@ -314,9 +315,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
           ],
         ),
       ),
-      onWillPop: () async {
-        return false;
-      },
     );
   }
 }
