@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   static Future<bool> keycloakLogin(String username, String password) async {
+    bool isLoggedIn = false;
     HttpClient client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
     final http = new IOClient(client);
@@ -22,16 +23,15 @@ class AuthRepository {
       'username': username,
       'password': password,
     };
-    await http.post(Uri.parse(Environment.ssoUrl),body: json.encode(data),headers: header)
+    await http.post(Uri.parse(Environment.ssoUrl),body: data,headers: header)
         .then(
             (response) async {
-              print(json.encode(data));
+              print(data);
           print("Reponse status : ${response.statusCode}");
           print("Response body : ${response.body}");
 
           if (response.statusCode == 200) {
             var prefs = await SharedPreferences.getInstance();
-            print(response.body);
             var JSONObj = JsonDecoder().convert(response.body);
             Map<String, dynamic> claims = JwtDecoder.decode(JSONObj['access_token']);
             prefs.setString('access_token', JSONObj['access_token']);
@@ -41,12 +41,14 @@ class AuthRepository {
                 .split(', ');
             prefs.setString('firestation', claims["firestation"].toString());
             prefs.setString('role', roles[0]);
-            return true;
+            isLoggedIn = true;
           }
-          return false;
+          else{
+            isLoggedIn = false;
+          }
 
         });
-    return false;
+    return isLoggedIn;
   }
 
   static Future<bool> keycloakLogout() async {

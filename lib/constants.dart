@@ -4,7 +4,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'alarm.dart';
 
 List<Protocol> protocols = <Protocol>[];
-String ipAddress = "192.168.0.20";
+String ipAddress = "152.67.71.8";
 bool isProtocol = false;
 bool isTest = true;
 int showingAlarmId = 0;
