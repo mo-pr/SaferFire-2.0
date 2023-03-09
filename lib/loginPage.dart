@@ -23,7 +23,7 @@ class LoginPage extends State<Login> {
   final _keyL = GlobalKey<FormState>(),
       _keyR = GlobalKey<FormState>(),
       _keyG = GlobalKey<FormState>();
-  bool isLoginScreen = true, isGuestScreen = false;
+  bool isLoginScreen = true;
   String email = "", password = "", firedep = "", role ="";
 
   ///Gets called when the "Sign In" Button is Pressed
@@ -54,36 +54,11 @@ class LoginPage extends State<Login> {
     }
   }
 
-  registerGuestUser() async {
-    final form = _keyG.currentState;
-    if (form!.validate()) {
-      form.save();
-      var res = await UserAuthentication.createGuest(firedep);
-      if (res.statusCode == 200) {
-        Map<String, dynamic> claims = JwtDecoder.decode(res.body);
-        var prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', res.body);
-        prefs.setString('firestation', claims["firestation"].toString());
-        prefs.setString('role', claims["role"].toString());
-        prefs.setBool('guest', true);
-        firedep = "";
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Start()),
-        );
-      }
-    }
-  }
-
   Widget getScreen() {
     if (isLoginScreen) {
       return _login();
     } else {
-      if (!isGuestScreen) {
-        return _register();
-      } else {
-        return _registerGuest();
-      }
+      return _register();
     }
   }
 
@@ -236,7 +211,6 @@ class LoginPage extends State<Login> {
                   onPressed: () {
                     setState(() {
                       isLoginScreen = false;
-                      isGuestScreen = false;
                     });
                   },
                   minWidth: MediaQuery.of(context).size.width,
@@ -370,7 +344,6 @@ class LoginPage extends State<Login> {
                   onPressed: () {
                     setState(() {
                       isLoginScreen = true;
-                      isGuestScreen = false;
                     });
                   },
                   minWidth: MediaQuery.of(context).size.width,
@@ -403,7 +376,6 @@ class LoginPage extends State<Login> {
                   onPressed: () {
                     setState(() {
                       isLoginScreen = false;
-                      isGuestScreen = true;
                     });
                   },
                   minWidth: MediaQuery.of(context).size.width,
@@ -411,103 +383,6 @@ class LoginPage extends State<Login> {
                   textColor: Colors.black,
                   child: const Text(
                     "Create Guest User",
-                    style: TextStyle(
-                        color: _cardBackgroundColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(color: _cardBackgroundColor)),
-                ),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  Widget _registerGuest() {
-    return Container(
-        height: 350,
-        width: MediaQuery.of(context).size.width / 1.1,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 15, 30, 10),
-          child: Form(
-            key: _keyG,
-            child: Column(
-              children: [
-                Text(
-                  'Willkommen zu SaferFire',
-                  style: TextStyle(
-                      color: Colors.red[500],
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  validator: (e) {
-                    if (e!.isEmpty) {
-                      return "Feuerwehr darf nicht leer sein!";
-                    }
-                    if (Validator.validateFirestation(e) == false) {
-                      return "Ungültige Feuerwehr!";
-                    }
-                    return null;
-                  },
-                  onSaved: (e) => firedep = e!,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    hintText: 'Feuerwehr',
-                  ),
-                ),
-                const SizedBox(height: 45),
-
-                MaterialButton(
-                  onPressed: () => registerGuestUser(),
-                  minWidth: MediaQuery.of(context).size.width,
-                  color: _cardBackgroundColor,
-                  textColor: Colors.black,
-                  child: const Text(
-                    "Create Guest User",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    //side: BorderSide(color: Colors.red)
-                  ),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  'or',
-                  style: TextStyle(
-                      color: _cardBackgroundColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-
-                ///Button for Sign UP
-                MaterialButton(
-                  onPressed: () {
-                    setState(() {
-                      isLoginScreen = false;
-                      isGuestScreen = false;
-                    });
-                  },
-                  minWidth: MediaQuery.of(context).size.width,
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  child: const Text(
-                    "Sign Up",
                     style: TextStyle(
                         color: _cardBackgroundColor,
                         fontSize: 20,
