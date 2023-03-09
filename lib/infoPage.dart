@@ -21,7 +21,6 @@ import 'package:vertical_card_pager/vertical_card_pager.dart';
 const _openNavbarColor = Color(0xFFbb1e10);
 const _backgroundColor = Colors.white;
 const _minHeight = 70.0;
-bool _isGuest = false;
 bool _isDeployment = false;
 
 String _alarmId = " ";
@@ -75,9 +74,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       });
-    setState(() {
-      _getSharedPreference().then((value) => _isGuest = value);
-    });
     if (cons.isTest) {
       socket = io('http://${cons.ipAddress}/testmissions', <String, dynamic>{
         'transports': ['websocket'],
@@ -122,11 +118,6 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     socket.on('error', (data) => print("Err: " + data));*/
     Timer.periodic(const Duration(seconds: 5), (Timer t) => _getAlarms());
     super.initState();
-  }
-
-  Future<bool> _getSharedPreference() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('guest')!;
   }
 
   @override
@@ -616,19 +607,7 @@ class InfoPage extends State<Info> with SingleTickerProviderStateMixin {
   }
 
   Widget _noDeploymen2() {
-    return _isGuest
-        ? Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.fromLTRB(5.w, 45.h, 5.w, 0),
-            child: const Center(
-              child: Text(
-                "Zur Zeit liegt kein Alarm vor",
-                style: TextStyle(color: Colors.black87, fontSize: 28),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-        : Column(
+    return Column(
             children: [
               Container(
                 height: 40,

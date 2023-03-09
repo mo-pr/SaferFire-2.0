@@ -34,8 +34,8 @@ class AuthRepository {
             var prefs = await SharedPreferences.getInstance();
             var JSONObj = JsonDecoder().convert(response.body);
             Map<String, dynamic> claims = JwtDecoder.decode(JSONObj['access_token']);
+            prefs.clear();
             prefs.setString('access_token', JSONObj['access_token']);
-            prefs.setString('refresh_token', JSONObj['refresh_token']);
             List<String> roles = claims['resource_access']['saferfire_app']['roles']
                 .toString().replaceAll('[', '').replaceAll(']', '')
                 .split(', ');
@@ -54,7 +54,6 @@ class AuthRepository {
   static Future<bool> keycloakLogout() async {
     var prefs = await SharedPreferences.getInstance();
     var accessToken = prefs.getString('access_token');
-    var refreshToken = prefs.getString('refresh_token');
     var headers = {
       'Authorization': 'Bearer '+accessToken!,
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -63,7 +62,6 @@ class AuthRepository {
     request.bodyFields = {
       'client_id': Environment.clientId,
       'client_secret': Environment.clientSec,
-      'refresh_token': refreshToken!,
     };
     request.headers.addAll(headers);
 
