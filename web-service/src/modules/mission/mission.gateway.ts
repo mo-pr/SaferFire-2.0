@@ -50,7 +50,6 @@ export class MissionGateway implements OnGatewayConnection, OnGatewayDisconnect{
         if(access_token != undefined && access_token != null && access_token!=""){   
             const payloadBuffer = Buffer.from(payload, "base64");
             const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
-            console.log(firestation)
             if(firestation!= undefined && firestation != null && firestation != ""){
                 this.clients.set(client,access_token);
                 while(this.isClientConnected){
