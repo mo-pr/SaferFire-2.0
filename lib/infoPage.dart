@@ -53,7 +53,7 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
   Future<void> _websocketReq() async {
     var prefs = await SharedPreferences.getInstance();
     socket.emit('ownMissionRequest',
-        json.encode({'token': prefs.getString('token')}));
+        json.encode({'token': prefs.getString('access_token')}));
   }
 
   void logout() async {
@@ -74,13 +74,13 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
       ..addListener(() {
       });
     if (cons.isTest) {
-      socket = io('http://localhost:80/testmissions', <String, dynamic>{
+      socket = io('http://${cons.ipAddress}:80/testmissions', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': false
       });
     }
     if (!cons.isTest) {
-      socket = io('http://localhost:80/missions', <String, dynamic>{
+      socket = io('http://${cons.ipAddress}:80/missions', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });
