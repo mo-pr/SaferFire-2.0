@@ -72,16 +72,15 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     _animationController.repeat(reverse: true);
     _animation = Tween(begin: 8.0, end: 12.0).animate(_animationController)
       ..addListener(() {
-        setState(() {});
       });
     if (cons.isTest) {
-      socket = io('http://${cons.ipAddress}/testmissions', <String, dynamic>{
+      socket = io('http://localhost:80/testmissions', <String, dynamic>{
         'transports': ['websocket'],
-        'forceNew': true
+        'forceNew': false
       });
     }
     if (!cons.isTest) {
-      socket = io('http://${cons.ipAddress}/missions', <String, dynamic>{
+      socket = io('http://localhost:80/missions', <String, dynamic>{
         'transports': ['websocket'],
         'forceNew': true
       });

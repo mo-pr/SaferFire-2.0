@@ -36,8 +36,8 @@ class LoginPage extends State<Login> {
   }
 
   baseLogin(String email, String password) async{
-    bool isLoggedIn = await AuthRepository.keycloakLogin(email,password);
-    if (isLoggedIn) {
+    //bool isLoggedIn = await AuthRepository.keycloakLogin(email,password);
+    if (true) {
       password = email = "";
       Navigator.pushReplacementNamed(context, "/info");
     }
@@ -403,9 +403,7 @@ class LoginPage extends State<Login> {
   void _getTime() {
     final DateTime now = DateTime.now();
     final String formattedDateTime = _formatDateTime(now);
-    setState(() {
-      _timeString = formattedDateTime;
-    });
+
   }
 
   /// converts the DateTime in a string (uses intl 0.17.0)
