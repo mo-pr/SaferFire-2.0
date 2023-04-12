@@ -11,7 +11,7 @@ export class DangerousgoodController {
 
     @Get('/getall')
     @HttpCode(200)
-    @Roles({roles:['dev_admin','saferfire_admin','saferfire_kommando','saferfire_mannschaft'],mode:RoleMatchingMode.ANY})
+    //@Roles({roles:['dev_admin','saferfire_admin','saferfire_kommando','saferfire_mannschaft'],mode:RoleMatchingMode.ANY})
     async getAll(){
         let dangerousgoods = await this.dangerousgoodService.getAllDangerousgoods();
         this.logger.log('Dangerousgoods successfully read from database.')
