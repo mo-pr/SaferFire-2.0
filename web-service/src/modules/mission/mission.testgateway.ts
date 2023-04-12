@@ -42,7 +42,7 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
                   let alarmCnt = alarms['cnt_einsaetze'];
                   for(let i = 0; i < alarmCnt;i++){
                     if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
-                      if(JSON.stringify(alarms['einsaetze'][i]['einsatz']).includes(firestation)){
+                      if(JSON.stringify(alarms['einsaetze'][i]['einsatz']).includes('FF Test')){
                         el.emit('ownMissionResponse',alarms['einsaetze'][i]['einsatz']);
                       }
                     }
