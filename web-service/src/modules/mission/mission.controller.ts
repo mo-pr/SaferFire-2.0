@@ -12,7 +12,7 @@ export class MissionController {
     private logger:Logger = new Logger('MissionController');
 
     @Get('/writemissions')
-    @Roles({roles:['dev_admin']})
+    //@Roles({roles:['dev_admin']})
     async writeAllAlarms(){
         let helper = new MissionHelper()
         let missions = await helper.extractAlarms()
@@ -29,7 +29,7 @@ export class MissionController {
 
     @Post('/getbyfiredepartment')
     @HttpCode(200)
-    @Roles({roles:['dev_admin','saferfire_admin','saferfire_kommando','saferfire_mannschaft'],mode:RoleMatchingMode.ANY})
+    //@Roles({roles:['dev_admin','saferfire_admin','saferfire_kommando','saferfire_mannschaft'],mode:RoleMatchingMode.ANY})
     async getByfiredepartment(@Body() payload:FiredepartmentBody){
         if(payload.firedepartment == null || payload.firedepartment == ""){
             throw new HttpException('Firedepartment is a required input!',HttpStatus.BAD_REQUEST);

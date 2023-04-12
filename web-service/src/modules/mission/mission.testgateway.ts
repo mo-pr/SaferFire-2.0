@@ -30,13 +30,13 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
   @SubscribeMessage('ownMissionRequest')
   async handleMessage(client: Socket, payload: string) {
     let alarms = testdata;
-    const access_token = JSON.parse(payload)['token'];  
-    if(access_token != undefined && access_token != null && access_token!=""){   
+    //const access_token = JSON.parse(payload)['token'];  
+    //if(access_token != undefined && access_token != null && access_token!=""){   
         const payloadBuffer = Buffer.from(payload, "base64");
         const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
         console.log(firestation)
         if(firestation!= undefined && firestation != null && firestation != ""){
-            this.clients.set(client,access_token);
+            //this.clients.set(client,access_token);
             while(this.isClientConnected){
               for(let el of this.clients.keys()){
                   let alarmCnt = alarms['cnt_einsaetze'];
@@ -53,8 +53,8 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
         }else{
             client.disconnect();
         }
-    }else{
-        client.disconnect();
-    }
+    //}else{
+        //client.disconnect();
+    //}
   }
 }
