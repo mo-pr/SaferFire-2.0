@@ -119,9 +119,16 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
+
+  @override
+  void deactivate() {
+    socket.dispose();
+    super.deactivate();
+  }
+
   @override
   void dispose() {
-    socket.close();
+    socket.dispose();
     super.dispose();
   }
 
