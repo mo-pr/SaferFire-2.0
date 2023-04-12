@@ -27,20 +27,16 @@ class DangerousGoodsState extends State<DangerousGoods> {
   }
 
   Future getData() async {
-    var prefs = await SharedPreferences.getInstance();
-    var accessToken = prefs.getString('access_token');
-    print(accessToken);
     var res = await http.get(
       Uri.parse('http://$ipAddress/dangerousgood/getall'),
       headers: <String, String>{
-        'Authorization': 'Bearer '+accessToken!,
         'Content-Type': 'application/x-www-form-urlencoded'
       },
     );
-    print(res.body);
-    /*List<DangerousGood> goods = List<DangerousGood>.from(l.map((model)=> DangerousGood.fromJson(model)));
+    Iterable l = json.decode(res.body);
+    List<DangerousGood> goods = List<DangerousGood>.from(l.map((model)=> DangerousGood.fromJson(model)));
     goods.sort((a,b)=> a.unNr.compareTo(b.unNr));
-    adrs = items = goods;*/
+    adrs = items = goods;
   }
 
   void _showDetail(int index) {

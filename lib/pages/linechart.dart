@@ -101,7 +101,7 @@ class LineChartState extends State<LineChart> {
                         },
                       ),
                       DropdownButton( //month button
-                        hint: const Text("choose month"),
+                        hint: const Text("Monat"),
                         value: dropdownvalueMonth,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         items: itemsMonth.map((String items) {
@@ -118,7 +118,7 @@ class LineChartState extends State<LineChart> {
                         },
                       ),
                       DropdownButton( //alarmtyp button
-                        hint: const Text("choose type"),
+                        hint: const Text("Einsatzart"),
                         value: dropdownvalueType,
                         icon: const Icon(Icons.keyboard_arrow_down),
                         items: itemsType.map((String items) {
@@ -165,15 +165,16 @@ class LineChartState extends State<LineChart> {
     List<double> spotsArray = [0,0,0,0,0,0,0,0,0,0,0,0]; //12 months -> ++ if alarm
     var res = await UserAuthentication.getAlarms("");
     var split =res.body.split("},{");
+
     List<String> dates = [];
     List<String> types = [];
 
     for (int i = 0; i < split.length; i++)
     {
       var alarmsplit = split[i].split("\",\"");
-      var date = alarmsplit[0].split(", ")[1];
+      var date = alarmsplit[1].split(", ")[1];
       dates.add(date);
-      var type = alarmsplit[1].split("\":\"")[1];
+      var type = alarmsplit[4].split("\":\"")[1];
       types.add(type);
     }
 
@@ -429,7 +430,7 @@ class LineChartState extends State<LineChart> {
     {
       return 6;
     }
-    else if (month == 'July')
+    else if (month == 'Juli')
     {
       return 7;
     }
@@ -515,8 +516,6 @@ class LineChartState extends State<LineChart> {
     setState(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         spots = await getSpots();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        firestation = prefs.getString('firestation');
       });
     });
     super.initState();
