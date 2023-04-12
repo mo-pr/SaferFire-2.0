@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const mission_service_1 = require("./mission.service");
 const mission_helper_1 = require("./mission.helper");
 const mission_dto_1 = require("./mission.dto");
-const nest_keycloak_connect_1 = require("nest-keycloak-connect");
 let MissionController = class MissionController {
     constructor(missionService) {
         this.missionService = missionService;
@@ -61,7 +60,6 @@ __decorate([
 ], MissionController.prototype, "getByfiredepartment", null);
 MissionController = __decorate([
     (0, common_1.Controller)('mission'),
-    (0, common_1.UseGuards)(nest_keycloak_connect_1.AuthGuard, nest_keycloak_connect_1.RoleGuard),
     __metadata("design:paramtypes", [mission_service_1.MissionService])
 ], MissionController);
 exports.MissionController = MissionController;

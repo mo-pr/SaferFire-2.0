@@ -8,17 +8,17 @@ import { DangerousgoodService } from './dangerousgood.service';
 import { DangerousgoodController } from './dangerousgood.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Dangerousgood]), KeycloakConnectModule.register({
+  imports: [TypeOrmModule.forFeature([Dangerousgood]), /*KeycloakConnectModule.register({
     authServerUrl: 'https://saferfire.org:8443/',
     realm: 'saferfire',
     clientId: 'saferfire_app',
     secret: '21iLnw4dapoyDY8h0zcUs3GVCuqqCj7h',
     policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
     tokenValidation: TokenValidation.ONLINE,
-  }),],
+  }),*/],
   controllers: [DangerousgoodController],
   providers: [DangerousgoodService, DangerousgoodRepository,
-  {
+  /*{
     provide: APP_GUARD,
     useClass: AuthGuard,
   },
@@ -29,6 +29,6 @@ import { DangerousgoodController } from './dangerousgood.controller';
   {
     provide: APP_GUARD,
     useClass: RoleGuard,
-  },]
+  },*/]
 })
 export class DangerousgoodModule {}

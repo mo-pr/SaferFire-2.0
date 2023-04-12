@@ -5,7 +5,7 @@ import { FiredepartmentBody } from './mission.dto';
 import { Roles,AuthGuard, RoleGuard, RoleMatchingMode } from 'nest-keycloak-connect';
 
 @Controller('mission')
-@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthGuard, RoleGuard)
 export class MissionController {
     constructor(private missionService: MissionService){}
 
