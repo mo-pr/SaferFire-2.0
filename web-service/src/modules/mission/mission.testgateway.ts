@@ -30,31 +30,30 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
   @SubscribeMessage('ownMissionRequest')
   async handleMessage(client: Socket, payload: string) {
     let alarms = testdata;
-    //const access_token = JSON.parse(payload)['token'];  
-    //if(access_token != undefined && access_token != null && access_token!=""){   
-        //const payloadBuffer = Buffer.from(payload, "base64");
-        //const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
-        //console.log(firestation)
-        //if(firestation!= undefined && firestation != null && firestation != ""){
-            //this.clients.set(client,access_token);
+    const access_token = JSON.parse(payload)['token'];  
+    if(access_token != undefined && access_token != null && access_token!=""){   
+        const payloadBuffer = Buffer.from(payload, "base64");
+        const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
+        if(firestation!= undefined && firestation != null && firestation != ""){
+            this.clients.set(client,access_token);
             while(this.isClientConnected){
               for(let el of this.clients.keys()){
                   let alarmCnt = alarms['cnt_einsaetze'];
                   for(let i = 0; i < alarmCnt;i++){
                     if(alarms['einsaetze'][i]['einsatz']['status'] == 'offen'){
                       if(JSON.stringify(alarms['einsaetze'][i]['einsatz']).includes('FF Test')){
-                        el.emit('ownMissionResponse',alarms['einsaetze'][i]['einsatz']);
+                        client.emit('ownMissionResponse',alarms['einsaetze'][i]['einsatz']);
                       }
                     }
                   }
               }
               await new Promise(f => setTimeout(f, 15000));
             }
-        //}else{
-            //client.disconnect();
-        //}
-    //}else{
-        //client.disconnect();
-    //}
+        }else{
+            client.disconnect();
+        }
+    }else{
+        client.disconnect();
+    }
   }
 }
