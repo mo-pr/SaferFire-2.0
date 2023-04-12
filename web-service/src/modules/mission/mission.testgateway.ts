@@ -32,10 +32,10 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
     let alarms = testdata;
     //const access_token = JSON.parse(payload)['token'];  
     //if(access_token != undefined && access_token != null && access_token!=""){   
-        const payloadBuffer = Buffer.from(payload, "base64");
-        const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
-        console.log(firestation)
-        if(firestation!= undefined && firestation != null && firestation != ""){
+        //const payloadBuffer = Buffer.from(payload, "base64");
+        //const firestation = payloadBuffer.toString().split('firestation":"')[1].split('"')[0]
+        //console.log(firestation)
+        //if(firestation!= undefined && firestation != null && firestation != ""){
             //this.clients.set(client,access_token);
             while(this.isClientConnected){
               for(let el of this.clients.keys()){
@@ -50,9 +50,9 @@ export class MissionTestGateway implements OnGatewayConnection, OnGatewayDisconn
               }
               await new Promise(f => setTimeout(f, 15000));
             }
-        }else{
-            client.disconnect();
-        }
+        //}else{
+            //client.disconnect();
+        //}
     //}else{
         //client.disconnect();
     //}

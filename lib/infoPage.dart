@@ -51,9 +51,9 @@ class StartPage extends State<Start> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
 
   Future<void> _websocketReq() async {
-    var prefs = await SharedPreferences.getInstance();
+    //var prefs = await SharedPreferences.getInstance();
     socket.emit('ownMissionRequest',
-        json.encode({'token': prefs.getString('access_token')}));
+        json.encode({'token': ''/*prefs.getString('access_token')*/}));
   }
 
   void logout() async {
