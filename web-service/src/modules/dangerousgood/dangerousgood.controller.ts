@@ -3,7 +3,7 @@ import { Roles,AuthGuard, RoleGuard, RoleMatchingMode } from 'nest-keycloak-conn
 import { DangerousgoodService } from './dangerousgood.service';
 
 @Controller('dangerousgood')
-@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthGuard, RoleGuard)
 export class DangerousgoodController {
     constructor(private dangerousgoodService: DangerousgoodService){}
 

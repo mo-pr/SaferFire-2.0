@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DangerousgoodController = void 0;
 const common_1 = require("@nestjs/common");
-const nest_keycloak_connect_1 = require("nest-keycloak-connect");
 const dangerousgood_service_1 = require("./dangerousgood.service");
 let DangerousgoodController = class DangerousgoodController {
     constructor(dangerousgoodService) {
@@ -33,7 +32,6 @@ __decorate([
 ], DangerousgoodController.prototype, "getAll", null);
 DangerousgoodController = __decorate([
     (0, common_1.Controller)('dangerousgood'),
-    (0, common_1.UseGuards)(nest_keycloak_connect_1.AuthGuard, nest_keycloak_connect_1.RoleGuard),
     __metadata("design:paramtypes", [dangerousgood_service_1.DangerousgoodService])
 ], DangerousgoodController);
 exports.DangerousgoodController = DangerousgoodController;

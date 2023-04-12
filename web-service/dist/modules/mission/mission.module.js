@@ -13,36 +13,17 @@ const mission_service_1 = require("./mission.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const mission_repository_1 = require("./mission.repository");
 const mission_entity_1 = require("./mission.entity");
-const nest_keycloak_connect_1 = require("nest-keycloak-connect");
-const core_1 = require("@nestjs/core");
 const mission_gateway_1 = require("./mission.gateway");
 const mission_testgateway_1 = require("./mission.testgateway");
 let MissionModule = class MissionModule {
 };
 MissionModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([mission_entity_1.Mission]), nest_keycloak_connect_1.KeycloakConnectModule.register({
-                authServerUrl: 'https://saferfire.org:8443/',
-                realm: 'saferfire',
-                clientId: 'saferfire_app',
-                secret: '21iLnw4dapoyDY8h0zcUs3GVCuqqCj7h',
-                policyEnforcement: nest_keycloak_connect_1.PolicyEnforcementMode.PERMISSIVE,
-                tokenValidation: nest_keycloak_connect_1.TokenValidation.ONLINE,
-            }),],
+        imports: [typeorm_1.TypeOrmModule.forFeature([mission_entity_1.Mission]),
+        ],
         controllers: [mission_controller_1.MissionController],
         providers: [mission_service_1.MissionService, mission_repository_1.MissionRepository, mission_gateway_1.MissionGateway, mission_testgateway_1.MissionTestGateway,
-            {
-                provide: core_1.APP_GUARD,
-                useClass: nest_keycloak_connect_1.AuthGuard,
-            },
-            {
-                provide: core_1.APP_GUARD,
-                useClass: nest_keycloak_connect_1.ResourceGuard,
-            },
-            {
-                provide: core_1.APP_GUARD,
-                useClass: nest_keycloak_connect_1.RoleGuard,
-            },]
+        ]
     })
 ], MissionModule);
 exports.MissionModule = MissionModule;
