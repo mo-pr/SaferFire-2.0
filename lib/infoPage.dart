@@ -1206,7 +1206,7 @@ class OperationInfo extends StatelessWidget {
               children: [
                 const SizedBox(height: 10),
                 const Text(
-                  "ID",
+                  "Einsatznummer",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
@@ -1216,7 +1216,7 @@ class OperationInfo extends StatelessWidget {
                 ),
                 const SizedBox(height: 50),
                 const Text(
-                  "Subtype",
+                  "Einsatzgrund",
                   style: TextStyle(color: Colors.black, fontSize: 25),
                 ),
                 Text(
@@ -1225,7 +1225,7 @@ class OperationInfo extends StatelessWidget {
                 ),
                 const SizedBox(height: 50),
                 const Text(
-                  "Addrese",
+                  "Adresse",
                   style: TextStyle(color: Colors.black, fontSize: 25),
                 ),
                 Text(
@@ -1310,7 +1310,7 @@ class AlarmOverview extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   const Text(
-                    "Addrese",
+                    "Adresse",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
