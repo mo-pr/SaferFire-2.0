@@ -297,44 +297,28 @@ class _ProtocolPageState extends State<ProtocolPage> {
                       Column(
                         children: [
                           Text(
-                            'Leitstellenjahr',
+                            'Kategorie',
                             style: TextStyle(
                               color: mainColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "${protocols.elementAt(showingAlarmId).leitstellenJahr?.year}",
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 25),
-                          ),
-                          //Text("Einsatznummer: ${widget.protocol!.einstznummer}"),
-                        ],
+                          if (protocols.elementAt(showingAlarmId).alarmart == 'BRAND')
+                            const Text(
+                              "BRAND",
+                              style: TextStyle(color: Colors.black, fontSize: 25),
+                            ),
+                          if (protocols.elementAt(showingAlarmId).alarmart != 'BRAND')
+                            const Text(
+                              "TECHNISCH",
+                              style: TextStyle(color: Colors.black, fontSize: 25),
+                            ),
+                          ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Kategorie',
-                    style: TextStyle(
-                      color: mainColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  if (protocols.elementAt(showingAlarmId).alarmart == 'BRAND')
-                    const Text(
-                      "BRAND",
-                      style: TextStyle(color: Colors.black, fontSize: 25),
-                    ),
-                  if (protocols.elementAt(showingAlarmId).alarmart != 'BRAND')
-                    const Text(
-                      "TECHNISCH",
-                      style: TextStyle(color: Colors.black, fontSize: 25),
-                    ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 15),
                 ],
               ),
             ),
@@ -856,7 +840,7 @@ class _ProtocolPageState extends State<ProtocolPage> {
                       color: Colors.white,
                       margin: const EdgeInsets.only(
                           left: 10.0, top: 10.0, bottom: 10.0),
-                      child: const Text("Tiere",
+                      child: const Text("Personen",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 25,
