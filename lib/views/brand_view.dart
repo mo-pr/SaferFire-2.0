@@ -338,25 +338,6 @@ class _Brand_StatistikState extends State<_Brand_Statistik> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("Brand-Entdeckung"),
-              DropdownButton<String>(
-                value: selectedEntdeckung,
-                items: entdeckungItems
-                      .map((item)=> DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item, style: TextStyle(fontSize: 24)),
-                ))
-                .toList(),
-                onChanged: (item) => setState(()=> selectedEntdeckung = item),
-              ),
-              /*TextField(
-                  controller: _entdeckungController,
-                  decoration: InputDecoration(
-                    labelText: "Brand - Entdeckung",
-                    border: myinputborder(),
-                    enabledBorder: myinputborder(),
-                    focusedBorder: myfocusborder(),
-                  )),*/
               const SizedBox(height: 10),
               TextField(
                   controller: _ausmassController,
