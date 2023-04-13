@@ -3,8 +3,8 @@
     "version": "1.3.1",
     "title": "Eins\u00e4tze laufender Tag (seit 00:00)",
     "pubDate": "Tue, 01 Mar 2022 21:04:04 +0100",
-    "cnt_feuerwehren": 12,
-    "cnt_einsaetze": 20,
+    "cnt_feuerwehren": 8,
+    "cnt_einsaetze": 5,
     "einsaetze": {
         "0": {
             "einsatz": {
